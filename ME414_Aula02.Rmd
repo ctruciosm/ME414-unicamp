@@ -1,0 +1,492 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Estatística Descritiva: Tabelas de Frequencia e Gráficos'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica,
+  | Universidade Estadual de Campinas
+date: "Aula 2"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (UNICAMP)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Introdução
+
+## Introdução
+
+>- Para conhecermos a *historia que os dados tem para nos contar* é necessário primeiro explorar os dados e termos uma visão geral do panorama. 
+>- Isto é feito com tabelas, gráficos, medidas resumo, etc.
+>- Esse processo é conhecido como **Análise Exploratória de Dados** (EDA em Ingles) e nos ajuda a identificar alguns modelos que serão usados posteriormente ou a definir melhor as hipóteses a serem testadas.
+>- A forma como exploramos os dados depende do tipo de variável e escala de medida.
+
+# Métodos Tabulares
+
+## Métodos Tabulares
+
+Suponha que estamos trabalhando com um *dataset* de 1000 observações e entre as variáveis contidas, temos a variável *Cor de olhos* (em que 0 significa negros, 1 significa marrom, 2 significa azul, 3 significa verde e 4 significa outras cores).
+
+\pause
+
+>- Faria sentido calcular a média para essa variável? Porque?
+>- O que poderiamos fazer para termos uma ideia de como se comportam os dados?
+>- Muitas vezes o unico que podemos fazer é **contar**
+
+## Métodos Tabulares
+
+#### Tabelas de Frequência
+
+As tabelas de frequência são utilizadas quando as variáveis são **categóricas**^[Contudo, variáveis numéricas podem ser categorizadas] elas mostram a **frequência** (a quantidade de vezes) com que cada categória/**classe** da variável aparece.
+
+\pause
+
+**Exemplo**
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(titanic)
+library(dplyr)
+titanic_test_full <- left_join(titanic_test,titanic_gender_model, by = "PassengerId") %>% dplyr::select(PassengerId,Survived, everything()) 
+titanic_data <- rbind(titanic_test_full, titanic_train) %>% mutate(Pclass = factor(Pclass, levels = c(1,2,3), labels = c("1st", "2nd", "3rd")))
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+titanic_data  %>% group_by(Sex) %>% summarise(freq = n()) %>% knitr::kable(caption = 'Distribuição de Frequências dos passagéiros do Titanic segundo sexo.', col.names = c('Sexo', 'Frequência'), align = "lc")
+```
+
+## Métodos Tabulares
+
+>- A frequência (*i.e,* o número de observações em cada classe) é também chamada de **frequência absoluta**
+>- Veja que cada observação pertence unicamente a uma classe
+>- Muitas vezes, além da frequência absoluta, estamos também interessados na proporção de observações em cada classe, isso é chamado de **frequência relativa**
+>- Quando reportamos a porcentagem isto é conhecido como **frequência percentual** = frequência relativa \color{red} $\times 100$ \color{black}
+
+\pause
+
+#### Frequência relativa
+
+$$\text{Frequência relativa classe }i = \dfrac{\text{Frequência absoluta da classe } i}{\text{Total de observações}}.$$
+
+## Métodos Tabulares
+
+**Exemplo**
+
+```{r message=FALSE, warning=FALSE}
+titanic_data  %>% group_by(Sex) %>% summarise(freq = n()) %>% 
+  ungroup() %>% mutate(rel = freq/sum(freq), porc = rel*100) %>% knitr::kable(caption = 'Distribuição de Frequências dos passagéiros do Titanic segundo sexo.', col.names = c('Sexo', 'Freq. absoluta', 'Freq. relativa', 'Freq. percentual'), digits = 3, align = "lccc")
+```
+
+\pause
+
+- Muitas vezes, também é desejável apresentar as frequência acumuladas (que são obtidas somandos as frequências até a $i$-éssima classe)
+
+
+## Métodos Tabulares
+
+**Exemplo**
+
+```{r message=FALSE, warning=FALSE}
+titanic_data  %>% group_by(Sex) %>% summarise(freq = n())%>% 
+  ungroup() %>% mutate(rel = freq/sum(freq), porc = rel*100, acum = cumsum(porc)) %>% knitr::kable(caption = 'Distribuição de Frequências dos passagéiros do Titanic segundo sexo.', col.names = c('Sexo', 'Freq. absoluta', 'Freq. relativa', 'Freq. percentual', 'Freq. percentual acumulada'), digits = 2, align = "lcccc")
+```
+
+
+## Métodos Tabulares
+
+Também podemos fazer tabelas de frequência com varáveis quantitativas, mas, obviamente, não faremos com que cada observação diferente seja uma classe,  **categorizamos** os dados!.
+
+\pause
+
+**Como categorizar? (sem a ajuda de um especialista)**
+
+>- determinar o número de classes (nem muitas nem poucas),
+>- determinar a amplitude de cada classe (por padrão usamos a mesma amplitude em todas as classes), $$\text{Amplitude} = \dfrac{\text{Maior valor} - \text{Menor valor}}{\text{Número de classes}}$$
+>- Determinar os limites da classe (uma observação deve pertencer a uma e somente a uma classe)
+
+
+## Métodos Tabulares
+
+
+```{r message=FALSE, warning=FALSE}
+library(epiDisplay)
+Table = titanic_data %>% dplyr::select(Age) %>%  mutate(age_cat = cut(Age, breaks = seq(0,80, by = 16))) %>% dplyr::select(age_cat) %>% tab1(graph = FALSE, cum.percent = TRUE)
+knitr::kable(Table$output.table[,1:3], caption = 'Distribuição de Frequências dos passagéiros do Titanic segundo idade (categorizada).', col.names = c('Freq. absoluta', 'Freq. percentual', 'Freq. percentual acumulada'), digits = 2, align = "ccc")
+```
+
+
+\pause
+
+- `[`, `]` significa inclui,
+- `(`, `)`, `<`, `>` significa **não** inclui.
+
+
+
+## Métodos Tabulares
+
+
+
+```{r message=FALSE, warning=FALSE}
+library(epiDisplay)
+Table = titanic_data %>% dplyr::select(Age) %>%  mutate(age_cat = cut(Age, breaks = seq(0,80, by = 16))) %>% dplyr::select(age_cat) %>% tab1(graph = FALSE, cum.percent = TRUE)
+knitr::kable(Table$output.table, caption = 'Distribuição de Frequências dos passagéiros do Titanic segundo idade (categorizada).', col.names = c('Freq. absoluta', 'Freq. percentual', 'Freq. percentual acumulada', 'Freq. percentual (-NA)', 'Freq. percentual acumulada (-NA)'), digits = 2, align = "ccccc")
+```
+
+
+
+## Métodos Tabulares
+
+
+>- \color{blue} Mas... conhecendo uma das frequências, conhecemos todas as outras através de simples operações!. Por que não utilizar, por exemplo, apenas a freq. relativa e deixar o *leitor* fazer a conta?
+>- \color{red} A ideia é apresentar os resultados da forma mais simples e informativa para o *leitor*, que ele não precise fazer contas, que ele veja a Tabela e saiba tudo aquilo que precisa saber.
+
+
+
+# Gráficos para variáveis qualitativas
+
+## Gráficos para variáveis qualitativas
+
+\begin{center}
+\color{violet} 
+``Uma imagem vale mais que mil palavras". Confúsio
+\color{black}
+\end{center}
+
+\pause
+
+\begin{center}
+Os gráficos devem ser de tal forma que apenas \textit{batendo o olho} tenhamos toda a informação que precissamos. Por isso, eles devem ser \textbf{informatívos} e \textbf{fáceis de entender}.
+\end{center}
+
+\pause
+
+>- Assim como as tabelas, os gráficos nos ajudam a ter um panorama geral dos dados.
+>- Existem diferentes tipos de gráficos e eles dependem do tipo de variável com que estamos trabalhando. 
+
+
+
+
+## Gráficos para variáveis qualitativas
+
+#### Gráfico de setores (ou Pizza/Pie)
+
+>- Gráfico para descrever variáveis qualitativas
+>- Apresenta a distribuição de frequências
+>- Útil quando temos **poucas** classes.
+>- Uma prática comúm quando temos muitas classes, é agrupar todas as classes com poucas frequências em uma nova categoria chamada *outros*.
+>- No seguinte slide, veremos um exemplo
+
+
+## Gráficos para variáveis qualitativas
+
+```{r fig.height=4, fig.width=12}
+proportions <- prop.table(table(titanic_data$Pclass))
+lbls <- paste(round(as.numeric(proportions)*100,2),"%",sep="")
+pie(as.numeric(proportions), labels = lbls, col = rainbow(length(lbls)), main = "Distribuição dos passagéiros do Titanic segundo a classe da passagem")
+```
+
+
+\pause
+
+O que você achou do gráfico?
+
+## Gráficos para variáveis qualitativas
+
+```{r fig.height=4, fig.width=12}
+pie(prop.table(table(titanic_data$Pclass)), col = rainbow(length(lbls)), main = "Distribuição dos passagéiros do Titanic segundo a classe da passagem")
+```
+
+\pause
+
+O que você achou do gráfico?
+
+
+## Gráficos para variáveis qualitativas
+
+```{r fig.height=4, fig.width=12}
+proportion <- prop.table(table(titanic_data$Pclass))
+lbls <- paste(round(as.numeric(proportion)*100,2),"%",sep="")
+pie(proportion, labels = lbls, col=rainbow(length(lbls)), main = "Distribuição dos passagéiros do Titanic segundo a classe da passagem")
+legend("topright", names(proportion), cex=0.8,fill=rainbow(length(lbls)))
+```
+
+
+\pause
+
+O que você achou do gráfico?
+
+
+
+## Gráficos para variáveis qualitativas
+
+```{r fig.height=4, fig.width=12}
+proportion <- prop.table(table(titanic_data$Pclass))
+lbls <- paste(names(proportion),paste(round(as.numeric(proportion)*100,2),"%",sep=""), sep = ", ")
+pie(proportion, labels = lbls, col=rainbow(length(lbls)), main = "Distribuição dos passagéiros do Titanic segundo a classe da passagem")
+```
+
+
+\pause
+
+O que você achou do gráfico?
+
+## Gráficos para variáveis qualitativas
+
+
+\begin{center}
+\color{violet}
+Os gráficos devem ser de tal forma que apenas \textit{batendo o olho} tenhamos toda a informação que precissamos. Por isso, eles devem ser \textbf{informatívos} e \textbf{fáceis de entender}.
+\color{black}
+\end{center}
+
+
+## Gráficos para variáveis qualitativas
+
+#### Gráfico de barras
+
+>- Gráfico para descrever variáveis qualitativas.
+>- Apresenta a distribuição de frequências.
+>- Útil quando tempos **muitas** ou **poucas** classes.
+>- A prática comúm de agrupar classes com poucas frequências em uma nova classe chamada de "outros", se mantém.
+>- Em um dos eixos especificamos as classes (grupos/categorias) e no outro eixo a frequência.
+
+
+## Gráficos para variáveis qualitativas
+
+**Exemplos**
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE, fig.cap="Distribuição dos passagéiros segundo classe da passagem"}
+library(patchwork)
+library(ggplot2)
+p1 <- titanic_data %>% ggplot() + geom_bar(aes(x = Pclass), fill = "green4") +ylab("Frequência") + xlab("Classe")
+p2 <- titanic_data %>% ggplot() + geom_bar(aes(x = Pclass, y = (..count..)/sum(..count..)*100), fill = "green4") +ylab("Porcentagem") + xlab("Classe")
+p3 <- titanic_data %>% ggplot() + geom_bar(aes(x = Pclass, y = (..count..)/sum(..count..)*100), fill = "green4") +ylab("Porcentagem") + xlab("Classe") + coord_flip()
+p1 + p2 + p3
+```
+
+
+
+## Gráficos para variáveis qualitativas
+
+#### Gráfico de Pareto
+
+Chamado também de diagrama de Pareto. É parecido ao gráfico de barras, mas contem algumas informações adicionais:
+
+\pause
+
+>- Ordena as barras de maior frequência a menor frequência
+>- As barras representam a frequência absoluta
+>- É criada uma curva (um polígono) para representar a frequência percentual acumulada.
+
+
+## Gráficos para variáveis qualitativas
+
+
+```{r fig.height=5, fig.width=10, message=FALSE, warning=FALSE, fig.cap="Gráfico de Pareto: Distribuição dos diamantes segundo a qualidade do corte"}
+library(ggQC)
+library(ggplot2)
+titanic_tabela <- titanic_data %>% group_by(Pclass) %>% summarise(freq = n()) %>% ungroup() %>% mutate(rel = freq/sum(freq), porc = rel*100, acum = cumsum(porc))
+
+ggplot(titanic_tabela, aes(x = Pclass, y = freq)) +
+  stat_pareto() + ylab("Frequência") + xlab(" ")
+```
+
+
+
+# Tabelas e Gráficos para duas variáveis
+
+## Tabelas de contingência
+
+Às vezes, estamos interessados em saber mais do que apenas a analise de uma única variável por separado pode nos dizer. Nesses casos, as tabelas ou gráficos antes apresentados não nos ajudam.
+
+\pause
+
+
+#### Tabelas de contingência
+
+>- As Tabelas de contingência (chamadas também Tabelas de dupla entrada ou tabelas cruzadas) são uteis para sintetizar a informação **conjunta** de duas variáveis, de forma que nos permita ter um melhor panorama dos nossos dados.
+>- Nas Tabelas de contingência teremos, na vertical, a distribuição das classes de uma das variáveis, e no horizontal, a distribuição das classes da outra variável.
+>- Além disso, poderemos ver a distribuição **conjunta** das variáveis (*i.e,* conheceremos o comportamento da intereção entre as duas variáveis).
+
+
+
+## Tabelas de contingência
+
+
+```{r}
+tabela <- titanic_data %>% 
+    dplyr::select(Pclass, Sex) %>% 
+    table()  %>% 
+    addmargins() %>% round(4)
+row.names(tabela) <- c("1st", "2nd", "3rd", "Total")
+knitr::kable(tabela, align = "cccc", 
+             col.names = c("Feminino", "Masculino", "Total"),
+             caption = "Distribuiçao dos passagéiros do Titanic segundo classe da passagem e sexo")
+```
+
+\pause
+
+Como representaríamos isso em um gráfico?
+
+## Gráficos
+
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE, fig.cap="Distribuição dos passagéiros do Titanic segundo classe da passagem e sexo."}
+titanic_data %>% 
+    dplyr::select(Pclass, Sex) %>% ggplot() +
+  geom_bar(mapping = aes(x = Sex, fill = Pclass), position = "dodge") +
+  ylab("Frequência") + xlab("Sexo") + theme(legend.title = element_blank())
+```
+
+
+
+
+## Gráficos
+
+
+
+```{r fig.height=5, fig.width=10, message=FALSE, warning=FALSE, fig.cap="Distribuição dos passagéiros do Titanic segundo classe da passagem e sexo."}
+titanic_data_filtrada <- titanic_data %>% dplyr::select(Pclass, Sex) 
+
+p1 <- ggplot(titanic_data_filtrada) +
+  geom_bar(mapping = aes(x = Sex, fill = Pclass), position = "stack") +
+  ylab("Frequência") + xlab("Sexo") + theme(legend.title = element_blank(), legend.position = "bottom")
+
+p2 <- ggplot(titanic_data_filtrada) +
+  geom_bar(mapping = aes(x = Pclass, fill = Sex), position = "stack") +
+  ylab("Frequência") + xlab("Sexo") + theme(legend.title = element_blank(), legend.position = "bottom")
+
+p1|p2
+```
+
+
+
+## Tabelas de contingência e Gráficos
+
+
+
+```{r}
+tabela <- titanic_data %>% 
+    dplyr::select(Pclass, Sex) %>% 
+    table()  %>% 
+    prop.table() %>% 
+    addmargins() %>% round(4)*100  
+row.names(tabela) <- c("1st", "2nd", "3rd", "Total")
+knitr::kable(tabela, align = "cccc", 
+             col.names = c("Feminino", "Masculino", "Total"),
+             caption = "Distribuiçao dos passagéiros (em %) do Titanic segundo classe da passagem e sexo")
+```
+
+\pause
+
+>- Aprox. 54\% dos passagéiros eram da terceira classe.
+>- Aprox. 64\% dos passagéiros eram do sexo masculino.
+>- Aprox. 8\% dos passagéiros eram do sexo feminino e viajaram em segunda classe.
+
+
+
+## Tabelas de contingência e Gráficos
+
+Às vezes, podemos montar as tabelas e interpretá-las em função de uma das variáveis. Por exemplo, podemos interpretar as porcentagens por linha.
+
+\pause
+
+```{r}
+tabela <- titanic_data %>% 
+    dplyr::select(Pclass, Sex) %>% 
+    table()  %>% 
+    prop.table(margin=1) %>% 
+    addmargins() %>%
+    round(4)*100
+knitr::kable(tabela[1:3,], align = "cccc", 
+             col.names = c("Feminino", "Masculino", "Total"),
+             caption = "Distribuiçao dos passagéiros do Titanic segundo classe da passagem e sexo (% segundo a classe da passagem) ")
+```
+
+
+## Tabelas de contingência e Gráficos
+
+Ou podemos interpretar as porcentagens por coluna.
+
+\pause
+
+```{r fig.height=5, fig.width=10, message=FALSE, warning=FALSE}
+tabela <- titanic_data %>% 
+    dplyr::select(Pclass, Sex) %>% 
+    table()  %>% 
+    prop.table(margin=2) %>% 
+    addmargins() %>%
+    round(4)*100
+row.names(tabela) <- c("1st", "2nd", "3rd", "Total")
+knitr::kable(tabela[,1:2], align = "ccc", 
+             col.names = c("Feminino", "Masculino"),
+             caption = "Distribuiçao dos passagéiros do Titanic segundo classe da passagem e sexo (% segundo o sexo)")
+```
+
+## Tabelas de contingência e Gráficos
+
+
+```{r fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
+titanic_data_filtrada <- titanic_data %>% dplyr::select(Pclass, Sex) 
+
+p1 <-  ggplot(titanic_data_filtrada) +
+  geom_bar(mapping = aes(x = Sex, fill = Pclass, y = ..count../sum(..count..)*100), position = "fill") +
+  ylab("Porcentagem") + xlab("Sexo") + 
+  scale_y_continuous(labels = scales::percent) + 
+  theme(legend.title = element_blank(), legend.position = "bottom")
+p2 <- ggplot(titanic_data_filtrada) +
+  geom_bar(mapping = aes(x = Pclass, fill = Sex, y = ..count../sum(..count..)*100), position = "fill") +
+  ylab("Porcentagem") + xlab("Classe") + 
+  scale_y_continuous(labels = scales::percent) + theme(legend.title = element_blank(), legend.position = "bottom")
+p1 | p2
+```
+
+
+## Comentários Finais
+
+
+>- É possivel estender as ideias das tabelas e gráficos de duas variáveis, para mais de duas dimensões.
+>- Escolher entre tabelas e gráficos; frequências absolutas, relativas ou percentuais; ou típo de gráfico a utilizar são detalhes que podem causar _dor de cabeça_ no princípio, mas a regra é simples \color{red} "O que for mais fácil de entender e interpretar é o que devemos reportar". \color{black}
+
+\pause
+
+#### Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 2**
+- Freund, J. E.; Perles, B. M. (2014). *Modern elementary statistics*. 12ed.  Pearson College Division. **Chapter 1**
+
+
+
