@@ -1,0 +1,595 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Estatística Descritiva: Medidas resumo'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica,
+  | Universidade Estadual de Campinas
+date: "Aula 4"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (UNICAMP)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Introdução
+
+## Introdução
+
+>- Na última aula vimos tabelas e gráficos para sintetizar/resumir dados qualitativos.
+>- Imagine agora que temos a variável `salário`. Como você resumiria os dados dessa variável?
+>- Hoje aprenderemos como sintetizar/resumir dados provenientes de  variáveis quantitativas. \begin{itemize}
+\item medidas de tendência central
+\item medidas de posição
+\item medidas de dispersão
+\item medidas de associação
+\item Gráficos: Histograma, Boxplot, scatterplot
+\end{itemize}
+
+
+# Medidas de tendência central
+
+## Medidas de tendência central: Média
+
+>- É a medida de tendência central mais conhecida.
+>- Constitui uma medida da posição central dos dados.
+
+\pause
+
+#### Média amostral
+
+Sejam as observações $x_1, x_2, \ldots, x_n$, a média é dada por $$\bar{x} = \dfrac{ \sum_{i=1}^nx_i}{n}.$$
+
+
+\color{violet} Nota: geralmente $\bar{x}$ é utilizado para denotar a média amostral e $\mu$ para denotar a média populacional.
+
+
+## Medidas de tendência central: Média
+ 
+ **Exemplo**
+ 
+A seguinte tabela apresenta as notas finais de 18 alunos de MAD211 da FACC/UFRJ.
+ 
+```{r message=FALSE, warning=FALSE}
+notas <- c(2.1, 5.6, 7, 8, 6.7, 9, 7, 6, 6.5, 7.2, 8.1, 8.8, 9.1, 6.3,  9.3, 9.6, 7.8, 7.7)
+knitr::kable(matrix(notas, nrow = 2))
+```
+
+\pause
+
+Vamos calcular $\bar{x}$
+
+\pause
+
+$$\bar{x} = \dfrac{2.1 + 5.6 + 7 + 8+ 6.7 + 9  \cdots+ 7.7}{18} = \dfrac{131.8}{18} = 7.322222$$ 
+ 
+ 
+## Medidas de tendência central: Mediana 
+
+>- Outra medida de tendência central.
+>- É o valor \textit{do meio} quando os valores estão ordenados
+>- Para obter a mediana os valores devem ser ordenados de menor a maior: : $x_{(1)}, x_{(2)},\ldots, x_{(n)},$ (onde $x_{(i)}$ é a i-ésima observação ordenada)
+>- Robusta a observações atípicas.
+
+
+\pause 
+
+#### Mediana
+
+$$Mediana(x)=
+\begin{cases}
+x_{\big(\frac{n+1}{2}\big)}, & \text{se } n \text{ for impar}\\ 
+\dfrac{x_{\big(\frac{n}{2}\big)} + x_{\big(\frac{n}{2} + 1\big)}}{2}, & \text{se } n \text{ for par}.
+\end{cases}$$
+
+
+## Medidas de tendência central: Mediana 
+
+**Exemplo**
+
+No conjunto de dados anterior: 
+
+```{r message=FALSE, warning=FALSE}
+notas <- c(2.1, 5.6, 7, 8, 6.7, 9, 7, 6, 6.5, 7.2, 8.1, 8.8, 9.1, 6.3,  9.3, 9.6, 7.8, 7.7)
+knitr::kable(matrix(notas, nrow = 2))
+```
+
+\pause
+
+Primeiro, ordenamos os dados
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+\pause
+
+Qual o valor \textit{do meio}?
+
+
+## Medidas de tendência central: Mediana 
+
+**(...continuação) Exemplo**
+
+Como $n = 18$ (par), a mediana é $Mediana(x) = \dfrac{x_{\big(\frac{n}{2}\big)} + x_{\big(\frac{n}{2} + 1\big)}}{2}$.
+
+\pause
+
+No nosso caso:
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+$$Mediana(x) = \dfrac{x_{\big(\frac{18}{2}\big)} + x_{\big(\frac{18}{2} + 1\big)}}{2} = \dfrac{x_{ (9)} + x_{(10)}}{2} = \dfrac{7.2+7.7}{2} = 7.45$$
+
+## Medidas de tendência central: Moda
+
+>- Outra medida de tendência central
+>- É o valor que ocorre com maior frequência
+>- Podem existir várias modas (nesse caso dizemos que os dados são multimodais)
+>- Útil também quando trabalhamos com variaveis qualitativas.
+
+\pause
+
+**Exemplo**
+
+No nosso conjunto de dados
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+temos que o número 7 aparece duas vezes, e todos os outros valores aparecem apenas  1 vez, logo $Moda(x)  = 7$
+
+## Medidas de tendência central: Moda
+
+Nos dados do Titanic, 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(titanic)
+library(dplyr)
+titanic_test_full <- left_join(titanic_test,titanic_gender_model, by = "PassengerId") %>% dplyr::select(PassengerId,Survived, everything()) 
+titanic_data <- rbind(titanic_test_full, titanic_train) %>% mutate(Pclass = factor(Pclass, levels = c(1,2,3), labels = c("1st", "2nd", "3rd")))
+```
+
+```{r message=FALSE, warning=FALSE}
+library(epiDisplay)
+Table = titanic_data %>% dplyr::select(Pclass) %>% tab1(graph = FALSE, cum.percent = FALSE)
+knitr::kable(Table$output.table[1:3,1], caption = 'Distribuição de Frequências das classe da passagem dos passageiros do Titanic.', col.names = c('Freq. absoluta'), digits = 2, align = "ccc")
+```
+
+A moda é 3rd (terceira classe)
+
+# Medidas de posição
+
+## Medidas de posição
+
+#### Percentil
+
+O $k$-ésimo percentil ($P_k$) é um valor tal que _pelo menos_ $k\%$ das observações são **menores ou iguais** a esse valor e _pelo menos_ $(100-k)\%$ das observações são **maiores ou iguais** a esse valor. 
+
+\pause
+
+
+#### Quartil
+
+- Às vezes é interessante dividir os dados em quatro partes, de forma que cada parte tenha aproximadamente 25% das observações. 
+- Um quartil é um caso particular de um percentil e temos três quartis em total: $Q_1 = P_{25}$, $Q_2 = P_{50}$ (ou mediana) e $Q_3 = P_{75}$
+
+## Outras medidas de posição
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
+library(ggplot2)
+x <-  seq(-3, 3, by = 0.001)
+y <-  dnorm(x)
+dados <- data.frame(x, y)
+ggplot(dados, aes(x,y)) + geom_area(fill = "gray") + geom_vline(xintercept = qnorm(c(0.25,0.5,0.75)), linetype = "dashed") + geom_text(aes(x = -1.2, y = 0.1), label = "25%", size = 10) + geom_text(aes(x = -0.4, y = 0.1), label = "25%", size = 10) + geom_text(aes(x = 0.4, y = 0.1), label = "25%", size = 10) + geom_text(aes(x = 1.2, y = 0.1), label = "25%", size = 10) + geom_text(aes(x = -0.67, y = 0), label = "Q1", color = "blue", size = 10) + geom_text(aes(x = 0, y = 0), label = "Q2", color = "blue", size = 10) + 
+  geom_text(aes(x = 0.67, y = 0), label = "Q3", color = "blue", size = 10) +ylab("") + xlab("")
+```
+
+## Medidas de posição
+
+
+#### Como calcula o k-ésimo percentil
+
+1. Ordene os dados de menor a maior: $x_{(1)}, x_{(2)},\ldots, x_{(n)}$
+2. Calcule o índice $i$, $$i = \Big(\dfrac{k}{100}\Big) \times n$$ em que $k$ é  o percentil desejado e $n$ é o número e observações
+3. Calcular o k-ésimo percentil: $$P_k=
+\begin{cases}
+x_{(\lfloor i \rfloor +1)}, & \text{se } i \text{ não for inteiro}\\ 
+\dfrac{x_{(i)} + x_{(i+1)}}{2}, & \text{se } i \text{ for inteiro}.
+\end{cases}$$
+
+\pause
+
+\color{violet} Provavelmente, você encontrará nos livros ou na internet formas diferentes de calcular os percentis. Não precisa se preocupar,  existem vários formas de calcular percentis, só na função `quantile()` do _R_ existem 9 formas diferentes! \color{black}
+
+
+## Como calcula o p-ésimo percentil
+
+**Exemplo**
+
+No nosso conjunto de dados
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+Vamos calcular $Q_1 = P_{25}$, $Q_2 = P_{50}$ e $Q_3 = P_{75}$
+
+\pause
+
+>- $i_1 = \Big(\frac{25}{100}\Big) \times 18 = 4.5,$ então $Q_1 = P_{25} = x_{(4+1)} = 6.5$ 
+>- $i_2 = \Big(\frac{50}{100}\Big) \times 18 = 9,$ e então $Q_2 = P_{50} = \dfrac{x_{(9)} + x_{(10)}}{2} = 7.45$
+>- $i_3 = \Big(\frac{75}{100}\Big) \times 18 = 13.5,$ então $Q_3 = P_{75} = x_{(13+1)} = 8.8$ 
+
+
+# Medidas de dispersão
+
+
+## Medidas de dispersão
+
+>- As medidas de posição nada nos dizem sobre a variabilidade (dispersão) dos dados
+>- As medidas de dispersão são um complemento às medidas de posição e juntas nos ajudarão a entender melhor como se comportam nossos dados.
+
+
+
+## Medidas de dispersão: Amplitude e Amplitude Interquartil
+
+#### Amplitude
+
+É a medida de dispersão mais simples, $$\text{Amplitude} = \underbrace{x_{(n)}}_{\text{Máximo}} - \underbrace{x_{(1)}}_{\text{Mínimo}}$$
+\pause
+
+\color{violet} Sua vantagem é o simples cálculo mas sua desvantagem é que depende apenas dos 2 valores mais extremos. \color{black}
+
+\pause
+
+> Observações extremas ( _outliers_ ) afetarão a amplitude!
+
+## Medidas de dispersão: Amplitude e Amplitude Interquartil
+
+
+#### Amplitude Interquartil (AIQ)
+
+É a diferença entre o terceiro e primeiro quartil, $$AIQ = Q_3 - Q_1$$
+
+\pause
+
+\color{violet} Não temos mais os problema da amplitude, mas nada sabemos dos outros 50% das observações. \color{black}
+
+
+
+## Medidas de dispersão: Amplitude e Amplitude Interquartil
+
+
+**Exemplo**
+
+No nosso conjunto de dados
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+Temos que $Q_3 = 8.8$ e $Q_1 = 6.5$. Então
+
+\pause
+
+- Amplitude = $x(n)-x(1) = 9.6 - 2.1 = 7.5$
+- $AIQ = Q_3 - Q_1 = 8.8 - 6.5 = 2.3$
+
+## Medidas de dispersão: Variância 
+
+>- É uma mas das medidas de dispersão mais conhecidas e utilizadas
+>- Seu cálculo utiliza todas as observações
+>- Baseia-se na diferença (ao quadrado) dos valores observados e sua média.
+
+\pause
+
+\color{violet} Até agora, não temos feito diferença entre população e amostra. Isto, pois as formulas apresentadas anteriormente são as mesmas independente se as observações são da população ou da amostra.
+\color{black}
+
+\pause
+Basicamente, onde tinhamos $x_1, x_2, \ldots, x_n$ com $n$ sendo o tamaho da amostra, teremos $x_1, x_2, \ldots, x_N$ com $N$ sendo o tamanho da população. 
+
+
+## Medidas de dispersão: Variância 
+
+Aqui vamos diferenciar entre a variância populacional ($\sigma^2$) e a variância amostral ($s^2$)
+
+#### Variância populacional
+
+$$\sigma^2 = \dfrac{\displaystyle \sum_{i=1}^N (x_i - \mu)^2}{N}$$ em que $\mu = \frac{\sum_{i=1}^N x_i}{N}$ é a média populacional e $N$ é o tamanho (número de elementos) da população.
+
+
+\pause
+
+\color{violet} Na prática, dificilmente calculamos a variância populacional. \color{black} 
+
+## Medidas de dispersão: Variância 
+
+
+#### Variância amostral
+
+$$s^2 = \dfrac{ \displaystyle \sum_{i=1}^n (x_i - \bar{x})^2}{n-1}$$ em que $\bar{x}$ é a media amostral e $n$ é o tamanho da amostra.
+
+\pause
+
+
+\color{violet} Na prática, utilizamo $s^2$ para estimar o $\sigma^2$. \color{black} 
+
+## Medidas de dispersão: Variância 
+
+No nosso conjunto de dados
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+tinhamos que $\bar{x} = 7.322222$. Vamos calcular $s^2$.
+
+\pause
+
+$s^2 = \dfrac{(2.1 - \bar{x})^2 + (5.6-\bar{x})^2 + \cdots + (9.6 - \bar{x})^2}{18-1} = \dfrac{53.01111}{17} = 3.118301$
+
+
+## Medidas de dispersão: Desvio Padrão
+
+>- A variância não preserva a mesma unidade dos dados originais (lembre-se, elevamos ao quadrado.)
+>- Para facilitar a compreensão e interpretação, uma medida de dispersão que preserve a mesma unidade dos dados originais é desejada.
+>- Isto é obtido com a raíz quadrada da variância, essa medida de dispersão recebe o nome de **Desvio Padrão**
+
+\pause
+
+#### Desvio Padrão
+
+- Desvio padrão da população: $\sigma = \sqrt{\sigma^2}$
+- Desvio padrão da amostra: $s = \sqrt{s^2}$
+
+
+
+## Outras medidas de disperão
+
+
+#### Desvio absoluto médio (DAM)
+
+$$DAM = \dfrac{ \sum_{i=1}^n | x_i - \bar{x} |}{n}$$
+
+
+
+#### Coeficiente de variação (CV)
+
+$$CV = \Big( \dfrac{\text{Desvio Padrão}}{\text{Média}} \times 100 \Big)\% $$
+
+\color{violet} O CV é interessante pois ele nos diz qual o tamanho do desvio padrão em relação à média. 
+
+## Outras medidas de disperão
+
+No nosso conjunto de dados
+
+```{r message=FALSE, warning=FALSE}
+knitr::kable(matrix(sort(notas), nrow = 2, byrow = TRUE))
+```
+
+tinhamos que $\bar{x} = 7.322222$ e $s^2 = 3.118301$. Vamos calcular o CV.
+
+\pause
+
+
+$$CV = \Big( \dfrac{\text{Desvio Padrão}}{\text{Média}} \times 100 \Big) \%  = \Big( \dfrac{\sqrt{3.118301} }{7.322222} \times 100 \Big)\% = 24.1166\%$$
+
+O desvio padrão é $\approx$ 24.11% do valor da média.
+
+
+# Gráficos para variáveis quantitativas
+
+## Boxplot
+
+>- Traz informação do valor central, variabilidade, observações extremas e simetria.
+>- É contruido utilizando 5 valores: \begin{itemize}
+\item Medina ($Q_2$)
+\item Quartil 1 ($Q_1$)
+\item Quartil 3 ($Q_3$)
+\item LS = $Q_3$ + 1.5 $AIQ$
+\item LI = $Q_1$ - 1.5$AIQ$ 
+\end{itemize}
+
+
+
+
+## Boxplot
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE, echo = FALSE}
+set.seed(876)
+x_exemplo = rnorm(5000)
+Q1 = as.numeric(quantile(x_exemplo , 0.25))
+Q2 = as.numeric(quantile(x_exemplo , 0.50))
+Q3 = as.numeric(quantile(x_exemplo , 0.75))
+LS = Q3 + 1.5*IQR(x_exemplo) 
+LI = Q1 - 1.5*IQR(x_exemplo) 
+estat = rep(c(LI, Q1, Q2, Q3, LS),200)
+name = rep(c("LI", "Q1", "Q2", "Q3", "LS"),200)
+y = rep(0.02, 1000)
+exemplo = data.frame(x = x_exemplo ,y,estat, name)
+ggplot(exemplo) + geom_boxplot(aes(x)) + 
+geom_text(aes(x = estat, y, label=name),hjust=0, vjust=0, size=10) 
+```
+
+
+## Histograma
+
+>- O histograma é um gráfico formado por barras que indicam a frequência dos dados (previamente agrupados em clases).
+>- Nos permite ter uma ideia da variabilidade e simetria dos dados.
+>- Em geral, nos permite conhecer como os dados estão distribuidos
+
+
+\pause
+
+#### Como calcular?
+
+>- Procedemos da mesma forma em que construimos as tabelas de frequência para variáveis continuas (Aula 3). Precisaremos formas as classes, definir a amplitude de classe, os limites da classe e a frequência da classe.
+>- Algumas regras praticas para escolher o número de classes $k$ são: \begin{itemize}
+\item Sturges: $k = 1 + 3.322 \log(n)$
+\item $k = \sqrt{n}$
+\end{itemize}
+
+
+## Histograma
+
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
+ggplot(exemplo) + geom_histogram(aes(x), color = "white")
+```
+
+## Histograma
+
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
+n <- 5000
+x <-  c(rchisq(n, df = 3),
+        rt(n, df = 5),
+        runif(n,-1,5),
+        rnorm(n*0.4, mean = -2, sd = 1),
+        rnorm(n*0.6, mean = 2, sd = 1))
+y <- c(rep("A", n), rep("B", n), rep("C", n), rep("D", n))
+dados <- data.frame(x,y)
+ggplot(dados) + geom_histogram(aes(x), color = "white") + facet_wrap(~y, scales = "free")
+```
+
+# Medidas de associação entre duas variáveis
+
+
+## Medidas de associação entre duas variáveis.
+
+>- Frequentemente estamos interessados na relação de associação entre duas variáveis.
+>- Nesta seção aprenderemos sobre o gráfico de dispersão e duas medias de associação amplamente utilizadas:  covariância e correlação.
+
+\pause
+
+#### Gráfico de dispersão Bi-dimensional
+
+- Também conhecido como _Nuvem de pontos_ ou _scatter plot_.
+- É uma representação gráfica no plano cartesiano dos pares $(x,y)$ em que $x$ e $y$ são os valores observados das duas variáveis em análise. 
+
+
+## Medidas de associação entre duas variáveis.
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE, fig.cap="Gráfico de dispersão (peso X altura) de 507 individuos"}
+library(openintro)
+ggplot(bdims) + geom_point(aes(x = wgt, y = hgt)) + ylab("Altura (em cm.)") + xlab("Peso (em kg.)")
+```
+
+Você acha que existe alguma relação de associação entre _altura_ e _peso_?
+
+
+## Medidas de associação entre duas variáveis.
+
+Sejam $X$ e $Y$ duas variáveis de interesse com $(x_1,y_1),  \ldots, (x_n, y_n)$ e os valores observados de $X$ e $Y$ em uma amostra de tamanho $n$.
+
+#### Covariância amostral
+
+$$s_{xy} = \dfrac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{n-1}$$
+
+\pause
+
+No conjunto de dados utilizado no gráfico de dispersão temos que $s_{xy} \approx 90.05$. Como interpretar esse valor?
+
+\pause
+
+>- valores positivos indicam uma relação linear direta (ou positiva)
+>- valores negativos indicam uma relação linear inversa (ou negativa)
+>- valores muito proximos de zero indicam que não há nenhuma associação linear entre as variáveis 
+>- $s_{xy} = s_{yx}$
+
+
+## Medidas de associação entre duas variáveis.
+
+>- No exemplo anterior vimos que $s_{xy} \approx 90.05$ o que implica uma relação positiva, mas _quão forte é essa relação?_
+>- Para responder essa pergunta precisamos de algum valor de referência para saber se a relação é forte ou não.
+>- Além disso, o valor da covariância depende das unidades de medida (por exemplo, se utizarmos a altura em metros e não em centímetros teremos que $s_{xy} \approx 0.9$)
+
+
+## Medidas de associação entre duas variáveis.
+
+
+#### Coeficiente de correlação de Pearson
+
+$$r_{xy} = \dfrac{s_{xy}}{s_x s_y}$$ em que 
+
+- $s_{xy}$ é a covariância amostral entre $x$ e $y$, 
+- $s_x$ é o desvio padrão de $x$ e 
+- $s_y$ é o desvio padrão de $y$.
+
+\pause
+
+**Propriedades**
+
+>- $r_{xy} = r_{yx}$
+>- $-1 \leq r_{xy} \leq 1$
+
+## Coeficiente de correlação de Pearson
+
+
+**Exemplo**
+
+>- No conjunto de dados utilizado no gráfico de dispersão temos que $r_{xy} \approx 0.72$. 
+>- Como 0.72 é positivo e proximo de 1, dizemos que a relação entre é $x$ e $y$ é positiva (ou direta) e que esta relação é forte
+
+\pause
+
+\color{violet} Na próxima aula utilizaremos um conjunto de dados real e faremos, com ajuda do _R_,  um pouco de análise exploratória de dados utilizando o visto até aqui. \color{black}
+
+
+## Outros coeficientes de correlação
+
+- O coeficiente de correlação de Pearson é util quando as duas variáveis de interesse são continuas.
+- Contudo, às vezes queremos calcular a correlação entre outros tipos de variáveis. Para isto, existem outros coeficientes de correlação.
+  * Coeficiente de correlação de [Spearman](https://pt.wikipedia.org/wiki/Coeficiente_de_correlação_de_postos_de_Spearman) (recomendado quando os dados estão em escala ordinal)
+  * Coeficiente de correlação de [Kendall](https://pt.wikipedia.org/wiki/Coeficiente_de_correlação_tau_de_Kendall) (recomendado quando os dados estão em escala ordinal)
+  * Coeficiente de [contingência](https://estatsite.com.br/2017/02/27/qui-quadrado-de-pearson-e-coeficiente-de-contingencia/) (se usa quando as duas variáveis estão em escala nomial)
+  * Etc.
+
+
+
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 3**
+- Freund, J. E.; Perles, B. M. (2014). *Modern elementary statistics*. 12ed.  Pearson College Division. **Chapter 2 - 3**
+- Morettin, P. A; Bussab, W. O (2004). *Estatística Básica*. 5ed. Saraiva. **Cap 3**
+
+
+
