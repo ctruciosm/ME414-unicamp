@@ -10,11 +10,11 @@ institute: |
   | Universidade Estadual de Campinas
 date: "Aula 6"
 header-includes:
-- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.1]{imagens/UFRJ.png}}
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
 - |
   ```{=latex}
   \usepackage[portuges]{babel}
-  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (FACC/UFRJ)            \hspace{1.4cm} | \hspace{1.3cm}   MAD211 \hspace{1.3cm} | \hspace{3.0cm}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
   }
   \setbeamerfont{page number in head/foot}{size=\small}
   \setbeamercolor{footline}{fg=black!2, bg=gray}

@@ -1,0 +1,573 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Introdução à Probabilidade'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica, 
+  | Universidade Estadual de Campinas
+date: "Aula 7"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# Definições básicas
+
+## Experimento aleatório, espaço amostral e eventos
+
+>- Seja um experimento aleatório ($E$) um experimento cujo resultado não podemos prever com certeza. 
+>- Seja $A$ um conjunto de possiveis resultados de E
+>- Seja $S$ (ou $\Omega$) o conjunto de todos os resultados possíveis de $E$.
+
+\pause 
+### Definição
+O conjunto de todos os possíveis resultados de $E$, $S$, é chamado espaço amostral (do experimento $E$) e todo subconjunto $A \subset S$ será chamado de evento.
+
+## Experimento aleatório, espaço amostral e eventos
+
+1- Se o resultado de um experimento consiste em observar a face superior de um lançamento de moeda, então  \pause
+
+>- $S = \{Cara, Coroa\}$
+>- Seja o evento A: o resultado é Cara. 
+>- $A = \{Cara\}$
+
+\pause
+2- Se o resultado de um experimento é a ordem em que 5 jogadores (camisa número 8,9,10,11,12) chutam os penalties, então  \pause
+
+>- $S = \{ \text{todas as 5! permutações de (8,9,10,11,12)} \}$
+>- Seja o evento A: os últimos 2 chutes são dado pelos camisa 11 e 10 (nessa ordem)
+>- $A = \{ (a,b,c,11,10) \text{ onde a,b,c são as 3! permutações de (8,9,12)} \}$
+
+
+## Experimento aleatório, espaço amostral e eventos
+
+
+3- Se o experimento consiste em jogar 2 dados, então \pause 
+
+>- $S = \{(i,j): i,j = 1,2,3,4,5,6 \}$
+>- Seja o evento A: a soma das faces é 7
+>- $A = \{ (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) \}$
+
+\pause
+4- Se o experimento consiste em escolher ao acaso um ponto no circulo de raio 1 centrado na origem, então \pause
+
+>- $S = \{ (x,y) \in \mathbb{R}^2: x^2+y^2 \leq 1 \}$
+>- Seja o evento A: a distância entre o ponto e a origem é $\leq 1/3$
+>- $A = \{ (x,y) \in \mathbb{R}^2: \sqrt{x^2+y^2} \leq 1/3 \}$
+
+## Experimento aleatório, espaço amostral e eventos
+
+5- Se o experimento consiste em medir (em horas) o tempo de vida de um transistor, então \pause 
+
+>- $S = \{ x \in \mathbb{R}^{+}: 0\leq x \leq \infty \}$
+>- Seja o evento A: o transistor não funciona mais que 5 horas
+>- $A = \{ x \in \mathbb{R}^{+}: 0\leq x \leq 5 \}$
+
+## Experimento aleatório, espaço amostral e eventos
+
+
+### Eventos
+Um evento $A$ é qualquer subconjunto de $S$ ($A \subset S$). Um evento é dito **simples** se consistir exatamente de um único resultado e é dito **composto** se consistir em mais de um resultado
+
+
+\pause
+
+6- Seja o experimento em que cada um de três carros que trafegam em uma estrada siga pela direita (D) ou pela esquerda (E) em uma bifurcação. Então,  $S = \{EEE, DEE, EDE, EED, EDD, DED, DDE, DDD \}$. Sejam os eventos
+
+- $A$: os 3 carros siguem pela direita
+- $B$: um dos 3 carros vira à direita
+- $C$: os 3 carros viram na mesma direção
+
+Quais eventos são simples e quais compostos?
+
+
+## Teoria de conjuntos
+
+Eventos são essencialmente conjuntos, assim, os resultados da teoria de conjuntos podem ser utilizados para estudar eventos. Três operações importantes (e que darão lugar a novos eventos gerados a partir dos eventos já conhecidos) são:
+
+### Complemento, União e Intersecção
+
+\pause
+
+
+1. Seja o evento $A \subset S$, o **complemento** de $A$ ($A^c$, $A^{'}$ ou $\bar{A}$), é o evento que consiste em todos os resultados em $S$ que não estão contidos em $A$.
+\pause 
+
+
+2. Sejam $A$ e $B$ dois eventos, a **união** $A \cup B$ é o evento que consiste em todos os resultados que estão em $A$ \color{red} ou \color{black} em $B$ ou em ambos.
+
+\pause
+
+3. a **intersecção** $A \cap B$ (ou simplesmente $AB$) é o evento que consiste em todos os resultados que estão em $A$ \color{red} e \color{black} também em $B$ simultaneamente
+
+## Teoria de conjuntos
+
+| Lei    |             |          |
+|:-----:|:-----------:|:----------:|
+| Commutativa | $A \cup B = B \cup A$ | $A \cap B = B \cap A$ |
+| Associativa | $(A \cup B) \cup C = A \cup (B \cup C)$ | $(A \cap B) \cap C = A \cap (B \cap C)$ |
+| Distributiva | $(A \cup B) \cap C = (A \cap C) \cup (B \cap C)$ | $(A \cap B) \cup C = (A \cup C) \cap (B \cup C)$ |
+
+**Leis de DeMorgan**
+
+- $\left(  \bigcup\limits_{i=1}^{n} A_{i} \right)^c = \bigcap\limits_{i=1}^{n} A_{i}^c$
+- $\left(  \bigcap\limits_{i=1}^{n} A_{i} \right)^c = \bigcup\limits_{i=1}^{n} A_{i}^c$
+
+## Teoria de conjuntos
+Seja o experimento que consiste em jogar 2 dados, então $S = \{(i,j): i,j = 1,2,3,4,5,6 \}$
+
+>- Seja o evento A: o primeiro dado é impar
+>- Seja o evento B: o primeiro dado é par
+>- $A \cap B$?, $A \cup B$?
+>- $A \cap B = \varnothing$ , $A \cup B = S$
+
+\pause
+### Evento certo e evento impossível
+$S$ é o evento certo e $\varnothing$ é o evento nulo (ou impossível). Quando $A \cap B = \varnothing$, $A$ e $B$ são eventos mutuamente exclusivos (ou disjuntos)
+
+
+# Probabilidade
+
+## Definições
+
+>- Seja $A \subset S$ um evento quaisquer  e $S$ finito enumerável, $$P(A) = \dfrac{\text{Número de elementos em A}}{\text{Número de elementos em S}}$$ (**definição clássica de probabilidade**)
+>- se $S$ não for enumerável, $$P(A) = \dfrac{\text{Área de A}}{\text{Área de  S}}$$ (**probabilidade geometrica**)
+>- se $S$ for infinito,  $$P(A) = \lim_{n \rightarrow \infty} \dfrac{n_A}{n},$$ onde $n_A$ é o número de ocorrências de $A$ em $n$ repetições independentes (**definição frequentista** ou **estatística**)
+
+## Definições
+
+>- Não vamos nos preocupar com o problema de como definir probabilidades para cada experimento.
+>- As definições previamente apresentadas têm o apelo da intuição, contudo, não são suficientes para uma formulação rigorosa da probabilidade. 
+>- Kolmogorov apresentou um conjunto de axiomas para definir probabilidade, permitindo incluir as definições anteriores como casos particulares.
+
+
+## Axiomas
+
+### Axiomas de Kolmogorov
+Seja um experimento cujo espaço amostral é $S$. Uma função $P$ definida nos subconjuntos de $S$ é uma probabilidade de satisfaz os seguintes axiomas:
+
+
+- **(A1)** Seja $A \subset S$, $0 \leq P(A),$
+- **(A2)** $P(S) = 1$,
+- **(A3)** Sejam $A_1, A_2, \ldots$ eventos **disjuntos** ($A_i \cap A_j = \varnothing$ para $i \neq j$), $$P \left(  \bigcup\limits_{i=1}^{\infty} A_{i} \right) = \displaystyle \sum_{i=1}^{\infty} P(A_i)$$
+
+\pause
+
+- Note que (A3) não se restringe ao caso de $S$ ser finito
+
+
+
+# Propriedades
+
+
+## Propriedades
+
+### Propriedades
+
+- **(P0)**: $0\leq P(A) \leq 1$
+- **(P1)**: $P(A^c) = 1-P(A)$
+- **(P2)**: $A \subset B$, então $P(A) \leq P(B)$
+- **(P3)**: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+- **(P4)**: $P \left(  \bigcup\limits_{i=1}^{n} A_{i} \right) = \displaystyle\sum_{i=1}^{n} P(A_i) - \displaystyle\sum_{i_1<i_2} P(A_{i_1} \cap A_{i_2}) + \ldots + (-1)^{r+1} \displaystyle\sum_{i_1<i_2<\ldots <i_r} P(A_{i_1} \cap \ldots \cap A_{i_r})+ \ldots + (-1)^{n+1} P(A_1 \cap \ldots \cap A_n)$
+- **(P5)**: Para quaisquer eventos $A_1, A_2, \ldots$, $P \left(  \bigcup\limits_{i=1}^{\infty} A_{i} \right) \leq \displaystyle \sum_{i=1}^{\infty} P(A_i)$
+
+
+## Propriedades
+
+
+**Prova (P0)** 
+
+$$0\leq P(A) \leq 1$$
+
+>- Seja $A \subset S$, então $S = A \cup A^c$
+>- Pelo (A1), $P(A) \geq 0$
+>- Como $A$ e $A^c$ são disjuntos, pelo (A3) $P(S) = P(A) + P(A^c)$ 
+>- $P(A) = P(S) - \underbrace{P(A^c)}_{\geq 0} \leq P(S) = 1$
+
+## Propriedades
+
+**Prova (P1)** 
+
+$$P(A^c) = 1-P(A)$$
+
+>- Seja $A \subset S$, então $S = A \cup A^c$
+>- Pelo (A2), temos que $P(S) = 1$
+>- Como $A$ e $A^c$ são disjuntos, pelo (A3), $P(\underbrace{A \cup A^c}_{S}) = P(A) + P(A^c)$
+>- $\underbrace{P(S)}_{1} =  P(A) + P(A^c)$
+>- $P(A^c) = 1-P(A)$
+
+## Propriedades
+
+**Prova (P2)** 
+
+$$A \subset B, \text{ então } P(A) \leq P(B)$$
+
+>- Seja $A \subset B$
+>- $B = A \cup (A^c \cap B)$
+>- $P(B) = P(A) + P(A^c \cap B)$
+>- Pelo (A1), $P(A^c \cap B) \geq 0$
+>- Então, $P(A) \leq P(B)$
+
+
+## Propriedades
+
+**Prova (P3)**  
+
+$$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+
+>- $A \cup B = A \cup (A^c \cap B)$
+>- $P(A \cup B) = P(A) + P(A^c \cap B)$ 
+>- Por outro lado: $B = (A \cap B) \cup (A^c \cap B)$
+>- $P(B) = P(A \cap B) + P(A^c \cap B)$
+>- $P(B) - P(A \cap B) = \underbrace{P(A^c \cap B)}_{P(A \cup B)-P(A)}$
+>- $P(A \cup B) = P(A) + P(A^c \cap B) = P(A) + P(B) - P(A \cap B)$
+
+
+## Propriedades
+
+**Prova (P4)** 
+
+$$P \left(  \bigcup\limits_{i=1}^{n} A_{i} \right) = \displaystyle\sum_{i=1}^{n} P(A_i) - \displaystyle\sum_{i_1<i_2} P(A_{i_1} \cap A_{i_2}) + \ldots + (-1)^{r+1} \displaystyle\sum_{i_1<i_2<\ldots <i_r} P(A_{i_1} \cap \ldots \cap A_{i_r})+ \ldots + (-1)^{n+1} P(A_1 \cap \ldots \cap A_n)$$
+
+Por indução ($n=2$, supormos que funciona para $n$ e provar para $n+1$)
+
+
+## Propriedades
+
+**Prova (P5)** 
+
+$$P \left(  \bigcup\limits_{i=1}^{\infty} A_{i} \right) \leq \displaystyle \sum_{i=1}^{\infty} P(A_i)$$
+
+
+>- $\bigcup\limits_{i=1}^{\infty} A_{i} = A_1 \cup (A_1^c \cap A_2) \cup (A_1^c \cap A_2^c \cap A_3) \cup \ldots$
+>- Pelo (A3), $P(\bigcup\limits_{i=1}^{\infty} A_{i}) = P(A_1) + P(A_1^c \cap A_2) + P(A_1^c \cap A_2^c \cap A_3) + \ldots$
+>- Note que, $A_1^c \cap A_2^c \cap \ldots \cap A_{j-1}^c \cap A_j \subset A_j$
+>- Pela (P3), $P(A_1^c \cap A_2^c \cap \ldots \cap A_{j-1}^c \cap A_j) \leq P(A_j)$
+>- $P(\bigcup\limits_{i=1}^{\infty} A_{i}) = P(A_1) + P(A_1^c \cap A_2) + P(A_1^c \cap A_2^c \cap A_3) + \ldots  \leq \displaystyle \sum_{i=1}^{\infty} P(A_i)$
+
+
+
+
+
+
+# Revisitando os Axiomas
+
+## Revisitando os Axiomas
+
+**Fora do horario de pico, um trem possui cinco vagões. Suponha que um passajeiro tem o dobro de probabilidade de pegar o vagão do meio (3) do que os adjacentes (2 ou 4) e por sua vez, pegar um dos vagões adjacentes tem o dobro de probabilidade de pegar um dos vagões extremos (1 ou 5). Qual é a probabilidade de pegar um dos vagões extremos?** (pegar o vagão 1 ou 5 tem a mesma probabilidade)
+
+>- O passajeiro pode subir em apenas 1 vagão
+>- Sejam os eventos $E_i$: o passageiro pega o vagão $i$ ($i = 1, 2, 3, 4, 5$)
+>- $E_i \cap E_j = \varnothing$, $i \neq j$
+>- $P(E_3) = 2P(E_2), \quad \text{e} \quad P(E_3) = 2 P(E_4)$
+>- $P(E_2) = 2 P(E_1), \quad P(E_2) = 2 P(E_5)$
+>- $P(E_4) = 2 P(E_1), \quad P(E_4) = 2 P(E_5)$
+
+## Revisitando os Axiomas
+
+**Fora do horario de pico, um trem possui cinco vagões. Suponha que um passajeiro tem o dobro de probabilidade de pegar o vagão do meio (3) do que os adjacentes (2 ou 4) e por sua vez, pegar um dos vagões adjacentes tem o dobro de probabilidade de pegar um dos vagões extremos (1 ou 5). Qual é a probabilidade de pegar um dos vagões extremos?** (pegar o vagão 1 ou 5 tem a mesma probabilidade)
+
+
+>- $P(\bigcup\limits_{i=1}^{5} E_i) = \displaystyle \sum_{i=1}^5 P(E_i) = P(E_1) + \underbrace{2P(E_1)}_{P(E_2)} + \underbrace{4P(E_1)}_{2P(E_2)} + \underbrace{2 P(E_1)}_{P(E_4)} + \underbrace{P(E_1)}_{P(E_5)} = 1$
+>- $P(E_1) = 0.1 = P(E_5)$; $P(E_2) = P(E_4) = 0.2$; $P(E_3) = 0.4$
+>- Probabilidade de pegar um dos vagões dos extremos é $P(E_1 \cup E_5) = P(E_1) + P(E_5) = 0.2$
+
+
+
+# Espaço amostral com resultados equiprovaveis
+
+## Espaço amostral com resultados equiprovaveis
+
+Em experimentos que consistem de $N$ resultados, é natural supor que todos os resultados em $S$ sejam igualmente provaveis:
+
+\pause
+
+
+>- Lançamento de uma moeda
+>- Lançamento de $r$ dados não viciados
+>- Selecionar $r$ cartas de um baralho de 52 cartas
+>- ...
+
+\pause 
+Considere um evento $A \subset S$, então $$P(A) = \dfrac{\text{Número de elementos em A}}{\text{Número de elementos em S}}$$
+
+## Espaço amostral com resultados equiprovaveis
+
+
+### Tudo é contagem
+
+Quando os resultados são igualente provaveis, calcular a probabilidade é basicamente:
+
+- **contar** o número de resultados em $A$, 
+- **contar** o número de todos os resultados possíveis em $S$, 
+- formar a razão. $$P(A) = \dfrac{N(A)}{N}$$
+
+onde $N(A)$ é o número de elementos em $A$ e $N$ é o número de elementos em $S$.
+
+
+# Exemplos
+
+
+## Combinatoria e probabilidades: Exemplos
+
+1. **Se jogarmos quatro dados não viciados, qual é a probabilidade de que os quatro números que aparecem sejam distintos?**
+
+\pause
+
+>- $S = \{(i,j,k,l): i,j,k,l = 1, ...,6 \}$
+>- $N = 6^4$
+>- $A$: Os quatro números são distintos
+>- $N(A) = 6\times 5 \times 4 \times 3$
+>- $$P(A) = \dfrac{N(A)}{N} = \dfrac{6\times 5 \times 4 \times 3}{6^4} = $$
+
+\pause 
+```{r}
+(6*5*4*3)/(6^4)
+```
+ 
+
+## Combinatoria e probabilidades: Exemplos
+
+2. **Se jogarmos 6 dados, qual é a probabilidade de cada um dos 6 números apareça apenas 1 vez?**
+
+\pause
+
+>- $S = \{(i,j,k,l,m,n): i,j,k,l,m,n = 1, ...,6 \}$
+>- $N = 6^6$
+>- $A$: Cada um dos 6 números aparece apenas 1 vez. $N(A)?$
+>- Se não considerarmos a ordem, $N(A) = 1$, mas no nosso caso precisamos considerar a ordem, então $N(A) = 6!$
+>- $$P(A) = \dfrac{6!}{6^6}$$
+
+\pause
+```{r}
+factorial(6)/(6^6)
+```
+
+## Combinatoria e probabilidades: Exemplos
+
+3. **Uma caixa contém 24 peças (2 estão com defeito). Se seleccionarmos aleatoriamente 10 peças (sem reposição). Qual a probabilidade de seleccionar as 2 peças defeituosas?**
+
+\pause
+
+>- $S$: Todas as formas em que podemos selecionar 10 peças de um total de 24
+>- $N = \binom{24}{10}$
+>- $A$: seleccionar as 2 peças defeituosas
+>- $N(A) = \binom{2}{2} \binom{22}{8}$
+>- $$P(A) = \dfrac{N(A)}{N} = \dfrac{\binom{2}{2} \binom{22}{8}}{\binom{24}{10}} = $$
+
+\pause
+```{r}
+(choose(2,2)*choose(22,8))/choose(24,10)
+```
+
+
+## Combinatoria e probabilidades: Exemplos
+
+4. **De um grupo de 100 pessoas, vamos seleccionar aleatoriamente um comitê de 12 pessoas. Qual é a probabilidade que duas pessoas ($A$ e $B$) sejam seleccionadas?**
+
+\pause
+
+>- $S$: Todas as formas de formar um grupo de 12 pessoas de um total de 100 
+>- $N = \binom{100}{12}$
+>- $A$: As pessoas A e B estão no comitê.
+>- $N(A) = \binom{2}{2} \binom{98}{10}$
+>- $$P(A) = \dfrac{N(A)}{N} = \dfrac{\binom{2}{2} \binom{98}{10}}{\binom{100}{12}} =$$
+
+\pause
+```{r}
+(choose(2,2)*choose(98,10))/choose(100,12)
+```
+
+
+## Combinatoria e probabilidades: Exemplos
+
+5. **35 pessoas são alocadas aleatoriamente em 2 grupos (um com 10 e outro com 25 pessoas). Qual é a probabilidade de que 2 pessoas específicas (A e B) estejam no mesmo grupo?**
+
+\pause 
+
+>- $S$: Todas as formas possíveis de dividir 35 pessoas nos 2 grupos.
+>- $N = \binom{35}{10} \times \binom{25}{25} = \binom{35}{10}$
+>- $A$: As pessoas A e B estão no mesmo grupo (pode ser no grupo de 10 ou no grupo de 25 pessoas)
+>- $N(A) = \binom{2}{2}\binom{33}{8} + \binom{2}{2}\binom{33}{23}$
+>- $$P(A) = \dfrac{N(A)}{N} = \dfrac{\binom{2}{2}\binom{33}{8} + \binom{2}{2}\binom{33}{23}}{\binom{35}{10}}$$
+
+ 
+## Combinatoria e probabilidades: Exemplos
+
+
+6. **Se as letras $A,A,E,I,I,C,T,T,T,S,S$ forem ordenadas aleatoriamente, qual a probabilidade de formar a palavra $ESTATISTICA$?**
+
+
+\pause
+>- Seja $E$: ordenar aleatoriamente as letras  $L = \{A,A,E,I,I,C,T,T,T,S,S \}$ e observar a palavra resultante
+>- $S = \{ \text{Todas as palavras} \neq \text{s  formadas com as letras em }L \}$
+>- Seja $N$ o número de elemento em $S$
+>- Seja o evento $A$: a palavra formada é ESTATISTICA
+
+## Combinatoria e probabilidades
+
+```{r}
+# N: Permutaçao com repeticao
+# na = 2; ne = 1, ni = 2, nc = 1, nt = 3, ns= 2
+N = factorial(11)/(factorial(2)^3*factorial(3))
+# P(A)=
+1/N
+```
+
+## Combinatoria e probabilidades
+
+Outra forma:
+
+```{r}
+# N: todas as permutaçoes
+N = factorial(11)
+# A: ESTATISTICA
+Na = 1*2*3*2*2*2*1*1*1*1*1
+# P(A)=
+Na/N
+# na = 2; ni = 2, nt = 3, ns= 2
+Na = factorial(2)*factorial(2)*factorial(3)*factorial(2)
+Na/N
+```
+
+
+
+## Combinatoria e probabilidades
+
+7. **Suponha que lançamos 7 dados não viciados. Qual é a probabilidade de que cada um dos 6 números distintos apareça pelo menos 1 vez? **
+
+\pause
+
+>- $S = \{ (i_1, i_2, ..., i_7): i_1, i_2, ..., i_7 = 1,2,3,4,5,6 \}$ e $N = 6^7$
+>- $A:$ cada um dos 6 números aparece pelo menos 1 vez. $N(A)?$
+>- Para que cada número apareça pelo menos 1 vez, um número precisa aparecer 2 vezes (suponhamos $n_1$)
+>- $\binom{7}{2, 1, 1, 1, 1, 1} = \dfrac{7!}{2!}$
+>- Quantas escolhas do número que repete duas vezes temos?
+>- Então, $N(A) = 6 \times \dfrac{7!}{2!}$
+>- $P(A) = \frac{6 \times \frac{7!}{2!}}{6^7} = \frac{7!}{2\times 6^6}$
+
+
+## Combinatoria e probabilidades
+
+8. **Um baralho com 52 cartas possui 12 figuras. Se as 52 cartas são distribuidas aleatoriamente entre 4 jogadores de forma que cada um deles receba 13 cartas, qual a probabilidade de que cada jogador receba 3 figuras?**
+
+\pause
+
+>- $S$: Todas as possiveis formas de distribuir 52 cartas em 4 jogadores com 13 cartas cada
+>- **Reinterpretando:** De quantas formas podemos distribuir 52 cartas em 4 grupos de tamanho 13 cada? De $N$ formas
+>- $$N = \binom{52}{13, 13, 13, 13}$$
+>- $A:$ cada jogador recebe 3 figuras. $N(A)?$
+
+## Combinatoria e probabilidades
+
+**Primeira forma**
+
+\pause 
+$$N(A) = \binom{12}{3}\binom{40}{10} \times \binom{9}{3}\binom{30}{10}\times \binom{6}{3}\binom{20}{10} \times \binom{3}{3}\binom{10}{10}$$
+
+\pause
+
+$$N(A) = \dfrac{12!}{3!9!}\dfrac{40!}{10!30!} \times \dfrac{9!}{3!6!}\dfrac{30!}{10!20!} \times \dfrac{6!}{3!3!}\dfrac{20!}{10!10!} \times \dfrac{3!}{3!0!}\dfrac{10!}{10!0!} = \dfrac{12! 40!}{(3!)^4 (10!)^4} $$
+
+\pause
+**Segunda forma**
+
+$$N(A) = \binom{12}{3, 3, 3, 3} \binom{40}{10, 10, 10, 10} = \dfrac{12!}{3! 3! 3! 3!} \dfrac{40}{10! 10! 10! 10!}  = \dfrac{12! 40!}{(3!)^4 (10!)^4}$$
+
+## Combinatoria e probabilidades
+
+
+Então, $$P(A) = \dfrac{N(A)}{N} = \dfrac{\dfrac{12! 40!}{(3!)^4 (10!)^4}}{\dfrac{52!}{(13!)^4}}$$
+
+
+
+```{r}
+#Na
+numNa = factorial(12)*factorial(40)
+denNa = (factorial(3)^4)*(factorial(10)^4)
+Na = numNa/denNa
+#N
+N = factorial(52)/(factorial(13)^4)
+# P(A)
+Na/N
+```
+
+
+## Combinatoria e probabilidades
+
+9. **Suponha que 2 meninas chamadas Carla, 3 crianças chamadas Maria e 4 crianças chamadas Tamires se sentam aleatoriamente em uma fileira de 9 assentos. Qual é a probabilidade de que as Carlas ocupem os dois primeiros assentos da fileira, as Marias os três assentos seguintes e as Tamires os quatro ultimos?**
+
+\pause
+
+>- $S:$ Todas as possíveis que as 9 crianças podem se sentar
+>- $N = 9!$ 
+>- $A:$ As Carlas ocupem os dois primeiros assentos da fileira, as Marias os três assentos seguintes e as Tamires os quatro ultimos
+>- $N(A) = 2! 3! 4!$ 
+>- $$P(A) = \dfrac{N(A)}{N} = \cfrac{2! 3! 4!}{9!}$$
+
+
+## Combinatoria e probabilidades
+
+10. **João tem $n$ pares de tênis no closet. Se escolhe aleatoriamente 2 tênis, qual é a probabilidade de formar um par correto?**
+
+\pause
+>- $S:$ Todas as possiveis escolhas de 2 em 2 entre os $2n$ tênis.
+>- $N = \binom{2n}{2}$
+>- $A:$ escolher um par correto
+>- $N(A) = n$
+>- $$P(A) = \dfrac{n}{\binom{2n}{2}} = \dfrac{1}{2n-1}$$
+
+
+## Combinatoria e probabilidades
+
+```{r}
+# Caso particular n = 10
+N = choose(20,2)
+Na = 10
+Na/N
+1/19
+```
+
+
+
+
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 4.1--Cap 4.3**
+- Degroot, M. H;  e Schervish, M. J. (2012). *Probability and Statistics*. 4ed, Pearson. **Chapter 1.5, 1.10**
+
+
+
