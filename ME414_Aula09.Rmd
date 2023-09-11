@@ -1,0 +1,774 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Distribuições Discretas'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica. 
+  | Universidade Estadual de Campinas
+date: "Aula 09"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# Variáveis Aleatórias
+
+## Variaveis Aleatorias
+
+#### Variável Aleatória (v.a)
+
+Una variable aleatoria $X$ é uma função que associa um número real a cada resutado de um experimento aleatório. $$X : S  \rightarrow  \mathbb{R}$$
+\pause
+
+
+
+::: columns
+
+:::: column
+
+#### Variável aleatória discreta
+
+Uma v.a. que pode assumir um número finito (ou infinito sempre que pudermos contar os elementos) de valores.
+
+::::
+
+:::: column
+
+\pause
+
+#### Variável aleatória contínua
+
+Uma v.a. que pode assumir qualquer valor numérico em um intervalo (ou coleção de intervalos)
+
+::::
+
+:::
+
+
+## Variaveis Aleatorias
+
+**Exemplos: Contínua ou Discreta?**
+
+>- Número de clientes que realizam uma compra na _amazon.com.br_ entre as 00:01 e 04:59 am. \pause Discreta! \pause
+>- Temperatura do paciente \pause Contínua! \pause
+>- Número de sinistros de auto aos finais de semana \pause Discreta! \pause
+>- Retorno financeiro de um investimento \pause Contínua! \pause
+>- Salário dos professores da UFRJ \pause Contínua! \pause
+>- Tempo (em minutos) da sua casa até a universidade \pause Contínua!
+
+# Função de probabilidade 
+
+## Função de probabilidade 
+
+Se $X$ é uma v.a discreta, a função de probabilidade (f.p.) de $X$ é uma função $f(\cdot)$ tal que:
+
+>- $f(x) \geq 0 \quad \forall x$
+>- $f(x) = P(X=x)$
+>- $\displaystyle \sum_{i} f(x_i) = 1$
+
+\pause
+
+> É comum denotar a função de probabilidade $f(x)$ por $p(x)$
+
+Podemos calcular a probabilidade de qualquer subconjunto $A$, $$P(X \in A) = \displaystyle \sum_{x_i \in A} p(x_i)$$
+
+
+# Esperança e Variância
+
+## Esperança e Variância
+
+Seja $X$ uma v.a. discreta (com valores $x_1, x_2, \ldots, x_n$) com f.p $p(\cdot)$.
+
+
+#### Esperança
+O valor esperado de $X$ é definido como \begin{center}
+$\mathbb{E}(X) = \displaystyle \sum_{i = 1}^n x_i p(x_i)$
+\end{center}
+
+\pause
+
+#### Variância
+A Variância de $X$, denotada por $\mathbb{V}(X)$ é definida como \begin{center}
+$\mathbb{V}(X) = \mathbb{E}((X-\mu)^2) = \displaystyle \sum_{i=1}^n (x_i-\mu)^2 p(x_i),$
+\end{center} em que $\mu = E(X)$
+
+## Esperança e Variância
+
+A **função de probabilidade** do número de pessoas vivendo na mesma casa ($X$) em uma determinada região do RJ é apresentada a seguir
+
+| $x$ | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|-|-|-|-|-|-|-|-|-|-|
+| $p(x)$ | 0.140 | 0.175 | 0.220 | 0.260 | 0.155 | 0.025 | 0.015 | 0.005 | 0.005 | 
+
+\pause
+
+>- $\mathbb{E}(X) = \displaystyle \sum_x x p(x) = 1 \times 0.140 + 2 \times 0.175 + \cdots + 9 \times 0.005 = 3.305$
+>- $\mathbb{V}(X) = \displaystyle \sum_x (x-\mu)^2 p(x) =$
+
+\pause
+
+$\mathbb{V}(X) = (1-3.305)^2 \times 0.140 +  \cdots + (9-3.305)^2 \times 0.005 = 2.291975$
+
+
+## Esperança e Variância
+
+#### Propriedades
+
+Seja $X$ uma variável aleatória
+
+>- $\mathbb{E}(aX+b) = a \mathbb{E}(X) + b$ (onde $a$ e $b$ são constantes)
+>- $\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}^2(X)$
+>- $\mathbb{V}(aX+b) = a^2 \mathbb{V}(X)$
+>- Sejam $X_1, X_2, \cdots,X_n$ v.a. com $\mathbb{E}(X_i) <\infty$, então, $$\mathbb{E}(X_1 + X_2 + \cdots + X_n) = \mathbb{E}(X_1) + \cdots + \mathbb{E}(X_n)$$
+>- Sejam $X_1, X_2, \cdots,X_n$ v.a. **independentes** com $V(X_i) <\infty$. Então, $$\mathbb{V}(X_1 + X_2 + \cdots + X_n) = \mathbb{V}(X_1) + \cdots + \mathbb{V}(X_n)$$
+
+
+
+# Distribuições discretas de probabilidade
+
+
+## Distribuição Bernoulli
+
+Considere os experimentos onde os possíveis resultados são:
+
+- Cara ou Coroa
+- Sucesso ou Fracasso
+- Defeituoso ou Não defeituodo
+- Sim ou não
+
+\pause
+Todos são experimentos onde temos unicamente duas opções (1: sucesso ou 0: fracasso).
+\pause
+
+#### Distribuição Bernoulli
+Uma v.a. discreta $X$ tem distribuição de Bernoulli com parâmetro $p$ $(0 \leq p \leq 1)$, denotada por $bernoulli(p)$, se $X$ pode assumir unicamente os valores 0 ou 1 com respectivas probabilidades $$P(X=1) = p \text{   e   } P(X=0) = 1-p$$
+
+
+## Distribuição Bernoulli
+
+Sua função de probabilidade $p(x)$ é dada por $$p(x)=
+\begin{cases}
+p^x (1-p)^{1-x} = p^x q^{1-x}, & \text{se } x  = 0, 1, \\ 
+0, & \text{caso contrario}
+\end{cases}$$
+
+
+
+\pause
+>- $E(X) = \displaystyle \sum_x xp(x) = 0\times p(0) + 1 \times p(1) = p(1) = p$
+>- $V(X) = pq$ 
+
+\pause 
+$V(X) = \underbrace{E(X^2)}_{\displaystyle \sum_x x^2p(x)}-\underbrace{E^2(X)}_{p^2} = \underbrace{[0^2 p(0) + 1^2 p(1)]}_{\displaystyle \sum_x x^2p(x)} - p^2 = p-p^2 = p(1-p)$
+
+
+## Distribuição Binomial
+
+Suponha um experimento com as seguintes caracteristicas:
+
+1. O experimentos consiste de $n$ experimentos menores (ensaios)
+2. Cada ensaio pode resultar em dois únicos valores (1: Sucesso, 0: Fracasso)
+3. Os ensaios são independentes
+4. A probabilidade de sucesso, $p$, é constante entre os ensaios.
+
+#### Experimento Binomial
+Um experimento onde 1-4 acontece, é chamado de experimento Binomial.
+
+
+## Distribuição Binomial
+
+Um experimento Binomial é então formado por $n$ ensaios Bernoulli independentes.
+
+
+#### Distribuição Binomial
+Uma v.a. discreta $X$ tem distribuição de Binomial com parâmetros $n$, $p$ $(0 \leq p \leq 1)$, denotada por $binom(n,p)$, se $X$ pode assumir os valores $0, 1, \ldots, n$ e se sua função de probabilidade é dada por
+
+$$p(x)=
+\begin{cases}
+\binom{n}{x} p^x q^{n-x}, & \text{se } x  = 0, 1,\ldots, n \\ 
+0, & \text{caso contrario}
+\end{cases}$$
+
+
+## Distribuição Binomial
+
+>- $X$ é o número total de sucessos em $n$ ensaios
+>- $E(X) = np$
+>- $V(X) = npq$
+
+\pause
+
+#### Teorema
+Se $X_1, \ldots X_n$ são v.as. *iid*  $X_i \sim bernoulli(p)$, então $X = X_1 + \ldots + X_n \sim binom(n,p)$
+
+
+## Distribuição Binomial
+
+**Demostração $E(X)$**  
+
+\pause
+
+Pelo Teorema anterior $X = X_1 + \ldots + X_n \sim binom(n,p)$, em que $X_i \sim bernoulli(p)$. Então
+
+\pause
+
+$$E(X) = E(X_1 + X_2 + \cdots + X_n) = \displaystyle \sum_{i=1}^n E(X_i) = \displaystyle \sum_{i=1}^n p = np$$
+
+
+## Distribuição Binomial
+
+**Demostração $V(X)$**  
+
+Pelo Teorema anterior $X = X_1 + \ldots + X_n \sim binom(n,p)$, em que $X_i \sim bernoulli(p)$. Então
+
+\pause
+
+
+$$V(X) = V(X_1 + X_2 + \cdots + X_n)$$
+Como os $X_i$'s são independentes
+
+$$V(X) = V(X_1 + X_2 + \cdots + X_n) = \displaystyle \sum_{i=1}^n V(X_i) = \displaystyle \sum_{i=1}^n pq = npq$$
+
+
+
+## Distribuição Binomial: Exemplos
+
+1. A probabilidade de sucesso de um experimento é 0.4 e seja $X$ o número de sucessos obtidos em 15 realizações independentes do experimento. Qual é a probabilidade de $6 \leq X \leq 9$?
+
+\pause
+
+**Primeiro passo: Informações**
+
+>- $p = 0.4$
+>- $X:$ número de sucessos obtidos em $n = 15$ realizações **independentes**
+
+\pause
+
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim binom(n = 15, p = 0.4)$
+>- $P(6 \leq X \leq 9) = P(X = 6) + P(X = 7)+ P(X = 8)+P(X = 9)$
+>- $P(6 \leq X \leq 9) = P(X\leq 9) - P(X < 6) = P(X\leq 9) - P(X \leq 5)$
+
+
+## Distribuição Binomial: Exemplos
+
+**Manualmente**
+
+$$p(x)=
+\begin{cases}
+\binom{n}{x} p^x q^{n-x}, & \text{se } x  = 0, 1,\ldots, n \\ 
+0, & \text{caso contrario}
+\end{cases}$$
+
+$$P(6 \leq X \leq 9) = P(X = 6) + P(X = 7)+ P(X = 8)+P(X = 9)$$
+
+\pause
+
+$\underbrace{\binom{15}{6}0.4^6(1-0.4)^{15-6}}_{P(X=6)} + \underbrace{\binom{15}{7}0.4^7(1-0.4)^{15-7}}_{P(X=7)} +$ $\underbrace{\binom{15}{8}0.4^8(1-0.4)^{15-8}}_{P(X=8)} + \underbrace{\binom{15}{9}0.4^9(1-0.4)^{15-9}}_{P(X=9)}$
+
+
+
+## Distribuição Binomial: Exemplos
+
+**R**
+```{r}
+n = 15
+p = 0.4
+#Primeira forma: p(6) + p(7) + p(8) + p(9)
+dbinom(6,n,p) + dbinom(7,n,p) + dbinom(8,n,p) + dbinom(9,n,p)
+# Segunda forma: F(9)- F(5)
+pbinom(9,n,p) - pbinom(5,n,p)
+```
+
+
+## Distribuição Binomial: Exemplos
+
+2. Uma moeda com probabilidade cara 0.6 é jogada 9 vezes. Qual a probabilidade de obter um número par de caras?
+
+\pause
+
+**Primeiro passo: Informações**
+
+>- $p = 0.6$
+>- $X:$ número de caras obtidas em $n = 9$ lancamentos.
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim binom(n = 9, p = 0.6)$
+>- A: número de caras obtidas nos $n=9$ lancamentos é um número par
+>- $P(A) = P(\underbrace{\{X=2\} \cup \{X=4\} \cup \{X=6\} \cup \{X=8\}}_{\text{Eventos disjuntos}})$
+>- $P(A) = P(X=2) + P(X=4) + P(X=6) + P(X=8)$
+
+
+## Distribuição Binomial: Exemplos
+
+**Manualmente**
+
+$$P(X=2) + P(X=4) + P(X=6) + P(X=8)$$
+
+
+\pause
+
+$\underbrace{\binom{9}{2}0.6^2(1-0.6)^{9-2}}_{P(X=2)} + \underbrace{\binom{9}{4}0.6^4(1-0.6)^{9-4}}_{P(X=4)} +$ $\underbrace{\binom{9}{6}0.6^6(1-0.6)^{9-6}}_{P(X=6)} + \underbrace{\binom{9}{8}0.6^8(1-0.6)^{9-8}}_{P(X=8)}$
+
+
+
+## Distribuição Binomial: Exemplos
+
+**R**
+```{r}
+n = 9
+p = 0.6
+# Queremos: p(2) + p(4) + p(6) + p(8)
+dbinom(2,n,p) + dbinom(4,n,p) + dbinom(6,n,p) + dbinom(8,n,p)
+```
+
+\pause
+**Qual o número esperado de caras (em $n=9$ lancamentos da moeda)?**
+
+\pause
+
+$$E(X) = np = 9 \times 0.6 = 5.4$$
+
+
+
+## Distribuição Binomial
+
+
+```{r, echo=FALSE, fig.width=12, fig.cap= "Exemplos: Distribuição Binomial", fig.height=6}
+par(mfrow = c(2,2))
+p1 = barplot(table(rbinom(10000, 10, 0.1)), main = "n = 10, p = 0.1")
+p2 = barplot(table(rbinom(10000, 10, 0.9)), main = "n = 10, p = 0.9")
+p3 = barplot(table(rbinom(10000, 10, 0.7)), main = "n = 10, p = 0.7")
+p4 = barplot(table(rbinom(10000, 10, 0.5)), main = "n = 10, p = 0.5")
+```
+
+
+
+## Distribuição Poisson
+
+Suponha que estamos interessados nas seguintes variáveis aleatórias:
+
+- Número de erros de impressão em uma página (ou em um grupo de páginas).
+- Número de pessoas que vivem mais de 105 anos em uma determinada comunidade.
+- Número de refrigerantes vendidos em uma determinada loja.
+- Número de clientes que entram numa agencia do banco em um dia.
+- Número de ciclistas que transitam numa ciclovia em um dia.
+
+\pause
+Estas v.a. têm todas a forma: 
+
+- $X:$ número de **________** em um intervalo fixo de **tempo/espaço**
+
+## Distribuição Poisson
+
+#### Distribuição Poisson
+A v.a. discreta $X$ (com valores inteiros não negativos) têm distribuição Poisson com parâmetro $\lambda > 0$, denotada $Pois(\lambda)$, se sua função de probabilidade é dada por
+
+$$p(x)=
+\begin{cases}
+\dfrac{e^{-\lambda} \lambda^x}{x!}, & \text{se } x  = 0, 1,\ldots \\ 
+0, & \text{caso contrario}
+\end{cases}$$
+
+\pause
+
+>- $\lambda:$ média de **_____**
+>- $E(X) = \lambda$
+>- $V(X) = \lambda$
+
+
+## Distribuição Poisson
+
+#### Teorema:
+Se as v.a. $X_1, X_2, \ldots, X_k$ são independentes e $X_i \sim Pois(\lambda_i)$, então $$X_1 + X_2 + \cdots + X_k \sim Pois(\lambda_1 + \lambda_2 + \cdots + \lambda_k)$$
+
+
+
+## Distribuição Poisson: Exemplo
+
+1. Suponha que em um determinado livro, em media, temos 4 erros tipográficos por página. Qual é a probabilidade de selecionar uma página aleatóriamente e a mesma não conter erros tipográficos?
+
+\pause 
+**Primeiro passo: Informações**
+
+>- $\lambda = 4$
+>- $X:$ número de erros tipográficos em uma determinado página livro.
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim Pois(\lambda = 4)$
+>- $P(X=0)  = \dfrac{e^{-4}4^0}{0!} = 0.01831564$
+
+\pause
+
+```{r}
+dpois(0,4) #dpois(x,lambda)
+```
+
+
+## Distribuição Poisson: Exemplo
+
+2. Em horario de pico, um caixa de supermercado atende em média 15 clientes por hora. O dono do supermercado, para motivar seus funcionários, estabelece que o funcionário que atender pelo menos 22 clientes por hora recebera um bonus \$ \$ \$. Qual é a probabilidade de um caixa qualquer ganhar o bonus?
+
+
+\pause 
+**Primeiro passo: Informações**
+
+>- $\lambda = 15$
+>- $X:$ número de clientes atendidos por um caixa de supermecado por hora (no horario de pico)
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim Pois(\lambda = 15)$
+>- $P(X\geq 22) = 1-P(X<22) = 1-P(X \leq 21)$
+
+## Distribuição Poisson: Exemplo
+
+
+**Manualmente**
+
+$$p(x)=
+\begin{cases}
+\dfrac{e^{-\lambda} \lambda^x}{x!}, & \text{se } x  = 0, 1,\ldots \\ 
+0, & \text{caso contrario}
+\end{cases}$$
+
+
+\pause
+
+
+$$P(X\geq 22) = 1-P(X<22) = 1-P(X \leq 21)$$
+\pause
+
+Como $\lambda = 15$, pela função de probabilidade da distribuição Poisson temos:
+
+$$P(X\geq 22) = 1- \displaystyle \sum_{x = 0}^{21} \dfrac{e^{-15} 15^x}{x!}$$
+
+## Distribuição Poisson: Exemplo
+
+**R**
+```{r}
+lambda = 15
+# Queremos 1-P(X <= 21) 
+1-ppois(21,lambda)
+# Outra forma
+x = 0:21
+1-sum(dpois(x, lambda))
+```
+
+
+## Distribuição Poisson: Exemplo
+
+3. Suponha que a proporção de pessoas Daltonicas no RJ é 0.005. Se seleccionarmos aleatoriamente 600 individuos do RJ, qual é a probabilidade de ter no máximo 2 pessoas Daltonicas?
+
+\pause 
+**Primeiro passo: Informações**
+
+
+>- $p = 0.005$
+>- $X:$ número de pessoas Daltonicas em uma amostra de $n=600$ pessoas de SP
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim binom(600,0.005)$
+>- $P(X \leq 2) = \underbrace{\binom{600}{0} p^0 (1-p)^{600}}_{P(X=0)} + \underbrace{\binom{600}{1} p^1 (1-p)^{599}}_{P(X=1)} + \underbrace{\binom{600}{2} p^2 (1-p)^{598}}_{P(X=2)}$
+
+
+
+## Distribuição Poisson: Exemplo
+
+Quando $n$ é grande é $p$ pequeno, podemos utilizar a **Aproximação Poisson à Binomial**
+
+#### Aproximação Poisson à Binomial
+Seja $X \sim binom(n,p)$ com $n \longrightarrow  \infty$ e $p \longrightarrow 0$. Então $$binom(n,p) \longrightarrow Pois(\lambda = np)$$
+
+
+## Distribuição Poisson: Exemplo
+
+>- $\lambda = np = 600 \times 0.005 = 3$
+
+```{r}
+# Aproximação
+lambda = 3
+ppois(2,lambda)
+# Valor exato
+n = 600
+p = 0.005
+pbinom(2,n,p)
+```
+
+\color{violet}
+\begin{center}
+Regra de bolso: $n > 50$ e $np < 5$
+\end{center}
+\color{black}
+
+
+## Distribuição Poisson: Exemplo
+
+4. Na cidade de Niteroi acontecem, em média 5 acidentes de carro por dia. Qual é a probabilidade de termos mais de 50 accidentes em uma determinada semana?
+
+\pause 
+**Primeiro passo: Informações**
+
+>- $\lambda =5$  (accidentes por dia)
+>- $X:$ número de accidentes em uma semana.
+
+\pause
+
+\begin{center}
+\color{red}
+$\lambda$ e $X$ devem estar \textbf{sempre} no mesmo intervalo de tempo/espaço.
+\color{black}
+\end{center}
+
+>- $\lambda* =5 \times 7$  (accidentes por semana)
+>- $X:$ número de accidentes em uma semana.
+
+## Distribuição Poisson: Exemplo
+
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim Pois(\lambda =35)$
+>- $P(X>50) = 1- P(X \leq 50) = 1- \displaystyle \sum_{x=0}^{50} \dfrac{35^x e^{-35}}{x!}$
+
+\pause
+
+**R**
+```{r}
+1-ppois(50, lambda = 35)
+```
+
+\pause
+
+Vejamos um gráfico de barras para $1000$ valores simulados de uma distribuição Poisson($\lambda$ = 35).
+
+## Distribuição Poisson: Exemplo
+
+```{r, echo = FALSE}
+x = rpois(1000, lambda = 35)
+barplot(table(x))
+```
+
+## Distribuição Poisson
+
+
+```{r, echo=FALSE, fig.width=12, fig.cap= "Exemplos: Distribuição Poisson", fig.height=6}
+par(mfrow = c(2,2))
+p1 = barplot(table(rpois(10000, 0.3)), main = "lambda = 0.3")
+p2 = barplot(table(rpois(10000, 3)), main = "lambda = 3")
+p3 = barplot(table(rpois(10000, 7)), main = "lambda = 7")
+p4 = barplot(table(rpois(10000, 100)), main = "lambda = 100")
+```
+
+
+
+## Distribução Hipergeométrica
+
+Uma urna contém $A$ bolas vermelhas e $B$ bols azuis, suponha que selecionames **sem reposição** $n$ bolas e seja $X$ o número de bolas vermelhas obtidas.
+
+\pause
+
+Neste experimento os ensaios não são mais independentes, pois depois selecionar a primeira bola, a probabilidade de obter uma bola, digamos, vermelha, muda.
+
+\pause
+
+Este tipo de problemas, é resolvido utilizando a distribuição Hipergeométrica.
+
+
+## Distribução Hipergeométrica
+
+
+#### Distribução Hipergeométrica
+A v.a. discreta $X$ têm distribuição Hipergeométrica com parâmetros $N$, $n$ e $r$, se sua função de probabilidade é dada por
+
+$$p(x)=
+\begin{cases}
+\dfrac{\binom{r}{x} \binom{N-r}{n-x}}{\binom{N}{n}}, & \text{se } x  = 0, 1,\ldots, r \\ 
+0, & \text{caso contrario}
+\end{cases},$$ em que $N$ é o numero total de elementos na população, $n$ é o tamanho da amostra e $r$ é número de _sucessos_ (ex: bolas vermelhas).
+
+\pause
+
+- $X:$ número de sucessos na amostra de $n$ elementos.
+- $\mathbb{E}(X) = \dfrac{n\times r}{N}, \quad \mathbb{V}(X) = \dfrac{n \times r}{N} \times \dfrac{N-r}{N} \times \dfrac{N-n}{N-1}$
+
+## Distribuição Hipergeométrica: Exemplo
+
+
+1. Uma urna contém 5 bolas vermelhas e 10 bolas azuis. Se selecionarmos 7 bolas ao acaso e sem substituição. Qual é a probabilidade de obter pelo menos 3 bolas vermelhas?
+
+\pause 
+**Primeiro passo: Informações**
+
+>- $r =5$  (caracteristica de interesse: bolas vermelhas).
+>- $N = 5+10 = 15$ (número total de bolas na urna).
+>- $n = 7$ (número de bolas selecionadas).
+>- $X:$ número de bolas vermelhas na amostra
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim Hiper(N = 15, n = 7, r = 5)$
+>- $P(X \geq 3)  = \underbrace{\dfrac{\binom{5}{3} \binom{10}{2}}{\binom{15}{5}}}_{P(X=3)}+ \underbrace{\dfrac{\binom{5}{4} \binom{10}{1}}{\binom{15}{5}}}_{P(X=4)} + \underbrace{\dfrac{\binom{5}{5} \binom{10}{0}}{\binom{15}{5}}}_{P(X=5)}$
+
+## Distribuição Hipergeométrica: Exemplo
+
+**R**
+```{r}
+r = 5
+N = 15
+n = 7
+# Queremos P(X >= 3) 
+sum(dhyper(3:r, m = r, n = N-r, k = n))
+# Outra forma: P(X >= 3) = 1-P(X<3) = 1-P(X <= 2)
+1-phyper(2, m = r, n = N-r, k = n)
+```
+
+
+## Distribuição Hipergeométrica: Exemplo
+
+2. A turma de ACA228 (Reg. Prev.) possui 18 alunos, dos quais 12 gostam do _R_ e 6 não gostam tanto assim. Se selecionarmos 5 alunos:
+
+a. Qual é a probabilidade de 3 deles gostarem do _R_?
+b. Qual é a probabilidade da maioria (3 ou mais) gostarem do _R_?
+
+\pause
+**Primeiro passo: Informações**
+
+>- $N = 18$, $r = 12$ e $n = 5$
+>- $X:$ número de alunos na amostra que gostam do _R_.
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+$$X \sim Hiper(N = 18, n = 5, r = 12)$$
+
+## Distribuição Hipergeométrica: Exemplo
+
+$$X \sim Hiper(N = 18, n = 5, r = 12)$$
+
+a. $P(X = 3) = \dfrac{\binom{12}{3}\binom{6}{2}}{\binom{18}{5}}$
+b. $P(X\geq 3) = \underbrace{\dfrac{\binom{12}{3}\binom{6}{2}}{\binom{18}{5}}}_{P(X=3)} + \underbrace{\dfrac{\binom{12}{4}\binom{6}{1}}{\binom{18}{5}}}_{P(X=4)} + \underbrace{\dfrac{\binom{12}{5}\binom{6}{0}}{\binom{18}{5}}}_{P(X=5)}$
+
+
+## Distribuição Hipergeométrica: Exemplo
+
+**R**
+
+```{r}
+r = 12
+N = 18
+n = 5
+# a. P(X=3)
+dhyper(3, m = r, n = N-r, k = n)
+# b. P(X>=3)  = 1-P(X<3) = 1- P(X <= 2)
+1-phyper(2, m = r, n = N-r, k = n)
+```
+
+
+## Distribuição Hipergeométrica: Exemplo
+
+3. O grupo de estudos [CIA (Causal Inference and Analytics)](https://ctruciosm.github.io/CIA)^[ctruciosm.github.io/CIA] têm 30 alunos, dos quais 25 são da FACC e 5 são externos. Se selecionarmos 6 alunos aleatoriamente, qual é a probablidade de que todos os alunos sejam da FACC?
+
+\pause
+**Primeiro passo: Informações**
+
+>- $N = 30$, $r = 25$ e $n = 6$
+>- $X:$ número de alunos na amostra que são da FACC.
+
+\pause
+**Segundo passo: Análise e Cálculo**
+
+>- $X \sim Hiper(N = 18, n = 5, r = 12)$
+>- $P(X=6) = \dfrac{\binom{25}{6} \binom{5}{0}}{\binom{30}{6}}$
+
+## Distribuição Hipergeométrica: Exemplo
+
+**R**
+
+```{r}
+r = 25
+N = 30
+n = 6
+# Queremos P(X = 6)
+dhyper(6, m = r, n = N-r, k = n)
+```
+
+
+## Distribuição Hipergeométrica
+
+
+```{r, echo=FALSE, fig.width=12, fig.cap= "Exemplos: Distribuição Hipergeométrica", fig.height=6}
+par(mfrow = c(2,2))
+p1 = barplot(table(rhyper(10000, m = 10, n = 50-10, k = 15)), main = "N = 50, n = 15, r = 10")
+p2 = barplot(table(rhyper(10000, m = 10, n = 50-10, k = 10)), main = "N = 50, n = 10, r = 10")
+p3 = barplot(table(rhyper(10000, m = 5, n = 50-5, k = 15)), main = "N = 50, n = 15, r = 5")
+p4 = barplot(table(rhyper(10000, m = 5, n = 50-5, k = 10)), main = "N = 50, n = 10, r = 5")
+```
+
+
+
+## Resumo
+
+| Distr. | Parâm.    | $P(X=x)$      | R: $P(X=x)$ |
+|:-------:|:-------:|:-----------:|:-----------:|
+| Binom.     | $n$, $p$      | $\binom{n}{x}p^x(1-p)^{n-x}$ | `dbinom(x,n,p)` |
+| Pois.  | $\lambda$ | $\dfrac{e^{-\lambda} \lambda^x}{x!}$ |  `dpois(x, `$\lambda$`)` |
+| Hiper. | $N$, $n$, $r$ | $\dfrac{\binom{r}{x}\binom{N-r}{n-x}}{\binom{N}{n}}$ | `dhyper(x,r,N-r,n)` | 
+
+\pause
+
+Se quisermos $P(X\leq x)$ substituimos a letra `d` pela letra `p` nas funções do R: `pbinom()`, `ppois()`, `phyper()`.
+
+\pause
+
+**Binomial ou Hipergeometrica?** Se conhecermos $N$ e a amostra é sem reposição, então é Hipergeométrica.
+
+
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 5**
+- Morettin, P.A;  e Bussab, W. de O. (2004). *Estatística Básica*. 5ed, Saraiva. **Cap 6**
+
+
+
