@@ -1,0 +1,622 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Distribuições Contínuas'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica. 
+  | Universidade Estadual de Campinas
+date: "Aula 10"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Variáveis Aleatórias
+
+## Variaveis Aleatorias
+
+#### Variável Aleatória (v.a)
+
+Una variable aleatoria $X$ é uma função que associa um número real a cada resutado de um experimento aleatório. $$X : S  \rightarrow  \mathbb{R}$$
+
+
+::: columns
+
+:::: column
+
+#### Variável aleatória discreta
+
+Uma v.a. que pode assumir um número finito (ou infinito sempre que pudermos contar os elementos) de valores.
+
+::::
+
+:::: column
+
+
+#### Variável aleatória contínua
+
+Uma v.a. que pode assumir qualquer valor numérico em um intervalo (ou coleção de intervalos)
+
+::::
+
+:::
+
+
+# Função de Densidade
+
+## Função de Densidade
+
+Se $X$ é uma v.a contínua, a função de densidade (f.d) de $X$ é uma função $f(\cdot)$ tal que:
+
+>- $f(x) \geq 0 \quad \forall x$
+>- $\displaystyle \int_{- \infty}^{\infty} f(t)dt = 1$
+
+\pause
+
+A função $F(x)$ é chamada função de distribuição acumulada (ou simplesmente função distribuição) e é definida por: 
+
+$$F(x) = \displaystyle \int_{- \infty}^{x} f(t)dt$$
+
+
+## V.a's continuas
+
+#### Observação
+
+Se $X$ é v.a. contínua, então:
+
+>- $P(X= x) = 0 \quad \forall x$
+>- $P( a \leq X \leq b) = P( a < X \leq b) = P( a \leq X < b) = P( a < X <b)$
+>- \color{red} $f(x)$ **não representa** a probabilidade de $x$, a probabilidade será calculada entre 2 pontos (e será igual á area abaixo da curva) \color{black}
+
+
+## V.a's continuas
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+library(ggplot2)
+x <- seq(0.1, 5, length.out = 500)
+y <- dexp(x, rate = 1)
+data <- data.frame(x, y)
+ggplot(data, aes(x=x, y=y)) +
+  geom_line(size=.5) + 
+  ylab("f(x)") + 
+  geom_ribbon(data=subset(data,x>0.5 & x<2.2),aes(x=x,ymax=y),ymin=0,alpha=0.3, fill = "green4")  + 
+  geom_text(aes(label = "a", x = 0.5, y = 0), size = 6)+ 
+  geom_text(aes(label = "b", x = 2.2, y = 0), size = 6) + 
+  geom_text(aes(label = "P(a<X<b)", x = 1.3, y = 0.1), size = 9)
+```
+
+
+## V.a's continuas
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+x <- seq(-5, 5, length.out = 500)
+y <- dnorm(x)
+data <- data.frame(x, y)
+ggplot(data, aes(x=x, y=y)) +
+  geom_line(size=.5) + 
+  ylab("f(x)") + 
+  geom_ribbon(data=subset(data,x<1),aes(x=x,ymax=y),ymin=0,alpha=0.3, fill = "green4")  + 
+  geom_text(aes(label = "b", x = 1, y = 0), size = 6) + 
+  geom_text(aes(label = "P(X<b)", x = -0.7, y = 0.025), size = 9)
+```
+
+
+
+## V.a's continuas
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+x <- seq(-5, 5, length.out = 500)
+y <- dnorm(x)
+data <- data.frame(x, y)
+ggplot(data, aes(x=x, y=y)) +
+  geom_line(size=.5) + 
+  ylab("f(x)") + 
+  geom_ribbon(data=subset(data,x>-0.5),aes(x=x,ymax=y),ymin=0,alpha=0.3, fill = "green4")  + 
+  geom_text(aes(label = "a", x = -0.5, y = 0), size = 6) + 
+  geom_text(aes(label = "P(X>a)", x = 0.9, y = 0.025), size = 9)
+```
+
+
+## V.a's continuas
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+x <- seq(-5, 5, length.out = 500)
+y <- dnorm(x)
+data <- data.frame(x, y)
+ggplot(data, aes(x=x, y=y)) +
+  geom_line(size=.5) + 
+  ylab("f(x)") + 
+  geom_ribbon(data=subset(data,x>-1.5 & x<2),aes(x=x,ymax=y),ymin=0,alpha=0.3, fill = "green4")  + 
+  geom_text(aes(label = "a", x = -1.5, y = 0), size = 6) + 
+  geom_text(aes(label = "b", x = 2, y = 0), size = 6) +
+  geom_text(aes(label = "P(a<X<b)", x = 0.1, y = 0.025), size = 9)
+```
+
+
+# Esperança e Variância
+
+## Esperança e Variância
+
+Seja $X$ uma v.a. contínua com f.p $f(\cdot)$.
+
+
+#### Esperança
+O valor esperado de $X$ é definido como \begin{center}
+$\mathbb{E}(X) = \displaystyle \int_{- \infty}^{\infty} x f(x) dx$
+\end{center}
+
+\pause
+
+#### Variância
+A Variância de $X$, denotada por $\mathbb{V}(X)$ é definida como \begin{center}
+$\mathbb{V}(X) = \mathbb{E}((X-\mu)^2) = \displaystyle \int_{- \infty}^{\infty} (x-\mu)^2 f(x)dx,$
+\end{center} em que $\mu = E(X)$
+
+## Esperança e Variância
+
+#### Propriedades
+
+Seja $X$ uma variável aleatória
+
+- $\mathbb{E}(aX+b) = a \mathbb{E}(X) + b$ (onde $a$ e $b$ são constantes)
+- $\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}^2(X)$
+- $\mathbb{V}(aX+b) = a^2 \mathbb{V}(X)$
+- Sejam $X_1, X_2, \cdots,X_n$ v.a. com $\mathbb{E}(X_i) <\infty$, então, $$\mathbb{E}(X_1 + X_2 + \cdots + X_n) = \mathbb{E}(X_1) + \cdots + \mathbb{E}(X_n)$$
+- Sejam $X_1, X_2, \cdots,X_n$ v.a. **independentes** com $V(X_i) <\infty$. Então, $$\mathbb{V}(X_1 + X_2 + \cdots + X_n) = \mathbb{V}(X_1) + \cdots + \mathbb{V}(X_n)$$
+
+
+
+# Distribuições Contínuas
+
+## Distribuições Contínuas
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+library(ggplot2)
+x1 = seq(-5, 5, by = 0.001)
+y1 = dnorm(x1)
+x3 = seq(0,10, by = 0.001)
+y3 = dexp(x3, rate = 1)
+x5 = seq(0,1,by = 0.001)
+y5 = dunif(x5)
+x6 = seq(0,10, by = 0.001)
+y6 = dchisq(x6, df = 3)
+
+x = c(x1,x3,x5,x6)
+y = c(y1,y3,y5,y6)
+names = c(rep("Normal Padrão",length(x1)),  rep("Exponencial", length(x3)),  rep("Uniforme", length(x5)), rep("Qui2", length(x6)))
+dados = data.frame(x,y,names)
+ggplot(dados) + geom_line(aes(x,y), colour = "green4") + facet_wrap(names~., scales = "free") + xlab(" ") + ylab(" ")
+```
+
+
+
+## Distribuição uniforme
+
+>- É a distribuição continua mais simples
+
+\begin{block}{Distribuição uniforme}
+Uma v.a. continua $X$ tem distribuição uniforme no intervalo $[a,b]$, denotada por $X \sim U_{[a,b]}$ se sua função densidade é dada por 
+$f(x) = f(x;a,b) = f(x|a,b)=
+\begin{cases}
+\dfrac{1}{b-a}, & \text{se } a \leq x \leq b \\ 
+0, & \text{caso contrário}, 
+\end{cases}$
+\end{block}
+
+
+## Distribuição uniforme
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+library(ggplot2)
+x1 = seq(0,1,by = 0.001)
+y1 = dunif(x1)
+x2 = seq(1,3,by = 0.001)
+y2 = dunif(x2, min = 1, max = 3)
+x3 = seq(-2,2,by = 0.001)
+y3 = dunif(x3, min = -2, max = 2)
+x = c(x1,x2,x3)
+y = c(y1,y2,y3)
+names = c(rep("U[0,1]",length(x1)),  rep("U[1,3]", length(x2)),rep("U[-2,2]", length(x3)))
+dados = data.frame(x,y,names)
+ggplot(dados) + geom_line(aes(x,y), colour = "green4") + facet_grid(.~names, scales = "free") + xlab(" ") + ylab(" ") + theme(strip.text = element_text(face="bold", size=14), axis.text=element_text(size=18))
+```
+
+## Distribuição uniforme
+
+- $E(X) = \dfrac{a+b}{2}$ 
+
+\pause
+**Demostração**
+
+$E(X) = \displaystyle \int_{- \infty}^{\infty} x f(x) dx = \displaystyle \int_a^b x f(x) dx= \displaystyle \int_a^b \dfrac{x}{b-a}dx = \color{red} \dfrac{1}{b-a} \color{violet}\displaystyle \int_a^b x dx \color{black}$
+
+\pause
+\begin{block}{Lembre:}
+$$\displaystyle \int_a^b x dx = \dfrac{b^2}{2} - \dfrac{a^2}{2}$$
+\end{block}
+
+\pause
+$E(X) = \color{red}\dfrac{1}{b-a} \color{black}\times \color{violet}\dfrac{b^2-a^2}{2} \color{black}= \dfrac{(b+a) (b-a)}{2(b-a)} = \dfrac{a+b}{2}$
+
+
+## Distribuição uniforme
+
+- $V(X) = \dfrac{(b-a)^2}{12}$
+
+\pause
+**Demostração**
+
+$E(X^2) = \displaystyle \int_{a}^b x^2 f(x) dx = \dfrac{b^2 + ab+ a^2}{3}$ (Verificar!)
+
+\pause
+
+$V(X) = E(X^2) - E^2(X) = \dfrac{b^2 + ab+ a^2}{3} - \dfrac{(a+b)^2}{4} = \dfrac{(b-a)^2}{12}$
+
+## Distribuição uniforme
+
+#### Importante
+Se $X \sim U[a,b]$, para qualquer intervalor $[c,d]$ com $a \leq c \leq d \leq b$, $$P(c \leq X \leq d) = \displaystyle \int_c^d \dfrac{1}{b-a}dx = \dfrac{d-c}{b-a}$$
+
+\pause 
+Por outro lado, $$F(x) = P(X \leq x)=
+\begin{cases}
+0, & \text{se }  x < a \\ 
+\dfrac{x-a}{b-a}, & \text{se },  a \leq x < b \\
+1, & \text{se } x \geq b
+\end{cases}$$
+
+
+## Distribuição uniforme: Exemplos
+
+1. Suponha que João e Maria combinam de sair para um encontro e João diz que a buscará em casa às 21:30 hrs. Maria é super pontual e resolve que só sairá com o João se ele atrasar no máximo 10 minutos. Assuma que o tempo de chegada de João se distribui como uma v.a. uniforme entre 21:15 e 21:45. Qual é a probabilidade de João chegar no máximo 10 minutos atrasado?
+
+\pause
+>- X: tempo de chegada do Joao à casa da maria 
+>- $X \sim U[15,45]$
+>- Queremos $P(X \leq 40)$
+>- $P(X \leq 40) = \displaystyle \int_{15}^{40} \dfrac{1}{45-15}dx = \dfrac{40-15}{45-15} = \dfrac{25}{30} = 0.83$
+
+## Distribuição uniforme: Exemplos
+
+**R**
+```{r}
+# X: tempo de chegada do Joao à casa da Maria, X ~ U[15,45]
+# P(X <= 40)
+punif(40,min=15, max = 45)
+```
+
+
+\pause
+
+```{r}
+# Y ~ U[-15,15] (forma alternativa)
+# P(Y <= 10)
+punif(10,min=-15, max = 15)
+```
+
+
+## Distribuição uniforme: Exemplos
+
+2. A espessura de chapas de metal fabricadas pela *MetaisABC* segue uma distribuição uniforme entre 0.87cm e 1.03cm. Se selecionarmos uma chapa aleatoriamente, qual é a probabilidade da chapa ter espessura entre 0.98 e 1.02?
+
+>- $X:$ espessura das chapas de metal fabricadas pela *MetaisABC*, 
+>- $X \sim U[0.87, 1.03]$
+>- Queremos $P(0.98 \leq X \leq 1.02)$
+>- $P(0.98 \leq X \leq 1.02) = \dfrac{1.02-0.98}{1.03-0.87} = 0.25$
+
+
+## Distribuição uniforme: Exemplos
+**R**
+```{r}
+a = 0.87
+b = 1.03
+punif(1.02, a, b)-punif(0.98, a, b)
+```
+
+\pause
+
+```{r}
+# Cuidado, por padrão punif assume que queremos uma U[0,1]
+# O seguinte código esta errado! 
+# (precisamos definir os parametros da dist. Uniforme)
+punif(1.02) - punif(0.98) 
+```
+
+
+## Distribuição uniforme: Exemplos
+
+3. O metrô passa na estação Ipanema de 15 em 15 minutos começando as 5am. Se o tempo de chegada de um passageiro à plataforma se distribui de forma uniforme entre as 7:00 e 7:50. Qual é a probabilidade do passageiro esperar menos que 5 minutos pelo metrô?
+
+>- Note que o metrô passará as 7:00, 7:15, 7:30, 7:45, 8:00, ....
+>- Seja $X$ o número em minutos em que o passageiro chega na plataforma entre as 7:00 e as 7:50, $X \sim U[0,50]$
+>- Para que o passageiro espere menos de 5 min deve chegar entre $10 < X < 15$, $25 < X < 30$ ou $40 < X < 45$
+>- $\underbrace{P(10 < X < 15)}_{\dfrac{15-10}{50-0}}$ + $\underbrace{P(25 < X <30)}_{\dfrac{30-25}{50-0}}$ + $\underbrace{P(40 < X < 45)}_{\dfrac{45-40}{50-0}} = 15/50$
+
+
+
+
+
+## Distribuição exponencial:
+
+
+\begin{block}{Distribuição exponencial}
+Uma v.a. continua $X$ tem distribuição exponencial com parâmetro $\lambda$, denotada por $X \sim Exp(\lambda)$ se sua função densidade é dada por 
+$f(x;a,b) = f(x|a,b)=
+\begin{cases}
+\lambda e^{-\lambda x}, & \text{se } x \geq 0 \\ 
+0, & \text{caso contrário.} 
+\end{cases}$
+\begin{itemize}
+\item $E(X) = 1/ \lambda$
+\item $V(X) = 1/\lambda^2$
+\end{itemize}
+
+\end{block}
+
+Quem é o $\lambda$? $\lambda = 1/\mu$, onde $\mu:$ tempo medio
+
+
+## Distribuição exponencial:
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+library(ggplot2)
+x = seq(0,10, by = 0.001)
+n = length(x)
+y1 = dexp(x,rate = 1)
+y2 = dexp(x, rate = 0.3)
+y3 = dexp(x, rate = 2)
+y4 = dexp(x, rate = 3)
+x = rep(x,4)
+y = c(y1,y2,y3,y4)
+lambda = c(rep("1", n), rep("0.3",n), rep("2", n), rep("7",n))
+dados = data.frame(x,y,lambda)
+ggplot(dados) + geom_line(aes(x,y, colour=lambda)) + ylab("f(x)") 
+```
+
+
+## Distribuição exponencial
+
+#### Importante
+Se $X \sim Exp(\lambda)$, para qualquer intervalor $[a,b]$ com $0 \leq a \leq b$, $$P(a \leq X \leq b) = \displaystyle \int_a^b \lambda e^{-\lambda x}dx = e^{-a \lambda} - e^{-b \lambda}$$
+
+\pause 
+Por outro lado, $$F(x) = P(X \leq x)=
+\begin{cases}
+0, & \text{se }  x < 0 \\ 
+1- e^{-\lambda x}, & \text{se },  x \geq 0  
+\end{cases}$$
+
+
+## Distribuição exponencial: Exemplos
+
+1. O tempo (em horas) necessário para consertar uma maquina de café (com um determinado problema XYZ) pode ser modelado por uma distribuição exponencial com $\lambda = 2/3$. João, o conserta-tudo, fala que para consertar nossa maquina de café, demorará, no mínimo 3 horas. Qual a probabilidade disso acontecer?
+
+\pause
+>- $X:$ tempo (em horas) necessário para consertar uma maquina de café
+>- $X \sim Exp(\lambda = 2/3)$
+>- Queremos $P(X \geq 3)$
+>- $P(X \geq 3) = 1- P(X<3) = 1-P(X \leq 3) = 1-[1-e^{-2/3 \times 3}] = 0.1353353$
+
+## Distribuição exponencial: Exemplos
+
+**R**
+```{r}
+# P(X >= 3) = 1-P(X<3) = 1-P(X<=3)
+lambda = 2/3
+1-pexp(3, rate = lambda)
+```
+
+
+## Distribuição exponencial: Exemplos
+
+2. A vida útil de um celular Xing-Ling segue uma distribuição exponencial com tempo de vida médio de 3 meses. João esta precisando muito de um celular, e um vendedor oferece um celular Xing-Ling por um preço bem camarada e ainda afirma que, se o celular estragar em menos de 2 meses, João receberá o dinheiro de volta. Qual a probabilidade do celular durar menos do que 2 meses?
+
+\pause
+
+>- $X$ tempo de vida útil de um celular Xing-Ling
+>- $X \sim Exp(\lambda = 1/3)$  ($\lambda = 1/\mu, \quad \mu = 3$)
+>- Queremos $P(X<2)$
+
+## Distribuição exponencial: Exemplos
+
+$\underbrace{P(X<2) = P( X \leq 2)}_{\text{pois } P(X=2)=0} = F(2)$ 
+
+\pause
+
+\begin{block}{Lembre que}
+$$F(x) = 1- e^{-\lambda x}$$
+\end{block}
+
+\pause
+
+$P(X \leq 2) = F(2) = 1- e^{-\frac{2}{3}} = 1-e^{-2/3} = 0.4865829$
+
+
+## Distribuição exponencial: Exemplos
+
+**R**
+```{r}
+lambda = 1/3
+# P(X<2) = P(X<=2)
+pexp(2, rate = lambda)
+1-exp(-2/3)
+```
+
+
+## Distribuição exponencial:
+
+\begin{block}{Proposição: Poisson-Exponencial}
+Suponha que o número de eventos que ocurrem em um intervalo de tempo/espaço $t$ tenha distribuição $Pois (\lambda t)$ onde $\lambda$ é o número esperado de eventos que ocorrem em uma unidade de tempo/espaço. Se o número de ocorrencias em intervalos não sobrepostos é independente entre intervalos, então a distribuição do tempo entre a ocorrencia de dois eventos sucessivos é $Exp(\lambda)$.
+\end{block}
+
+3. Suponha que as ligações recebidas numa central de denuncias ocorram segundo um processo de Poisson com taxa de 0.7 ligações por dia. Qual a probabilidade de haver mais de 2 dias entre chamadas?
+
+## Distribuição exponencial: Exemplos
+
+>- Seja $X:$ número de dias entre as chamadas
+>- Queremos $P(X>2)$
+
+\pause
+Como o número de chamadas segue uma $Poisson(0.7)$, pela **Proposição Poisson-Exponencial**, $X:$ o número de occorencias entre dois eventos sucessivos $\sim Exp(0.7)$
+
+>- $P(X>2) = 1-P(X\leq2) = 1-e^{-2 \times 0.7} = 0.246597$
+
+\pause
+
+```{r}
+1-pexp(2, rate = 0.7)
+```
+
+
+
+## Distribuição Normal
+
+>- É a distribuição continua mais importante de todas
+>- tem forma de sino
+
+#### Distribuição Normal
+Uma v.a. continua $X$ tem distribuição Normal (Gaussiana), denotada por $N(\mu, \sigma)$, se sua função densidade é da forma $$f(x; \mu, \sigma) = f(x| \mu, \sigma) = f(x) = \dfrac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}}, \text{ com } x \in (-\infty, \infty)$$
+
+- $E(X) = \mu$
+- $V(X) = \sigma^2$
+
+## Distribuição Normal
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 12, fig.height = 6}
+library(ggplot2)
+x = seq(-10,10, by = 0.001)
+n = length(x)
+y1 = dnorm(x)
+y2 = dnorm(x, mean = 0, sd = 2)
+y3 = dnorm(x, mean = 3, sd = 2)
+y4 = dnorm(x, mean = 4, sd = 3)
+x = rep(x,4)
+y = c(y1,y2,y3,y4)
+Paremetros = c(rep("mu = 0, sigma = 1", n), rep("mu = 0, sigma = 2",n), rep("mu = 3, sigma = 2", n), rep("mu = 4, sigma = 3",n))
+dados = data.frame(x,y,Paremetros)
+ggplot(dados) + geom_line(aes(x,y, colour=Paremetros)) + ylab("f(x)")
+```
+
+
+
+## Distribuição Normal
+
+
+#### Distribuição Normal Padrão
+Quando $\mu = 0$ e $\sigma = 1$, a distribuição Normal é conhecida como Normal Padrão, denotada por $N(0, 1)$, e sua função de densidade é da forma  $$f(x) = \dfrac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}, \text{ com } x \in (-\infty, \infty)$$
+
+- $E(X) = 0$
+- $V(X) = 1$
+- $F(x) = \displaystyle \int_{-\infty}^x f(t) dt = \Phi (x)$
+
+
+## Distribuição Normal
+
+#### Padronização
+Se $X \sim N(\mu, \sigma)$, então $Z = \dfrac{X-\mu}{\sigma} \sim N(0,1)$
+
+#### Observação 1
+
+Embora no computador consigamos calcular as probabilidade para quaisquer valores de $\mu$ e $\sigma$, sempre levaremos tudo para uma distribuição padrão.
+
+
+## Distribuição Normal: Exercicios
+
+1. Se $X \sim N(0,1)$, calcule: $P(X \leq -3)$, $P(X > 3)$ e $P(-2 \leq X \leq 2)$
+
+```{r}
+# P(X<= -3)
+pnorm(-3)
+# P(X>3)
+1-pnorm(3)
+# (c) P(-2 <= X <= 2)
+pnorm(2)-pnorm(-2)
+```
+
+
+## Distribuição Normal: Exercicios
+
+2. O tempo gasto em terminar a $P_1$ de MAD211 tem distribuição normal, com média 120 minutos e desvio padrão de 15 min. Qual é a probabilidade de um aluno terminar a prova em menos de 45 minutos?
+
+\pause
+
+>- $X:$ tempo gastos em terminar a $P_1$ de MAD211
+>- $X \sim N(120, 15)$
+>- $Z = \dfrac{X-120}{15}$
+>- Queremos $P(X < 45)$
+>- $P(X < 45) = P(\dfrac{X-120}{15} < \dfrac{45-120}{15}) = P(Z < -5)$
+
+\pause 
+
+```{r}
+pnorm(-5)
+```
+
+
+
+## Distribuição Normal: Exercicios
+
+3. Suponha que o peso médio dos porcos de uma fazenda seja 70 kg e que o desvio padrão dos pesos seja 10 kg. Supondo que esses pesos se distribuem normalmente, qual é a probabilidade de um porco escolhido ao acaso pesar entre 65 e 75 kg?
+
+\pause
+
+>- $X:$ pesos dos porcos de uma determinada fazenda, $X \sim N(70,10)$
+>- Queremos $P(65 \leq X \leq 75)$
+>- Padronizando: $P \big( \dfrac{65-70}{10} \leq \dfrac{X -70}{10} \leq \dfrac{75-70}{10} \big) = P(-0.5 \leq Z \leq 0.5)$
+
+\pause 
+
+```{r}
+pnorm(0.5)-pnorm(-0.5)
+```
+
+
+
+## Distribuições especiais: Como identificar?
+
+- **Binomial:** $X:$ número total de sucessos em $n$ realizações
+- **Poisson:**  $X:$ número de ______ em um intervalo fixo de tempo/espaço
+- **Hipergeométrica:** parecido com Binomial mas conhecemos $N$ e a probabilidade de sucesso muda de ensaio para ensaio.
+- **Uniforme:** *se distribui uniformemente*
+- **Exponencial: ** $X:$ tempo até a occorencia de eventos sucessivos 
+- **Normal:** *se distribui normalmente*
+
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 6**
+- Morettin, P.A;  e Bussab, W. de O. (2004). *Estatística Básica*. 5ed, Saraiva. **Cap 7**
+
+
+
