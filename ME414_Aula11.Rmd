@@ -1,0 +1,519 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Amostragem e Distribuições Amostrais'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica. 
+  | Universidade Estadual de Campinas.
+date: "Aula 11"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Amostragem
+
+## Amostragem
+
+
+\begin{center}
+```{r echo= FALSE, out.width = '70%'}
+knitr::include_graphics("imagens/populacao_vs_amostra.png")
+```
+\end{center}
+
+
+
+>- **População**: conjunto de todos os elementos de interesse no estudo.
+>- **Amostra**: subconjunto da população
+
+## Amostragem
+
+Característica numéricas da população (média, proporção, desvio padrão, etc) são chamados de **parâmetros**
+
+
+\pause
+
+\color{violet}
+Um dos propósitos da inferência estatística é estimar e testar hipóteses a respeito dos parâmetros populacionais utilizando a informação contida na amostra
+\color{black}
+
+\pause
+
+**Por que utilizar uma amostra?**
+
+\pause
+
+>- Coletar informação da população toda é caro
+>- Coletar informação da população toda é inviável
+
+\pause
+
+\color{red}
+Os resultados da amostra apresentam apenas uma estimativa do verdadeiro (e desconhecido) valor do parâmetro. \textbf{Com métodos apropriados de amostragem, obteremos "boas" estimativas}
+\color{black}
+
+## Amostragem aleatória simples
+
+Amostragem aleatória simples é um dos métodos de amostragem mais comums
+
+\pause
+
+#### Definição
+
+
+Uma amostra aleatória simples (a.a) de tamanho $n$ de uma população de tamanho $N$ é uma amostra selecionada de forma independente e sem reposição^[Existem amostras aleatórias com e sem reposição] de tal maneira que cada elemento na amostra tenha a mesma probabilidade de ser escolhido.
+
+\pause
+
+>- Antigamente se utilizaba uma Tabela de número aleatórios
+>- Hoje em dia qualquer programa calcula números (pseudo) aleatorios
+
+## Amostragem aleatória simples
+
+>- No *R*:
+
+```{r, eval=FALSE}
+sample(x, n)
+```
+em que $x$ é um vetor com o ID dos elementos da população e $n$ é o tamano da amostra.
+
+\pause
+
+**Exemplo**
+
+```{r}
+IDs <- 1:1000
+n <- 10
+sample(IDs,n)
+```
+
+ 
+ 
+## Amostragem aleatória simples
+
+
+Quantas amostras aleatórias simples de tamanho $n$ podem ser selecionadas de uma população cm $N$ elementos?
+
+\pause
+
+$$\binom{N}{n} = \dfrac{N!}{n!(N-n)!}$$
+
+
+## Amostragem aleatória simples
+
+A diretoria do CCJE gostaria conhecer a opinião dos alunos da FACC sobre o ensino remoto no 2020.2. Por motivos logísticos e financeiros, saber a opinião de todos os alunos é inviável. Por esse motivo, a diretoria do CCJE pede ajuda aos alunos de MAD211 para selecionar uma amostra de 400 alunos. Como seria feita a amostragem?
+
+\pause
+
+>- Usar os ID dos alunos (por exemplo, o número de matricula)
+>- Usar `sample(matriculas_alunos, n = 400)`
+>- Entrevistar os 400 alunos selecionados.
+
+
+# Estimação pontual
+
+## Estimação pontual
+
+>- Frequentemente estamos interessados em conhecer o valor de algumas caracteristicas (parâmetros) da população
+>- Como dificilmente temos informação da população toda, o que é feito é calcular a caracteristoca correspondente à amostra, denominada **estatística amostral**.
+
+\pause
+
+
+#### Estatística
+
+Uma estatística é uma característica da amostra, ou seja, uma estatística $T$ é uma função de $X_1, X_2, \ldots, X_n$
+
+\pause 
+
+#### Parâmetro
+
+Um parâmetro é uma medida usada para descrever uma caracaterística da população
+
+
+
+## Estimação pontual
+
+
+\color{red}
+
+Na prática, estimaremos a caracteristica de interesse (parâmetro) utilizando dados da nossa amostra.
+
+\color{black}
+
+
+**Exemplos**
+
+\pause
+
+>- Saber a opinião dos alunos da FACC sobre o ensino remoto no 2020.2
+>- Saber o salário de todos os professores universitários de instituições publicas no Brasil
+>- Saber a intenção de voto de todos os brasileiros (com idade para votar)
+
+
+## Estimação pontual
+
+
+**Exemplo**
+
+Suponha que os salários dos 10000 professores das universidades publicas está no conjunto de dados `salarios`
+
+\pause
+
+```{r, echo=FALSE}
+salarios <- rnorm(10000, mean = 7500, sd = sqrt(1500))
+```
+
+
+Cuja média é `r round(mean(salarios),2)` e variância é `r round(var(salarios)*(length(salarios)-1)/length(salarios),2)`
+
+
+\pause
+
+Vamos supor que o sistema tem organizado os professores segundo salário (de menor a maior)
+
+\pause
+
+```{r}
+salarios <- sort(salarios)
+```
+
+\pause 
+
+vamos a selecionar uma amostra de tamanho 100 e calcular o salário médio e a variância
+
+## Estimação pontual
+
+
+```{r}
+amostra1 <- head(salarios,100) #100 primeiros registros na base
+amostra2 <- tail(salarios,100) #100 últimos registros na base
+amostra3 <- sample(salarios,100) # a.a de tamanho 100
+```
+
+\pause
+
+Qual amostra você acha nos dara "boas" estimativas? por quê? 
+
+\pause
+
+$\mu =$ `r round(mean(salarios),2)` e $\sigma^2 =$ `r round(var(salarios)*(length(salarios)-1)/length(salarios),2)`
+
+
+```{r}
+c(mean(amostra1), mean(amostra2), mean(amostra3))
+c(var(amostra1), var(amostra2), var(amostra3))
+```
+
+## Estimação pontual
+
+E se quisermos saber a proporção de professores que ganham mais de 7500 reais?
+
+```{r}
+sum(salarios > 7500)/length(salarios) #prop. populacional
+```
+
+\pause
+
+```{r}
+sum(amostra1 > 7500)/length(amostra1)
+sum(amostra2 > 7500)/length(amostra2)
+sum(amostra3 > 7500)/length(amostra3)
+```
+
+
+## Estimação pontual
+
+>- A média amostral é um estimador da média populacional $\mu$
+>- A variância amostral é um estimador da variância populacional $\sigma^2$
+>- A proporção da amostra é um estimador da proporção populacional $p$
+
+# Distribuições amostrais
+
+## Distribuições amostrais
+
+>- No exemplo anterior, temos que $\mu =$ `r round(mean(salarios),2)` e (para a amostra3) $\bar{x}$ =  `r round(mean(amostra3),2)` mas....
+>- E se tivessemos escolhido outra amostra?
+
+\pause 
+
+
+```{r}
+c(mean(sample(salarios,100)), mean(sample(salarios,100)),
+  mean(sample(salarios,100)), mean(sample(salarios,100)))
+```
+
+\pause
+
+>- Cada amostra levará a valores diferentes de $\bar{x}$
+>- Se considerarmos, digamos 2000 amostras, qual é a distribuição amostral de $\bar{x}$?
+
+## Distribuições amostrais
+
+
+```{r fig.height=6, fig.width=12, message=FALSE, warning=FALSE, echo = FALSE}
+x_mean = c()
+for(i in 1:2000){
+  x_mean[i] = mean(sample(salarios,100))
+}
+x_mean <- data.frame(x_mean)
+library(ggplot2)
+ggplot(data = x_mean) + geom_histogram(aes(x = x_mean), fill = "green4") + geom_vline(xintercept = mean(salarios))
+```
+
+
+## Distribuições amostrais
+
+>- A estimador $\bar{X} = \dfrac{\displaystyle \sum_1^n X_i}{n}$ é uma variável aleatória, e como variável aleatória tem um valor médio (valor esperado), um desvio padrão e uma distribuição de probabilidade.
+>- A distribuição de probabilidade da média amostral é chamada de **distribuição amostral** da média.
+>- Conhecer a distribuição amostral de alguma **estatística** (média, proporão, variância, etc), bem como suas propriedades, nos possibilitará fazer afirmações a respeito de quão próximas de, por exemplo, quão próximas a média da amostra está da média populacional (ou a variância amostral da variância populacional ou a proporção amostral da proporção populacional,etc)
+
+
+## Distribuição da média amostral
+
+Sejam $X_1, \ldots, X_n$ uma amostra aleatória de uma distribuição com média $\mu$ e variância $\sigma^2$
+
+\pause
+
+>- $\mathbb{E}(\bar{X}) = \mathbb{E} \Big(\dfrac{ \sum_{i=1}^n X_i}{n} \Big) = \dfrac{1}{n} \underbrace{\mathbb{E}(X_1 + \cdots + X_n)}_{\mathbb{E}(X_1) + \cdots + \mathbb{E}(X_n)} = \dfrac{1}{n} n \mu = \mu$
+>- \color{violet} Quando o valor esperado de um estimador pontual é igual ao parâmetro, dizemos que o estimador é não viesado. \color{black}
+>- A média amostral é um estimador não viesado da média populacional.
+>- $\mathbb{V}(\bar{X}) = \mathbb{V} \Big(\dfrac{ \sum_{i=1}^n X_i}{n} \Big) = \dfrac{1}{n^2} \underbrace{\mathbb{V}(X_1 + \cdots + X_n)}_{\mathbb{V}(X_1) + \cdots + \mathbb{V}(X_n)} = \dfrac{n \sigma^2}{n^2}= \dfrac{\sigma^2}{n}$
+
+
+## Distribuição da média amostral
+
+>- No exemplo dos salários, vimos que a distribuição da média amostral tinha a forma de uma distribuição normal.
+>- Será que isso é uma coincidência?
+
+\pause
+
+
+#### Resultado
+
+Se $X_1, X_2, \ldots, X_n \sim N(\mu, \sigma)$, então $$\bar{X} \sim N(\mu, \sigma/\sqrt{n})$$
+
+## Distribuição da média amostral
+
+
+
+#### Teorema Central do Limite
+
+Sejam $X_1, X_2, \ldots, X_n$ (para $n$ grande) v.as \textbf{independentes} e \textbf{identicamente distribuidas} com $E(X_1) = \mu$ e $V(X_1) = \sigma^2 < \infty$. Então, $$\dfrac{(\bar{X}_n - \mu)}{\sigma/\sqrt{n}} \sim_{aprox} N(0,1) \quad \equiv \quad \dfrac{\sum_{i=1}^n X_i - n\mu}{\sqrt{n} \sigma} \sim_{aprox} N(0,1)$$ 
+
+
+
+\pause
+
+
+\color{violet} Vamos ver o TCL (Teorema Central do Limite) através de simulações? \color{black}
+
+
+## Distribuição da média amostral
+
+
+**Por que precisamos da distribuição da média amostral?**
+
+>- Quando calculamos $\bar{x}$ não podemos esperar que esse valor seja exatamente igual a $\mu$
+>- Mas conhecer a distribuição da média amostral nos fornece informações probabilisticas da diferença entre a média amostral e a média da população.
+
+
+## Distribuição da média amostral
+
+1. Seja $X$ o número ligações semanais de telemarketing recebidas por clientes de uma operadores de celular ($X$ tem média de 7 e desvio padrão de 3). Os clientes, cansados de receberem tantas ligações, resolvem processar a empresa. A empressa nega este fato mas aceita escolher uma amostra de 100 pessoas e se, em média, o número de ligações semanais for maior do que 9, eles darão aos clientes uma indenização pelos transtornos. Qual é a probabilidade de, em média, os 100 usuários receberem mais do que 9 ligações semanais?
+
+\pause
+
+>- $X$ tem $\mu = 7$ e $\sigma = 3$
+>- Pelo TCL $$\dfrac{\bar{X} - \mu}{\sigma/\sqrt{100}} =  \sim N(0,1)$$
+>- Queremos: $P(\bar{X}>9)$
+
+
+## Distribuição da média amostral
+
+temos que: $X$ tem $\mu = 7$ e $\sigma = 3$  e $\dfrac{\bar{X} - \mu}{\sigma/\sqrt{100}} =  \sim N(0,1)$
+
+\pause
+$P(\bar{X}>9) = P(\bar{X} - 7 > 9-7) = P(\underbrace{\dfrac{\bar{X} - 7}{3/\sqrt{100}}}_{\sim N(0,1)} > \underbrace{\dfrac{9-7}{3/\sqrt{100}}}_{6.666667})$
+
+\pause
+
+$P(Z > 6.666667) = 1- P(Z \leq  6.666667)$
+
+\pause
+
+```{r}
+1-pnorm(6.666667)
+```
+
+
+## Distribuição da média amostral
+
+2. Suponha que uma moeda honesta é lançada 900 vezes. Qual a probabilidade de obter mais de 495 caras?
+
+\pause
+>- $X_i:$ lado superior da moeda no i-ésimo lançamento (1: cara, 0:coroa)
+>- $X_i \sim bernoulli(p=0.5)$
+>- $E(X_1) = p = 0.5$
+>- $V(X_1) = pq = 0.25$
+>- TCL:  $\dfrac{X_1+\cdots + X_n - n \mu}{\sigma \sqrt{n}} \sim_{aprox} N(0,1)$
+>- $P( \displaystyle \sum_{i=1}^nX_i > 495) = P(\underbrace{\frac{\sum_{i=1}^nX_i  - 900 \times 0.5}{\sqrt{0.25}\times \sqrt{900}}}_{Z} > \underbrace{\frac{495-900 \times 0.5}{\sqrt{0.25} \times \sqrt{900}}}_{3})$
+
+## Distribuição da média amostral
+
+```{r}
+1-pnorm(3)
+```
+
+
+\pause
+
+Mas poderiamos também ter obtido a resposta utilizando diretamente a distribuição binomial ($Y\sim Binom (n = 900, p = 0.5)$)
+
+\pause
+$P(Y > 495) = 1-P(Y \leq 495)$
+
+\pause
+
+```{r}
+1-pbinom(495, 900, prob = 0.5)
+```
+
+\pause
+
+\color{violet} A diferença nas respostas é devido a que o TCL é uma aproximação \color{black}
+
+
+## Distribuição da média amostral
+
+
+3. Uma amostra aleatório de tamanho $n = 120$ é extraida de uma distribuição uniforme no intevalo [0,1] ($U_{[0,1]}$). Qual é a probabilidade de que $P(|\bar{X} - 1/2| \leq 0.1)$?
+
+\pause
+
+>- A média da distribuição $U_{[a,b]}$ é $\dfrac{a+b}{2}$, no nosso caso: $\dfrac{0+1}{2} = 1/2$
+>- A variáncia da distribuição $U_{[a,b]}$ é $\dfrac{(b-a)^2}{12}$, no nosso caso: $1/12$
+>- Aplicando o TCL: $$\dfrac{(\bar{X}- \mu)}{\sigma/\sqrt{n}} = \dfrac{\sqrt{120}(\bar{X}- 1/2)}{1/\sqrt{12}} \sim_{approx} N(0,1)$$
+>- Queremos: $P(|\bar{X} - 1/2| \leq 0.1)$
+
+
+## Distribuição da média amostral
+
+$$\dfrac{\sqrt{120}(\bar{X}- 1/2)}{1/\sqrt{12}} \sim_{approx} N(0,1)$$
+\pause
+
+
+>- $P(|\bar{X} - 1/2| \leq 0.1) = P( -0.1 \leq  \bar{X} - 1/2 \leq 0.1)$
+>- $P(|\bar{X} - 1/2| \leq 0.1) = P( \dfrac{-0.1}{1/\sqrt{12}} \leq  \dfrac{\bar{X} - 1/2}{1/\sqrt{12}} \leq \dfrac{0.1}{1/\sqrt{12}})$
+>-  $P(|\bar{X} - 1/2| \leq 0.1) = P( \underbrace{\sqrt{120}\dfrac{-0.1}{1/\sqrt{12}}}_{-3.794733} \leq  Z \leq \underbrace{\sqrt{120}\dfrac{0.1}{1/\sqrt{12}}}_{3.794733})$
+
+\pause
+
+```{r}
+pnorm(3.794733) - pnorm(-3.794733)
+```
+
+
+
+
+
+
+# Métodos de amostragem
+
+## Métodos de amostragem
+
+>- Até agora discutimos a amostragem aleatória simples e discutimos propriedades de $\bar{X}$ e $\bar{p}$ quandos se usa esta forma de amostragem.
+>- Contudo, não é o único método de amostragem
+>- Discutiremos brevemente outros métodos de amostragem.
+
+
+## Métodos de amostragem
+
+
+#### Amostragem estratificada
+
+>- Os elementos da população sñao divididos em grupos chamados de _estratos_ de forma que cada elemento pertence unicamente a um estrato
+>- Selecionamos uma amostra aleatoria de cada um dos estratos
+>- Quanto mais homogeneos os estratos, melhor a nossa amostra
+
+## Métodos de amostragem
+
+
+#### Amostragem por conglomerados
+
+>- Dividimos a população em conglomerados (grupos) em que cada elementos pertence unicamente a um conglomerado.
+>- Seleccionamos uma amostra aleatoria dos conglomerados
+>- Todos os elementos contidos nos conglomerados selecionados formam parte da nossa amostra
+>- Quanto mais heterogeneo sejam os conglomerados, melhor a nossa amostra
+>- Ex. amostrar quarteirões
+
+
+
+## Métodos de amostragem
+
+
+#### Amostragem sistemática
+
+>- Muitas vezes, selecionar uma amostra aleatória simples pode não ser viavel ou consumir muito tempo
+>- Ex: clientes de uma determinada loja fisica
+>- Uma alternativa é utilizar amostragem sistemática
+>- Consiste em amostrar elementos a cada $k$ elementos
+>- Ex: amostrar o primeiro cliente que entra na loja, o cliente $1+k$, $1+2k$, ...$1+nk$ até completarnos nossa amostra.
+>- Se tivermos o tamanho total de populção $N$ e quisermos uma amostra de tamanho $n$, escolhemos elemento de $k = N/n$ em $k$. Ex: $k$, $2k$, ...$nk$
+
+
+
+## Métodos de amostragem
+
+#### Amostragem por conveniência
+
+>- Amostragem não-probabilistica
+>- A amostra é identificada por conveniência 
+>- Ex: ao se fazer uma pesquisa na universidade, podemos selecionar estudantes voluntários (simplesmente por eles estarem disponíveis)
+
+
+\pause
+
+#### Amostragem de julganento
+
+>- Amostragem não-probabilistica
+>- A pessoa que conhece profundamente o tema do estudo escolhe os elemento que julga seram mais importates da população
+>- Ex: um reporter escolher alguns deputados para darem sua opinião sobre algum fato.
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 7**
+- Morettin, P.A;  e Bussab, W. de O. (2004). *Estatística Básica*. 5ed, Saraiva. **Cap 10**
+
+
