@@ -1,0 +1,453 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Intervalos de Confiança'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica, 
+  | Universidade Estadual de Campinas
+date: "Aula 12"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Estimação por Intervalo: Introdução
+
+## Estimação por Intervalo
+
+>- Até agora temos focado unicamente em estimadores pontuais (um único valor: média amostral, variância amostral, etc).
+>- Estimação pontual não permite medir a incerteza associada.
+>- Estimação pontual não permite saber qual é a possível magnitude de erro que estamos cometendo.
+
+\pause
+
+A forma geral de uma estimação por intervalo é:
+
+\color{violet}
+$$\text{Estimação por ponto} \pm \text{margem de erro}$$
+\color{black}
+
+## Estimação por Intervalo
+
+
+Suponha que queremos estimar a média $\mu$ de uma distribuição qualquer com variância $\sigma^2$ (conhecida).
+
+\pause
+
+Pelo TCL temos: $$\dfrac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim_{approx} N(0,1)$$
+
+\pause
+
+Chamemos $e = |\bar{X} - \mu|$ e $\sigma_{\bar{X}} = \sigma/\sqrt{n}$.
+
+\pause
+
+Agora, podemos determinar a probabilidade de cometer erros de certa magnitude. Por exemplo, $P(e \leq 1.96\sigma_{\bar{X}})$
+
+## Estimação por Intervalo
+
+
+
+
+$$P(e \leq 1.96\sigma_{\bar{X}}) = P( |\bar{X} - \mu| \leq 1.96\sigma_{\bar{X}}) = P(|Z| \leq 1.96)$$
+
+$$P(-1.96 \leq Z \leq 1.96) = 0.95$$
+
+```{r}
+pnorm(1.96)-pnorm(-1.96)
+```
+
+
+## Estimação por Intervalo
+
+
+Por outro lado,
+
+$$P( |\bar{X} - \mu| \leq 1.96\sigma_{\bar{X}}) = 0.95$$
+\pause
+
+$$P(-1.96\sigma_{\bar{X}} \leq \bar{X} - \mu \leq 1.96\sigma_{\bar{X}}) = 0.95$$
+\pause
+
+$$P(\underbrace{\bar{X}-1.96\sigma_{\bar{X}}}_{\text{limite inferior}} \leq  \mu \leq \underbrace{\bar{X} + 1.96\sigma_{\bar{X}}}_{\text{limite superior}}) = 0.95$$
+\pause
+
+$0.95$ é denotado por $\delta$ ou $1-\alpha$ e é chamado de coeficiente de confiança.
+
+
+## Estimação por Intervalo
+
+
+**O que significa esse intervalo?**
+
+\pause
+
+Para ilustrar, 
+
+\pause
+
+>- vamos a selecionar 100 amostras aleatórias de tamanho 50 de uma $N(0,1)$ 
+>- Para cada amostra, calcularemos os intervalos de confiança 80\%, 90\%, 95\%.
+>- Vamos a contar quantas vezes o intervalo cobre o parâmetro.
+
+\pause
+
+> Os pontos vermelhos representam a estimação pontual e as linhas verdes representam o intervalo de confiança.
+
+## Estimação por Intervalo
+
+
+```{r, echo = FALSE}
+M <- 100
+n = 50
+amostra = matrix(NA,ncol = n, nrow = M)
+for(i in 1:M){
+  set.seed(i)
+  amostra[i,] = rnorm(n)
+}
+conf.int.mean <- function(dados,sigma,conf.level, n){
+  margem = qnorm(1-(1-conf.level)/2)*sigma/sqrt(n)
+  media.amostral = mean(dados)
+  c(media.amostral - margem, media.amostral + margem)
+}
+n <- ncol(amostra)
+media <- apply(amostra,1,mean)
+ic80 <- t(apply(amostra,1,conf.int.mean, sigma = 1, conf.level = 0.80, n))
+ic90 <- t(apply(amostra,1,conf.int.mean, sigma = 1, conf.level = 0.90, n))
+ic95 <- t(apply(amostra,1,conf.int.mean, sigma = 1, conf.level = 0.95, n))
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+limites <- rbind(ic80,ic90,ic95)
+ic <- c(rep("IC80%", M), rep("IC90%",M), rep("IC95%",M))
+y <- rep(1:M,3)
+media <- rep(media,3)
+ic_simul <- data.frame(limites,ic,y,media) %>% rename(L = X1,U = X2,IC = ic)
+ggplot(ic_simul) +
+  geom_point(aes(y = y,x = media), col = "red") + 
+  geom_linerange(aes(x = media, y = y, xmax = U, xmin = L), color = "green4") + 
+  geom_vline(xintercept = 0) + facet_wrap(.~ IC) + ylab(" ") + xlab(" ")
+```
+
+
+## Estimação por Intervalo
+
+
+```{r, echo = FALSE}
+ic_simul %>% 
+  mutate(abajo = ifelse(0 < L,1,0), arriba = ifelse(0>U,1,0), dentro = 1-abajo-arriba) %>% 
+  group_by(IC) %>% summarise(fail_left = mean(abajo)*100,
+                             coverage = mean(dentro)*100,
+                             fail_right = mean(arriba)*100) %>% 
+  knitr::kable(aling = 'cccc',caption = "Porcentagem de IC abaixo o IC, dentro do IC e acima do IC", col.names = c("Int. Conf.","Abaixo", "Dentro", "Acima"))
+```
+
+
+
+\pause
+
+**O que significa o intervalo de confiança?**
+
+Voltando ao exemplo onde $$P(\bar{X}-1.96\sigma_{\bar{X}} \leq  \mu \leq \bar{X} + 1.96\sigma_{\bar{X}}) = 0.95$$
+
+\color{violet}
+Se pudessemos escolher várias amostras aleatórias de tamaho $n$ e construir intervalos da forma $\big<\bar{X}-1.96\sigma_{\bar{X}}; \bar{X} + 1.96\sigma_{\bar{X}} \big>$, 95\% deles conteriam o parâmetro (desconhecido) $\mu$.
+\color{black}
+
+
+
+
+# Intervalo de confiança com variância conhecida
+
+## Intervalo de confiança com variância conhecida
+
+
+#### Intervalo de Confiança para $\mu$: Caso $\sigma$ conhecido
+
+Seja $X_1, \ldots, X_n \sim N(\mu, \sigma)$, então:
+
+\pause
+
+>- Se quisermos o IC 95\% $\big<\bar{X}-1.96\dfrac{\sigma}{\sqrt{n}}; \bar{X} + 1.96\dfrac{\sigma}{\sqrt{n}} \big>$
+>- Se quisermos o IC 99\% $\big<\bar{X}-2.57\dfrac{\sigma}{\sqrt{n}}; \bar{X} + 2.57\dfrac{\sigma}{\sqrt{n}} \big>$
+>- Em geral, se quisermos IC com nível de confiança $100\delta$\%, \color{violet} $$\big<\bar{X}-Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}} \big>,$$ \color{black} em que $\alpha = 1-\delta$ e $Z_{1-\alpha/2}$ é o quantil $1-\alpha/2$ da distribuição $N(0,1)$
+
+
+## Intervalo de confiança com variância conhecida
+
+
+**Exemplo**
+
+Seja 3.1, 3.5, 2.6, 3.4, 3.8, 3, 2.9 e 2.2 uma amostra aleatória de tamaho $n = 8$ proveniente de uma distribuição $N(\mu, \sigma = 0.5)$. Calcule:
+
+- IC para $\mu$ com nível de confiança  $\delta = 0.90$
+- IC para $\mu$ com nível de confiança  $\delta = 0.95$
+
+\pause
+
+**Solução**
+
+>- $\bar{X} = 3.0625$
+>- Utilizaremos $\alpha = 1- \delta =$ 0.1 e 0.05
+>- Para $\alpha = 0.1$, $Z_{1-\alpha/2} = Z_{1-0.1/2} = Z_{0.95}$ (usaremos para o IC90\%)
+>- Para $\alpha = 0.05$, $Z_{1-\alpha/2} = Z_{1-0.05/2} = Z_{0.975}$ (usaremos para o IC95\%)
+
+\pause
+
+```{r}
+c(qnorm(0.95), qnorm(0.975))
+```
+
+## Intervalo de confiança com variância conhecida
+
+$n = 8$, $\bar{X} = 3.0625$, $\sigma = 0.5$, $Z_{0.95} = 1.64$, $Z_{0.975} = 1.96$.
+
+$$\big<\bar{X}-Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}} \big>$$
+
+\pause
+
+>- IC 90\% $$\big<3.0625-1.64\dfrac{0.5}{\sqrt{8}}; 3.0625 + 1.64\dfrac{0.5}{\sqrt{8}} \big> \quad \equiv \big<2.772586; 3.352414 \big>$$
+>- IC 95\% $$\big<3.0625- 1.96\dfrac{0.5}{\sqrt{8}}; 3.0625 +  1.96\dfrac{0.5}{\sqrt{8}} \big> \quad \equiv \big<2.716018; 3.408982 \big>$$
+
+
+# Intervalo de confiança com variância desconhecida
+
+## Intervalo de confiança com variância desconhecida
+
+>- Os IC apresentados anteriormente são utilizados quando conhecemos o verdadeiro valor do parâmetro $\sigma$. 
+>- Contudo, na prática dificilmente conhecemos $\sigma$ e temos que estimar esse valor por $\hat{\sigma}$
+>- Quando utilizamos $\hat{\sigma}$ em lugar de $\sigma$ para construir o IC, devemos substituir a distribuição Normal pela distribuição T com $n-1$ graus de liberdade.
+>- Em geral, se quisermos IC com nível de confiança $100\delta$\%, \color{violet} $$\big<\bar{X}-t_{1-\alpha/2,n-1}\dfrac{\hat{\sigma}}{\sqrt{n}}; \bar{X} + t_{1-\alpha/2,n-1}\dfrac{\hat{\sigma}}{\sqrt{n}} \big>,$$ \color{black} em que $\alpha = 1-\delta$ e $t_{1-\alpha/2,n-1}$ é o quantil $1-\alpha/2$ da distribuição T com $n-1$ graus de liberdade
+
+
+
+## Intervalo de confiança com variância desconhecida
+
+
+```{r message=FALSE, warning=FALSE, echo = FALSE}
+x <- seq(-5,5,by = 0.001)
+n <- length(x)
+ynormal <- dnorm(x)
+ystudent4 <- dt(x,4)
+ystudent12 <- dt(x,12)
+ystudent35 <- dt(x,35)
+y <- c(ynormal,ystudent4,ystudent12,ystudent35)
+x <- rep(x,4)
+nomes <- c(rep("N(0,1)",n),
+           rep("T4",n),
+           rep("T12",n),
+           rep("T35",n))
+dados <- data.frame(x,y,nomes)
+library(ggplot2)
+ggplot(dados) + geom_line(aes(x,y, color = nomes), size = 1.2)
+```
+
+
+
+## Intervalo de confiança com variância desconhecida
+
+
+**Exemplo**
+
+Seja 3.1, 3.5, 2.6, 3.4, 3.8, 3, 2.9 e 2.2 uma amostra aleatória de tamaho $n = 8$ proveniente de uma distribuição $N(\mu, \sigma)$. Calcule:
+
+- IC para $\mu$ com nível de confiança  $\delta = 0.90$
+- IC para $\mu$ com nível de confiança  $\delta = 0.95$
+
+\pause
+
+**Solução**
+
+>- $\bar{X} = 3.0625$
+>- $\hat{\sigma} = 0.5125$
+>- $\alpha = 1- \delta =$ 0.1 e 0.05
+>- $t_{1-\alpha/2,n-1} = t_{1-0.1/2,7} = t_{0.95,7}$ (usaremos para o IC90\%)
+>- $t_{1-\alpha/2,n-1} = t_{1-0.05/2,7} = t_{0.975,7}$ (usaremos para o IC95\%)
+
+
+\pause
+
+```{r}
+c(qt(0.95,7), qt(0.975,7))
+```
+
+## Intervalo de confiança com variância desconhecida
+
+$n = 8$, $\bar{X} = 3.0625$, $\hat{\sigma} = 0.5125$, $t_{0.95,7} = 1.89$, $t_{0.975,7} = 2.36$.
+
+$$\big<\bar{X}-t_{1-\alpha/2,n-1}\dfrac{\hat{\sigma}}{\sqrt{n}}; \bar{X} + t_{1-\alpha/2,n-1}\dfrac{\hat{\sigma}}{\sqrt{n}} \big>$$
+
+\pause
+
+>- IC 90\% $$\big<3.0625-1.89\dfrac{0.5125}{\sqrt{8}}; 3.0625 + 1.89\dfrac{0.5125}{\sqrt{8}} \big> \quad \equiv \big<2.720039; 3.404961 \big>$$
+>- IC 95\% $$\big<3.0625-2.36\dfrac{0.5125}{\sqrt{8}}; 3.0625 + 2.36\dfrac{0.5125}{\sqrt{8}} \big> \quad \equiv \big<2.634877; 3.490123 \big>$$
+
+
+
+# Intervalos de confiança para populações não normais
+
+
+## Intervalos de confiança para populações não normais
+
+>- Até agora temos visto como calcular intervalos de confiança quando nossa amostra aleatória $X_1, \ldots, X_n \sim N(\mu, \sigma)$
+>- Vimos o caso quendo $\sigma$ é conhecido $$\big<\bar{X}-Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}} \big>$$
+>- Também vimos o caso quendo $\sigma$ é desconhecido $$\big<\bar{X}-t_{1-\alpha/2,n-1}\dfrac{\hat{\sigma}}{\sqrt{n}}; \bar{X} + t_{1-\alpha/2,n-1}\dfrac{\hat{\sigma}}{\sqrt{n}} \big>$$
+>- \color{violet} Mas o que acontece se $X_1, \ldots, X_n$ não seguirem uma distribuição Normal? \color{black}
+
+## Intervalos de confiança para populações não normais
+
+>- Quando $X_1, \ldots, X_n$ não seguirem uma distribuição Normal podemos utilizar o TCL (desde que $n$ seja grande).
+>- Teremos que, independente da distribuição de $X_1, \ldots, X_n$, um intervalo aproximado, quando $n$ for grande, será \color{violet} $$\big<\bar{X}-Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}} \big>$$ \color{black}
+
+
+\pause
+
+**O que são esses valores $Z_{1-\alpha/2}$?**
+
+## Intervalos de confiança
+
+\begin{center}
+```{r echo= FALSE, out.width = '100%'}
+knitr::include_graphics("figures/IC_example.pdf")
+```
+\end{center}
+
+
+## Intervalos de confiança
+
+
+Uma pesquisa baseada em uma amostra de tamanho 600, descubriu que as famílias pretendem gastar em média 649 reais nas festas de final do ano. Se o desvio padrão da amostra foi de 175 reais:
+
+\pause
+
+>- Com 95\% de confiança, qual é a margem de erro?
+>- Qual é o intervalo de confiança 95\% para a média populacional $\mu$?
+>- Qual é o intervalo de confiança 99\% para a média populacional $\mu$?
+
+
+\pause
+
+**Solução**
+
+>- $n = 600$ (grande), utilizamoso TCL
+>- IC serão calculados utilizando: $$\big<\bar{X}-\underbrace{Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}}}_{\text{Margem de erro}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}} \big>$$
+
+## Intervalos de confiança
+
+$$\big<\bar{X}-\underbrace{Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}}}_{\text{Margem de erro}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}} \big>$$
+
+**Com 95\% de confiança, qual é a margem de erro?**
+
+\pause
+
+>- $\delta = 0.95$, então $\alpha = 0.05$. Assim, $Z_{1-\alpha/2} = Z_{0.975} = 1.96$
+>- Margem de erro: $Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}} = 1.96 \dfrac{175}{\sqrt{600}} = 14.00292 \approx 14$
+
+\pause
+
+**Qual é o intervalo de confiança 95\% para a média populacional $\mu$?**
+
+\pause
+
+$$\big<\bar{X}-\underbrace{Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}}}_{\text{Margem de erro}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}} \big> \approx \big<649- 14; 649+ 14 \big> \approx \big<635; 663\big>$$
+
+## Intervalos de confiança
+
+**Qual é o intervalo de confiança 99\% para a média populacional $\mu$?**
+
+\pause
+
+>- $\delta = 0.99$, então $\alpha = 0.01$. Assim, $Z_{1-\alpha/2} = Z_{0.995} = 2.57$
+>- $\bar{X} = 649$, $\hat{\sigma} = 175$, $n = 600$
+
+\pause
+
+$$\big<\bar{X}-Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}}; \bar{X} + Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}} \big> =$$
+$$\big<649- 2.57\dfrac{175}{\sqrt{600}}; 649 + 2.57\dfrac{175}{\sqrt{600}} \big> =$$
+
+$$\big<630.639; 667.361 \big>$$
+
+# Tamanho da amostra
+
+## Como determinar o tamanho da amostra
+
+>- A margem de erro $Z_{1-\alpha/2}\dfrac{\hat{\sigma}}{\sqrt{n}}$ depende to tamanho da amostra $n$
+>- Qual deve ser o tamaho de $n$ para produzir uma margem de erro desejada?
+>- Suponha que conhecemos o valor $\sigma$, se denotarmor por $E$ à margem de erro, temos: $$E = Z_{1-\alpha/2}\dfrac{\sigma}{\sqrt{n}}$$
+>- Resolvendo: \color{violet} $$\sqrt{n} = Z_{1-\alpha/2}\dfrac{\sigma}{E} \longrightarrow n =  Z_{1-\alpha/2}^2 \dfrac{\sigma^2}{E^2}$$ \color{black}
+
+
+\pause
+
+Esse tamanho de amostra fornece a margem de erro desejada, ao nível de confiança escolhido.
+
+## Como determinar o tamanho da amostra
+
+\color{violet} $$n =  Z_{1-\alpha/2}^2 \dfrac{\sigma^2}{E^2}$$ \color{black}
+
+
+\pause
+
+>- A formula para determinar o tamanho da amostra depende do parâmetro deconhecido $\sigma$, o que fazer na prática?
+
+\pause
+
+- Use a estimativa do desvio padrão calculada a partir de dados de estudos anteriores.
+- Use um estudo piloto^[Estudo piloto é um estudo preliminar com o objetivo de validar o instrumento que utilizaremos para coletar a informaçñao, bem como para termos uma estimativa de $\sigma$] para selecionar uma amostra preliminar e estimar o valor de $\sigma$.
+
+
+## Como determinar o tamanho da amostra
+
+
+Uma organização deseja realizar um estudo para estimar a média populacional do custo diário de aluguel de carros de tamaho médio em Campinas. O diretor do projeto especifica que a média populacional deve ser estimada com uma margem de erro de 3 reais e um grau de confiança de 95\%.  De um estudo piloto, sabe-se que o desvio padrão do custo diário de aluguel é de 15 reais. Determine o tamanho amostral que satisfaça as exigências do diretor.
+
+\pause
+
+>- $E = 3$, $\hat{\sigma} = 15$
+>- Nível de confiança 95\%, ou seja $\delta = 0.95$ e $\alpha = 0.05 = 1- \delta$
+>- $Z_{1-\alpha/2} = Z_{0.975} = 1.96$
+>- Utilizando a formula: $$n =  Z_{1-\alpha/2}^2 \dfrac{\sigma^2}{E^2} = (1.96)^2 \dfrac{15^2}{3^2} = 216.09 \approx 217$$
+\pause
+
+(arredondamos pra cima).
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 8**
+- Morettin, P.A;  e Bussab, W. de O. (2004). *Estatística Básica*. 5ed, Saraiva. **Cap 11**
+
+
+
