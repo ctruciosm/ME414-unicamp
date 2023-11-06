@@ -1,0 +1,557 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Teste de Hipóteses I'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica, 
+  | Universidade Estadual de Campinas
+date: "Aula 13"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introdução
+
+## Introdução
+
+Nos ultimos meses e devido à pandemia, o comercio eletrônico tem dado passos gigantes quanto à velocidade da entrega, preços diferenciados e opções de produtos. Com isto, o _Mercado Livre_ está se perguntando se ainda é a opção preferida pelos Brasileiros quanto a comercio eletrônico se refere. 
+
+\pause
+
+Especificamente, _Mercado Livre_ quer saber se é a opção preferida por mais de 50\% dos Brasileiros (que compram pela internet).
+
+\pause
+
+Denotando por $p$ a proporção de Brasileiros que prefere fazer compras pela internet atraves do _Mercado Livre_, definimos as hipóteses
+
+$$H_0: p \leq 0.5 \quad vs. \quad H_1: p>0.5,$$
+
+## Introdução
+
+
+>- Para responder essa pergunta, podemos perguntar a todos os Brasileiros qual a opção preferida quanto a comercio eletrônico se refere (mas é inviável)
+>- \color{violet} Se é enviável, como podemos responder essa pergunta se nunca conhecemos $p$? \color{black}
+>- \color{red} **É aqui que mais uma vez a inferência estatística entra em cena!**. Selecionaremos uma amostra de tamanho $n$ e com base nos resultados obtidos na nossa amostra chegaremos a uma conclusão que será generalizada para a população toda (esta é a essencia do processo de inferência estatística). \color{black}
+>- Para se fazer isto, precisamos de **Testes de Hipóteses**
+
+
+# Hipóteses
+
+## Hipóteses
+
+\begin{center}
+\color{red}
+Uma hipóteses é uma declaração sobre um parâmetro (ou vetor de parâmetros) da população
+\color{black}
+\end{center}
+
+\pause
+
+\begin{center}
+\color{violet}
+O Teste de Hipóteses é usado para determinar (utilizando os dados da nossa amostra) se uma afirmação sobre o valor do parâmetro populacional deve ou não ser rejeitada.
+\color{black}
+\end{center}
+
+\pause
+
+Quando trabalhamos com testes de hipóteses temos duas hipóteses complementares/contraditorias. A primeira, chamada de hipótese nula e denotada por $H_0$ e a outra chamada de hipótese alternativa e denotada por $H_1$.
+
+
+\pause
+
+\color{blue}
+Uma analogia interessante é pensar em testes de hipóteses como um processo criminal. A pessoa é inocete ($H_0$ é V) até que se demonstre o contrário (rejeitar $H_0$).
+\color{black}
+
+
+## Hipóteses
+
+**Como identificar quem é $H_0$ e quem $H_1$?**
+
+\pause
+
+>- \color{red} Hipótese Alternativa ($H_1$): é o oposto do que é formulado na hipóteses nula. $H_1$, também conhecida como hipótese do investigador, é a alegação que o investigador gostaria de confirmar. \color{black}
+>- \color{blue} Hipótese Nula ($H_0$): é a hipóteses experimental, aquela para quem precisamos forte evidência para rejeitar (de fato, é a hipótese que queremos rejeitar). O termo `nulo` pode-se entender como "sem valor, efeito ou consequência" e sugere que $H_0$ deve ser identificada como a hipótese de não haver mudança, diferença ou melhoria. \color{red}
+
+
+
+
+## Tipos de Testes de Hipóteses
+
+\color{blue}
+Seja $\theta$ (com espaço paramêtrico $\Theta$) o parâmetro pupulacional a ser testado, então $H_0: \theta \in \Theta_0 \quad vs \quad H_1: \theta \in \Theta_0^c$, em que $\Theta_0 \cup \Theta_0^c = \Theta$
+\color{black}
+
+
+\pause
+
+Seja $\theta$ o parâmetro populacional a ser testado. Geralmente estamos interessados em algumas das seguintes hipóteses:
+
+\pause
+
+>- Teste **Bilateral**: $$H_0: \theta = \theta_0 \quad vs \quad H_1: \theta \neq \theta_0$$
+>- Teste **Unilateral**: $$H_0: \theta \leq \theta_0 \quad vs \quad H_1: \theta > \theta_0,$$ $$H_0: \theta \geq \theta_0 \quad vs \quad H_1: \theta < \theta_0$$
+
+
+
+
+
+## Tipos de Testes de Hipóteses
+
+Um determinado modelo de carro percorre em média 10.21 Km/L. O _time_ de produto desenvolveu um novo sistema de injeção de combustivel, projetado para aumentar a taxa média de quilômetros rodados por litro. Para avaliar o novo sistema, diversas unidades serão produzidas, instaladas nos automóveis e submetidas a testes de direção. **Como definir os testes de hipóteses?**
+
+\pause
+
+>- O _time_ de produto esta à procura de evidencia que comprove que o novo sistema aumenta a taxa média de quilômetros rodados por litro.
+>- Seja $\mu$ a média populacional (Km/L) percorridos pelo carro. Então, queremos provar que $\mu > 10.21$ 
+
+\pause
+\color{violet}
+Lembre-se: Hipótese Alternativa ($H_1$) é o oposto do que é formulado na hipóteses nula. $H_1$ refere-se à alegação que o investigador gostaria de confirmar.
+\color{black}
+
+\pause
+>- \color{red} $H_0: \mu \leq 10.21 \quad vs. \quad H_1:\mu > 10.21$ \color{black}
+
+
+## Tipos de Testes de Hipóteses
+
+Um fabricante de refrigerante declara que as garrafas de 2 litros contém, no mínimo, uma média de 1.99 litros. Uma auditoria chega à empresa e quer vereficar se as declarações da empresa são verdadeiras. **Como definir os testes de hipóteses?**
+
+\pause
+\color{blue} Hipótese Nula ($H_0$): é a hipóteses experimental, aquela para quem precisamos forte evidência para rejeitar (de fato, é a hipótese que queremos rejeitar). O termo `nulo` pode-se entender como "sem valor, efeito ou consequência" e sugere que $H_0$ deve ser identificada como a hipótese de não haver mudança, diferença ou melhoria. \color{red}
+
+\pause
+
+>- A principio, a afirmação do fabricante é verdade e veremos se temos evidência para rejeitar a afirmação dele (provar que ele esta mentindo).
+>- Ou seja, queremos saber se o fabricante esta mentindo.
+>- \color{red} $H_0: \mu \geq 1.99 \quad vs. \quad H_1:\mu < 1.99$ \color{black}
+
+## Tipos de Testes de Hipóteses
+
+
+Um inspetor de controle de qualidade precisa decidir de aceitará a remessa de peças recém recebidas ou se a devolverá ao fornecedor por não cumprir com as especificações. As especificações da empresa é que as peças tenham 2 polegadas de diámetro (se o tamanho da peça for maior ou menor, causará problemas na montagem). **Como definir os testes de hipóteses?**
+
+
+>- A principio, o lote está correto (a menos que tenhamos evidência para dizer que o lote não está correto).
+>- Vamos a rejeitar a remessa se tivermos forte evidencia de que o tamanho das peças é diferentes de 2.
+>- \color{red} $H_0: \mu = 2 \quad vs. \quad H_1:\mu \neq 2$ \color{black}
+
+\pause
+\color{blue}
+Hipótese Nula ($H_0$): é a hipóteses experimental, aquela para quem precisamos forte evidência para rejeitar... \color{black}
+
+
+
+## Tipos de Testes de Hipóteses
+
+**Ainda ficou dificil?**
+
+\pause
+
+\color{red}
+\textbf{Dica:} $\leq$, $\geq$ ou $=$ sempre aparecem na hipótese nula
+\color{black}
+
+\pause
+
+Um determinado modelo de carro percorre em média 10.21 Km/L. O _time_ de produto desenvolveu um novo sistema de injeção de combustivel, projetado para **aumentar a taxa média de quilômetros rodados** por litro.  
+
+\pause
+
+\color{red} $$H_0: \mu \leq 10.21 \quad vs. \quad H_1:\mu > 10.21$$ \color{black}
+
+
+
+## Tipos de Testes de Hipóteses
+
+
+
+Um fabricante de refrigerante declara que as garrafas de 2 litros contém, no mínimo, uma média de 1.99 litros. Uma auditoria chega à empresa e quer vereficar se as declarações da empresa são verdadeiras. **Como definir os testes de hipóteses?**
+
+\pause
+
+\color{red} $$H_0: \mu \geq 1.99 \quad vs. \quad H_1:\mu < 1.99$$ \color{black}
+
+\pause
+
+Um inspetor de controle de qualidade precisa decidir de aceitará a remessa de peças recém recebidas ou se a devolverá ao fornecedor por não cumprir com as especificações. As especificações da empresa é que as peças tenham em média 2 polegas de diámetro (se o tamanho da peça for maior ou menor, causará problemas na montagem). **Como definir os testes de hipóteses?**
+
+\pause
+
+\color{red} $$H_0: \mu = 2 \quad vs. \quad H_1:\mu \neq 2$$ \color{black}
+
+
+# Erros de Tipo I e Tipo II
+
+## Erros de Tipo I e Tipo II
+
+Quando fazemos testes de hipóteses, como estamos trabalhando com base nos dados da amostea, existem algumas situações que podem acontecer:
+
+|                     | $H_0$ é verdadeiro | $H_0$ é Falso          |
+|:--------------------|:------------------:|:----------------------:|
+| Não rejeitar $H_0$  |                    | 
+| Rejeitar $H_0$      |                    | 
+
+## Erros de Tipo I e Tipo II
+
+Quando fazemos testes de hipóteses, como estamos trabalhando com base nos dados da amostea, existem algumas situações que podem acontecer:
+
+
+|                     | $H_0$ é verdadeiro | $H_0$ é Falso     |
+|:--------------------|:------------------:|:----------------------:|
+| Não rejeitar $H_0$  |  Correto           |  Erro
+| Rejeitar $H_0$      |  Erro              |  Correto 
+
+## Erros de Tipo I e Tipo II
+
+Infelizmente, as conclusões corretas nem sempre são possíveis (lembre-se, estamos utilizando uma amostra) e devemos admitir a possibilidade de erros.
+
+\pause
+
+|                     | $H_0$ é verdadeiro | $H_0$ é Falso     |
+|:--------------------|:------------------:|:----------------------:|
+| Não rejeitar $H_0$  | Correto            | Erro do Tipo II
+| Rejeitar $H_0$      | Erro do Tipo I     | Correto
+
+\pause
+
+- **Erro de Tipo I:** Rejeitar $H_0$ quando $H_0$ é verdadeiro
+- **Erro de Tipo II:** Não rejeitar $H_0$ quando $H_0$ é Falso
+
+
+## Erros de Tipo I e Tipo II
+
+**Exemplo:** Um determinado modelo de carro percorre em média 10.21 Km/L. O _time_ de produto desenvolveu um novo sistema de injeção de combustivel, projetado para **aumentar a taxa média de quilômetros rodados** por litro.  
+ $$H_0: \mu \leq 10.21 \quad vs. \quad H_1:\mu > 10.21$$
+ 
+ **Identifique o Erro Tipo I e Erro Tipo II**
+ 
+\pause
+
+- **Erro de Tipo I:** Rejeitar $H_0$ quando $H_0$ é verdadeiro
+- **Erro de Tipo II:** Não rejeitar $H_0$ quando $H_0$ é Falso
+
+\pause
+ 
+**Erro de Tipo I** \pause \color{violet} concluir que o novo sistema aumenta a taxa média de quilômetros rodados quando na verdade não aumenta. \color{black}
+
+\pause
+
+**Erro de Tipo II** \color{violet} concluir que o novo sistema não aumenta a taxa média de quilômetros rodados quando na verdade aumenta sim. \color{black}
+
+## Erros de Tipo I e Tipo II
+
+**Exemplo:** Um inspetor de controle de qualidade precisa decidir de aceitará a remessa de peças recém recebidas ou se a devolverá ao fornecedor por não cumprir com as especificações. As especificações da empresa é que as peças tenham em média 2 polegas de diámetro. $$H_0: \mu = 2 \quad vs. \quad H_1:\mu \neq 2$$ 
+
+\pause
+ 
+- **Erro de Tipo I:** Rejeitar $H_0$ quando $H_0$ é verdadeiro
+- **Erro de Tipo II:** Não rejeitar $H_0$ quando $H_0$ é Falso
+
+
+\pause
+
+**Erro de Tipo I**\color{violet} devolver a remessa por não cumprir com as especificações quando na verdade cumpria com as especificações sim. \color{black}
+
+\pause
+
+**Erro de Tipo II** \color{violet} ficar com a remessa assumindo que cumpre com as especificações mas na verdade não cumpre. \color{black}
+
+
+## Erros de Tipo I e Tipo II
+
+>- Embora as decisões corretas e erradas sejam desconhecidas (lembre-se, nunca sabemos se $H_0$ é verdadeira ou não, se soubessemos, não fariamos testes de hipótes!), tentamos estabelecer um controle sobre as decisões erradas.
+>- Este controle é feito atraves das probabilidade de cometer os erros (Tipo I e Tipo II)
+>- Infelizmente, minimizar ambos os erros de forma simultanea não é possível.
+>- A prática comum é controlar a probabilidade de Erro Tipo I em um nível específico $\alpha$, e dentro desta classe de testes minimizar a probabilidade do Erro Tipo II tanto quanto possível.
+>- $\alpha$ recebe o nome de nível de significância e é definido como $\alpha = Sup_{\theta} \quad P(\text{Erro Tipo I})$.
+
+
+
+# Testes de Hipóteses
+
+## Teste da média populacional: $\sigma$ conhecido
+
+Sejam $x_1, \ldots, x_n \sim N(\mu, \sigma)$ com $\sigma$ conhecido e sejam as hipóteses:
+
+$$H_0: \mu = \mu_0 \quad vs \quad H_1: \mu \neq \mu_0$$
+\pause
+$$H_0: \mu \leq \mu_0 \quad vs \quad H_1: \mu > \mu_0$$
+\pause
+$$H_0: \mu \geq \mu_0 \quad vs \quad H_1: \mu < \mu_0$$
+
+
+
+
+## Teste da média populacional: $\sigma$ conhecido
+
+Para testar hipóteses  é preciso uma **estatística de teste**, nossa estatística de teste é
+
+$$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}}$$
+\pause
+
+Como $x_1, \ldots, x_n \sim N(\mu, \sigma)$, temos que $\dfrac{\bar{x} - \mu}{\sigma/ \sqrt{n}}\sim N(0,1)$ e sob $H_0: \mu = \mu_0$, temos que $$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}} \sim N(0,1)$$
+
+
+## Teste da média populacional: $\sigma$ conhecido
+
+Pensemos no teste bilateral: $$H_0: \mu = \mu_0 \quad vs. \quad H_1: \mu \neq \mu_0$$
+
+
+>- Se $H_0$ for verdade $z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}}$ será pequeno.
+>- Se  $H_0$ não for verdade, $z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}}$ será grande
+>- Quão grande deve ser para rejeitar a afirmação em $H_0$? Muito grande (pois precisamos de uma evidência forte para rejeitar $H_0$)
+
+
+## Teste da média populacional: $\sigma$ conhecido
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 10, fig.height = 5}
+f = function(x) dnorm(x)
+plot(f,-5,5)
+polygon(x=c(-5,seq(-5,-1.96,l=50),-1.96), y=c(0,f(seq(-5,-1.96,l=50)), 0), col="gray")
+polygon(x=c(1.96,seq(1.96,5,l=50),5), y=c(0,f(seq(1.96,5,l=50)), 0), col="gray")
+```
+
+
+>- Esse **grande** é a região cinza no gráfico (região de rejeição)
+>- Como calcular os limites dessa região de rejeição?
+
+## Teste da média populacional: $\sigma$ conhecido
+
+
+>- Estamos controlando $\alpha$, ou seja $P(\text{Erro Tipo I}) = \alpha$
+>- Como já temos a distribuição sob $H_0$, queremos o valor $k$, tal que
+
+\pause
+
+\begin{align}
+\alpha & = P(|Z| > k) = 1- \underbrace{P(|Z| \leq k)}_{P(-k \leq Z \leq k)} \\
+       & = 1- \big[P(Z \leq k) - \underbrace{P(Z \leq -k)}_{1-P(Z \leq k)} \big] \\
+       & = 1- \big[2 P(Z \leq k) - 1 \big] \\
+       & = 2-2P(Z \leq k)
+\end{align}
+
+\pause
+
+Então $\dfrac{\alpha}{2} = 1 - P(Z \leq k) \longrightarrow P(Z \leq k) = 1- \dfrac{\alpha}{2}$
+
+## Teste da média populacional: $\sigma$ conhecido
+
+$$P(Z \leq k) = 1- \dfrac{\alpha}{2}$$
+
+Como $P(Z \leq k) = F(k)$ (definição da função distribuição), $$F(k) = 1- \dfrac{\alpha}{2},$$
+então $\underbrace{F^{-1}(F(k))}_{k} = \underbrace{F^{-1}(1- \alpha/2)}_{z_{1-\alpha/2}}$.
+
+
+No R:
+
+```{r, eval = FALSE}
+k = qnorm(1-alpha/2)
+```
+
+## Teste da média populacional: $\sigma$ conhecido
+
+$$H_0: \mu = \mu_0 \quad vs. \quad H_1: \mu \neq \mu_0$$
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 8, fig.height = 4}
+f = function(x) dnorm(x)
+plot(f,-5,5)
+polygon(x=c(-5,seq(-5,-1.96,l=50),-1.96), y=c(0,f(seq(-5,-1.96,l=50)), 0), col="gray")
+polygon(x=c(1.96,seq(1.96,5,l=50),5), y=c(0,f(seq(1.96,5,l=50)), 0), col="gray")
+```
+
+\pause
+
+
+
+Rejeitamos $H_0$ se $|z| > k$ (equivalentemente se $z > k$ ou $z < -k$), ou seja, se $z$ cair na região cinza (região de rejeição).
+
+## Teste da média populacional: $\sigma$ conhecido
+
+De forma semelhante
+
+>- Se $H_0: \mu \leq \mu_0 \quad vs \quad H_1: \mu > \mu_0,$ rejeitamos $H_0$ se $$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}} > k_1 = z_{1 - \alpha}$$
+
+\pause
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 10, fig.height = 5}
+f = function(x) dnorm(x)
+plot(f,-5,5)
+polygon(x=c(1.64,seq(1.64,5,l=50),5), y=c(0,f(seq(1.64,5,l=50)), 0), col="gray")
+```
+
+
+
+
+
+
+## Teste da média populacional: $\sigma$ conhecido
+
+De forma semelhante
+
+>- Se $H_0: \mu \geq \mu_0 \quad vs \quad H_1: \mu < \mu_0,$ rejeitamos $H_0$ se $$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}} < k_2 = z_{\alpha}$$
+
+
+\pause
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 8, fig.height = 4}
+f = function(x) dnorm(x)
+plot(f,-5,5)
+polygon(x=c(-5,seq(-5,-1.64,l=50),-1.64), y=c(0,f(seq(-5,-1.64,l=50)), 0), col="gray")
+```
+ 
+## Teste da média populacional: $\sigma$ conhecido - Exemplo
+
+Considere o teste $H_0: \mu \geq 20 \quad vs \quad H_1: \mu < 20$. Uma amostra de tamanho 50 produziu $\bar{x} = 19.4$ e o desvio padrão populacional é $\sigma = 2$. Rejeitamos ou não $H_0$?
+
+\pause
+
+>- Por padrão assumimos $\alpha = 0.05$ (ao menos que se especifique o contrário)
+>- Definos a estatística de teste $$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}} = \dfrac{19.4 -20}{2/\sqrt{50}} = -2.12132$$
+>- Como $H_0: \mu \geq 20 \quad vs \quad H_1: \mu < 20$, rejeitamos $H_0$ se $z < z_{\alpha}$
+\pause
+```{r}
+alpha = 0.05
+qnorm(alpha)
+```
+
+\pause
+
+-2.12132 < `r round(qnorm(alpha),6)`**?** Sim, então rejeitamos $H_0$
+
+
+## Teste da média populacional: $\sigma$ conhecido - Exemplo
+
+Considere o teste $H_0: \mu \leq 25 \quad vs \quad H_1: \mu > 25$. Uma amostra de tamaho 40 produzio $\bar{26.4}$ e o desvio padrão populacional é $\sigma = 6$. Rejeitamos ou não $H_0$?
+
+\pause
+
+>- Por padrão assumimos $\alpha = 0.05$ 
+>- Definos a estatística de teste $$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}} = \dfrac{26.4 -25}{6/\sqrt{40}} = 1.47573$$
+>- Como $H_0: \mu \leq 25 \quad vs \quad H_1: \mu > 25$, rejeitamos $H_0$ se $z > z_{1-\alpha}$
+\pause
+```{r}
+alpha = 0.05
+qnorm(1-alpha)
+```
+
+\pause
+
+1.47573 > `r round(qnorm(1-0.05),6)` **?** Não, então não rejeitamos $H_0$
+
+
+## Teste da média populacional: $\sigma$ conhecido - Exemplo
+
+Considere o teste $H_0: \mu = 15 \quad vs \quad H_1: \mu \neq 15$. Uma amostra de tamaho 50 produzio $\bar{14.15}$ e o desvio padrão populacional é $\sigma = 3$. Rejeitamos ou não $H_0$?
+
+\pause
+
+>- Por padrão assumimos $\alpha = 0.05$ 
+>- Definos a estatística de teste $$z = \dfrac{\bar{x} - \mu_0}{\sigma/ \sqrt{n}} = \dfrac{14.15 -15}{3/\sqrt{50}} = -2.003469$$
+>- Como $H_0: \mu = 15 \quad vs \quad H_1: \mu \neq 15$, rejeitamos $H_0$ se $|z| > z_{1-\alpha/2}$
+\pause
+```{r}
+alpha = 0.05
+qnorm(1-alpha/2)
+```
+
+\pause
+
+|-2.003469| = 2.003469 > `r round(qnorm(1-alpha/2),6)` **?** Sim, então rejeitamos $H_0$
+
+## Teste da média populacional: $\sigma$ desconhecido
+
+>- Na maioria das vezes $\sigma$ não é conhecido e utilizamos os dados para estimá-lo
+>- Isto implica que mesmo que $X_1, \ldots, X_n \sim N(\mu, \sigma)$, a nossa estatística de teste $$t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/\sqrt{n}},$$ não tem mais uma distribuição $N(0,1)$
+>- De fato, pode-se provar que  $$t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/\sqrt{n}} \sim t_{n-1}$$
+
+## Teste da média populacional: $\sigma$ desconhecido
+
+Então:
+
+\pause
+
+>- Se $H_0: \mu = \mu_0 \quad vs \quad H_1: \mu \neq \mu_0,$  rejeitamos $H_0$ se $$\Big| t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/ \sqrt{n}}\Big | > t_{1 - \alpha/2,n-1}$$
+>- Se $H_0: \mu \leq \mu_0 \quad vs \quad H_1: \mu > \mu_0,$ rejeitamos $H_0$ se $$t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/ \sqrt{n}} > t_{1 - \alpha,n-1}$$
+>- Se $H_0: \mu \geq \mu_0 \quad vs \quad H_1: \mu < \mu_0,$ rejeitamos $H_0$ se $$t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/ \sqrt{n}} < t_{\alpha,n-1}$$
+
+## Teste da média populacional: $\sigma$ desconhecido
+
+Considere $H_0: \mu \leq 12 \quad vs. \quad H_1: \mu > 12$. Uma amostra de $n = 25$ produziu $\bar{x} = 14$ e desvio padrão **amostral** $\hat{\sigma} = 4.32$. Rejeitamos ou não $H_0$?
+
+\pause
+
+>- Por padrão assumimos $\alpha = 0.05$ 
+>- $\sigma$ é conhecido ou desconhecido? \pause
+>- Como vamos utilizar $\hat{\sigma}$, definos a estatística de teste $$t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/ \sqrt{n}} = \dfrac{14 -12}{4.32/\sqrt{25}} = 2.314815$$
+>- Como $H_0: \mu \leq 12 \quad vs. \quad H_1: \mu > 12$, rejeitamos $H_0$ se $t > t_{1-\alpha,n-1}$
+\pause
+```{r}
+alpha = 0.05; n = 25
+qt(1-alpha, n-1)
+```
+
+\pause
+
+2.314815  > `r round(qt(1-alpha, n-1),6)` **?** Sim, então rejeitamos $H_0$
+
+## Teste da média populacional: $\sigma$ desconhecido
+
+Considere $H_0: \mu = 18 \quad vs. \quad H_1: \mu \neq 18$. Uma amostra de $n = 23$ produziu $\bar{x} = 17$ e desvio padrão **amostral** $\hat{\sigma} = 4.5$. Rejeitamos ou não $H_0$?
+
+\pause
+
+>- Por padrão assumimos $\alpha = 0.05$ 
+>- $\sigma$ é conhecido ou desconhecido? \pause
+>- Como vamos utilizar $\hat{\sigma}$, definos a estatística de teste $$t = \dfrac{\bar{x} - \mu_0}{\hat{\sigma}/ \sqrt{n}} = \dfrac{17 -18}{4.5/\sqrt{23}} = -1.06574$$
+>- Como $H_0: \mu = 18 \quad vs. \quad H_1: \mu \neq 18$, rejeitamos $H_0$ se $|t| > t_{1-\alpha/2,n-1}$
+\pause
+```{r}
+alpha = 0.05; n = 23
+qt(1-alpha/2, n-1)
+```
+
+\pause
+
+|-1.06574| = 1.06574  > `r round(qt(1-alpha/2, n-1),6)` **?** Não, então não rejeitamos $H_0$
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 9**
+- Morettin, P.A;  e Bussab, W. de O. (2004). *Estatística Básica*. 5ed, Saraiva. **Cap 12**
+
+
+
