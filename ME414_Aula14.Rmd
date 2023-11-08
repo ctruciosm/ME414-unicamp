@@ -1,0 +1,453 @@
+---
+title: 'ME414 - Estatística para Experimentalistas'
+subtitle: 'Teste de Hipóteses II'
+author: | 
+  | Prof. Carlos Trucíos
+  | ctrucios@unicamp.br
+  | ctruciosm.github.io
+institute: |
+  | Instituto de Matemática, Estatística e Computação Científica, 
+  | Universidade Estadual de Campinas
+date: "Aula 14"
+header-includes:
+- \titlegraphic{ \vspace*{-1.2cm} \hspace*{8.75cm} \includegraphics[scale=.05]{unicamp.png}}
+- |
+  ```{=latex}
+  \usepackage[portuges]{babel}
+  \setbeamertemplate{frame footer}{\hspace{0.2cm} Carlos Trucíos (IMECC)            \hspace{1.4cm} | \hspace{1.3cm}   ME414 \hspace{1.3cm} | \hspace{3.0cm}
+  }
+  \setbeamerfont{page number in head/foot}{size=\small}
+  \setbeamercolor{footline}{fg=black!2, bg=gray}
+  \makeatletter
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        %\usebeamerfont{page number in head/foot}%
+        \usebeamertemplate*{frame footer}
+        \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+  \makeatother
+  ```
+output:
+  beamer_presentation:
+    toc: true
+    # theme: "Pittsburgh"
+    #colortheme: "seahorse"
+classoption: "aspectratio=149"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Teste de Hipóteses para a proporção
+
+## Teste de Hipóteses para a proporção
+
+>- Até agora temos visto testes de hipóteses para a média populacional $\mu$.
+>- Outro parâmetro populacional de interesse é a proporção $p$
+>- Seja $p_0$ o valor hipotético da proporção populacional, estamos interessados em testes da forma: $$H_0: p = p_0 \quad vs \quad H_1: p \neq p_0,$$ $$H_0: p \leq p_0 \quad vs \quad H_1: p > p_0,$$  $$H_0: p \geq p_0 \quad vs \quad H_1: p < p_0.$$
+>- Assim como no caso do teste para a média, para o caso da proporção também precisamos de uma **estatística de teste**.
+
+## Teste de Hipóteses para a proporção
+
+Sabemos que se $X_1, \ldots, X_n \sim N(\mu, \sigma)$, no teste para $\mu$ com $\sigma$ conhecido a estatística de teste é da forma $$z = \dfrac{\bar{x} - \mu_0}{\sigma/\sqrt{n}} \sim N(0,1)$$
+
+\pause
+
+Sejam $X_1, \ldots, X_n \sim Bernoulli(p)$, embora os dados não tenham uma distribuição normal, pelo TCL temos que $$z = \dfrac{\bar{x} - \mu_0}{\sigma/\sqrt{n}} \sim_{approx} N(0,1)$$
+
+## Teste de Hipóteses para a proporção
+
+No caso de $X_1, \ldots, X_n \sim Bernoulli(p)$, temos que $\bar{x} = \bar{p}$ e $\mu_0 = p_0$. 
+
+\pause
+
+Sob $H_0: p = p_0$, temos que $\sigma = p_0(1-p_0)$. Então, a estatística de teste é da forma $$z = \dfrac{\bar{p} - p_0}{\sqrt{\dfrac{p_0 (1-p_0)}{n}}} \sim_{approx} N(0,1)$$
+
+\pause
+
+Com isso, podemos tester as hipóteses: 
+
+- $H_0: p = p_0 \quad vs \quad H_1: p \neq p_0,$ 
+- $H_0: p \leq p_0 \quad vs \quad H_1: p > p_0,$ 
+- $H_0: p \geq p_0 \quad vs \quad H_1: p < p_0.$ 
+
+como usual.
+
+## Teste de Hipóteses para a proporção
+
+Considere o seguinte teste $H_0: p = 0.2 \quad vs. \quad H_1: p \neq 0.2$. Uma amostra de tamanho 400 produziu $\bar{p} = 0.175$. **Rejeitamos $H_0$ ou não?**
+
+
+\pause
+
+>- Por padrão assumimos $\alpha = 0.05$ 
+>- Definos a estatística de teste $$z = \dfrac{\bar{p} - p_0}{\sqrt{\dfrac{p_0 (1-p_0)}{n}}} = \dfrac{0.175 -0.2}{\sqrt{\dfrac{0.2 (1-0.2)}{400}}} = -1.25$$
+>- Como $H_0: p = 0.2 \quad vs. \quad H_1: p \neq 0.2$, rejeitamos $H_0$ se $|z| > z_{1-\alpha/2}$
+\pause
+```{r}
+alpha = 0.05
+qnorm(1-alpha/2)
+```
+
+\pause
+
+|-1.25| = 1.25 > `r round(qnorm(1-alpha/2),6)` **?** Não, então não rejeitamos $H_0$
+
+
+## Teste de Hipóteses para a proporção
+
+Considere o seguinte teste $H_0: p \geq 0.75 \quad vs. \quad H_1: p < 0.75$. Uma amostra de tamanho 300 produziu $\bar{p} = 0.72$. Considerando um nível de significância de 1\%, **rejeitamos $H_0$ ou não?**
+
+\pause
+
+>- $\alpha = 0.01$
+>- Definos a estatística de teste $$z = \dfrac{\bar{p} - p_0}{\sqrt{\dfrac{p_0 (1-p_0)}{n}}} = \dfrac{0.72 -0.75}{\sqrt{\dfrac{0.75 (1-0.75)}{300}}} = -1.2$$
+>- Como $H_0: p \geq 0.75 \quad vs. \quad H_1: p < 0.75$, rejeitamos $H_0$ se $z < z_{\alpha}$
+\pause
+```{r}
+alpha = 0.01
+qnorm(alpha)
+```
+
+\pause
+
+-1.2 < `r round(qnorm(alpha),6)` **?** Não, então não rejeitamos $H_0$
+
+
+# Diferença de médias para polulações não relacionadas
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+>- Seja $\mu_x$ a média da população 1 e $\mu_y$ a média da população 2
+>- Estamos interessados em fazer inferência para a diferença $\mu_x - \mu_y$.
+>- As duas amostras são tomadas separada e independentemente de duas populações diferentes.
+>- Calcularemos Intervalos de Confiança e fazeremos testes de hipóteses para $\mu_x - \mu_y$.
+
+\pause 
+
+**Como faremos isto?**
+
+>- Selecionamos uma amostra de tamanho $n_1$ da população 1 e calculamos $\bar{x}$
+>- Selecionamos uma amostra de tamanho $n_2$ da população 2 e calculamos $\bar{y}$
+>- Com isso, temos $\bar{x}- \bar{y}$ um estimador por ponto de $\mu_x - \mu_y$
+
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+>- Sabemos que $\bar{x} \sim N(\mu_x, \sigma_{\bar{x}})$ e $\bar{y} \sim N(\mu_y, \sigma_{\bar{y}})$, então $$\bar{x}-\bar{y} \sim N \Big (\mu_x - \mu_y, \sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2} \Big)$$
+>- Padronizando, $$z = \dfrac{(\bar{x}-\bar{y}) -  (\mu_x - \mu_y)}{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}} \sim N(0, 1)$$
+ \pause
+ 
+ $z$ nos ajudará tanto a construir intervalos de confiança quanto testes de hipóteses.
+ 
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+ 
+Se quisermos um intervalo de confiança $\delta = 1-\alpha$ para $\mu_x - \mu_y$ faremos $P(|Z| < k) = 1-\alpha$ 
+
+\pause
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 6, fig.height = 3}
+f = function(x) dnorm(x)
+plot(f,-5,5)
+polygon(x=c(-5,seq(-5,-1.96,l=50),-1.96), y=c(0,f(seq(-5,-1.96,l=50)), 0), col="gray")
+polygon(x=c(1.96,seq(1.96,5,l=50),5), y=c(0,f(seq(1.96,5,l=50)), 0), col="gray")
+```
+
+\pause
+
+$$- z_{1-\alpha/2} \leq \dfrac{(\bar{x}-\bar{y}) -  (\mu_x - \mu_y)}{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}} \leq z_{1-\alpha/2}$$
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+$$- z_{1-\alpha/2} \leq \dfrac{(\bar{x}-\bar{y}) -  (\mu_x - \mu_y)}{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}} \leq z_{1-\alpha/2}$$
+
+\pause
+
+$$(\bar{x}-\bar{y}) - z_{1-\alpha/2} \sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2} \leq \mu_x - \mu_y \leq (\bar{x}-\bar{y}) + z_{1-\alpha/2} \sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}$$
+\pause
+
+Então, o intervalo de confiança $\delta = 1-\alpha$ para $\mu_x - \mu_y$ é da forma $$\big< (\bar{x}-\bar{y}) \pm \underbrace{z_{1-\alpha/2} \sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}}_{\text{Margem de erro}} \big >$$
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+
+**E se quisermos um teste para a diferença de médias?** \pause Sejam as hipóteses:
+
+
+>- $H_0: \mu_x - \mu_y = D_0 \quad vs. \quad H_1: \mu_x - \mu_y \neq D_0,$ rejeitamos $H_0$ se $|z| > k = z_{1-\alpha/2}$ (equivalentemente se $z > k$ ou $z < -k$);
+>- Se $H_0: \mu_x - \mu_y \leq D_0 \quad vs \quad H_1: \mu_x - \mu_y > D_0,$ rejeitamos $H_0$ se $z > k_1 = z_{1 - \alpha};$
+>- Se $H_0: \mu_x - \mu_y \geq D_0 \quad vs \quad H_1: \mu_x - \mu_y < D_0,$ rejeitamos $H_0$ se $z < k_2 = z_{\alpha}.$
+
+\pause 
+
+Em que $$ z =  \dfrac{(\bar{x}-\bar{y}) -  D_0}{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}}$$
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+Considere os seguintes resultados:
+
+- **Amostra 1**: $n_1 = 50$, $\bar{x} = 13.6$, $\sigma_1 = 2.2$
+- **Amostra 2**: $n_2 = 35$, $\bar{y} = 11.6$, $\sigma_1 = 3.0$
+
+a. Qual é a estimação por ponto de $\mu_x - \mu_y$?
+b. Calcule um IC 90\% para $\mu_x - \mu_y$
+c. Teste $H_0: \mu_x = \mu_y \quad vs \quad H_1: \mu_x \neq \mu_y$ (considera $\alpha = 0.10$)
+
+
+\pause
+
+**Solução:**
+
+\pause
+
+a. A estimação por ponto de $\mu_x - \mu_y$ é $\bar{x}-\bar{y} = 13.6- 11.6 = 2$
+
+\pause
+
+b. IC 90\%, istp implica que $\alpha = 0.10$, $$\big< \underbrace{(\bar{x}-\bar{y})}_{2} \pm z_{1-\alpha/2} \underbrace{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}}_{\sqrt{2.2^2/50 + 3^2/35} = 0.594931} \big >$$
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+b. Calcularemos $z_{1-\alpha/2}$, e como $\alpha = 0.10$
+
+```{r}
+alpha = 0.10
+qnorm(1-alpha/2)
+```
+
+\pause
+
+$$\big< \underbrace{(\bar{x}-\bar{y})}_{2} \pm \underbrace{z_{1-\alpha/2}}_{1.64} \underbrace{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}}_{0.594931} \big > = \big< 1.024313; 2.975687 \big > $$
+\pause
+
+c. Queremos testar $H_0: \mu_x = \mu_y \quad vs \quad H_1: \mu_x \neq \mu_y,$ então $$z =  \dfrac{(\bar{x}-\bar{y}) -  D_0}{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}} = \dfrac{2 -  0}{0.594931} = 3.361734$$
+
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+>- $z = 3.361734$
+>- Como $H_0: \mu_x = \mu_y \quad vs \quad H_1: \mu_x \neq \mu_y,$ rejeitamos $H_0$ se $|z| > z_{1-\alpha/2}$
+>- $z_{1-\alpha/2} =$ `r qnorm(1-alpha/2)` (já calculamos isto antes para o IC)
+>- 3.361734 > `r qnorm(1-alpha/2)` **?** Sim, então rejeitamos $H_0$ e concluimos que $\mu_x \neq \mu_y$
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+Considere as seguintes hipóteses $H_0: \mu_x - \mu_y \leq 0 \quad vs. \quad H_1: \mu_x - \mu_y > 0$ e considere os seguintes resultados:
+
+- **Amostra 1**: $n_1 = 40$, $\bar{x} = 25.2$, $\sigma_1 = 5.2$
+- **Amostra 2**: $n_2 = 50$, $\bar{y} = 22.8$, $\sigma_1 = 6.0$
+
+Rejeitamos $H_0$? (considere $\alpha = 0.01$)
+
+\pause
+
+**Solução**
+
+>- Estatística de teste: $$z =  \dfrac{(\bar{x}-\bar{y}) -  D_0}{\sqrt{\sigma_x^2/n_1 + \sigma_y^2/n_2}} = \dfrac{(25.2-22.8) -  0}{\sqrt{5.2^2/40 + 6^2/50}} = \dfrac{2.4}{1.181524} = 2.031275$$
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ conhecidos.
+
+>- $z = 2.031275$
+>- Como $H_0: \mu_x - \mu_y \leq 0 \quad vs. \quad H_1: \mu_x - \mu_y > 0$ rejeitamos $H_0$ se $z > z_{1-\alpha}$
+>- $\alpha = 0.01$ \pause
+```{r}
+alpha = 0.01
+qnorm(1-alpha)
+```
+
+>- $z = 2.031275 >$ `r qnorm(1-alpha)` **?** Não, então não rejeitamos $H_0$ (nível de significância $\alpha = 0.01$).
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos e diferentes.
+
+>- O que acontece quando não conhecemos $\sigma_x$ nem $\sigma_y$?
+>- Devemos estimar esses valores pela variância amostral, assim teremos $\hat{\sigma}_x$ e $\hat{\sigma}_y$
+>- Substituir $\sigma_x$ e $\sigma_y$ por $\hat{\sigma}_x$ e $\hat{\sigma}_y$ terá um custo.
+>- O custo é não podermos mais utilizar a distribuição  normal, no caso utilizaremos uma distribuição $t$
+
+\pause
+
+**Intervalo de confiança**
+
+O intervalo de confiança $\delta = 1-\alpha$ para $\mu_x - \mu_y$ é da forma $$\big< (\bar{x}-\bar{y}) \pm \underbrace{t_{1-\alpha/2, gl} \sqrt{\hat{\sigma}_x^2/n_1 + \hat{\sigma}_y^2/n_2}}_{\text{Margem de erro}} \big >$$
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos e diferentes.
+
+**Teste de Hipóteses:**
+
+\pause 
+
+$$t =  \dfrac{(\bar{x}-\bar{y}) -  D_0}{\sqrt{\hat{\sigma}_x^2/n_1 + \hat{\sigma}_y^2/n_2}}$$
+
+
+>- $H_0: \mu_x - \mu_y = D_0 \quad vs. \quad H_1: \mu_x - \mu_y \neq D_0,$ rejeitamos $H_0$ se $|t| > k = t_{1-\alpha/2, gl}$ (equivalentemente se $t > k$ ou $t < -k$);
+>- Se $H_0: \mu_x - \mu_y \leq D_0 \quad vs \quad H_1: \mu_x - \mu_y > D_0,$ rejeitamos $H_0$ se $t > k_1 = t_{1 - \alpha, gl};$
+>- Se $H_0: \mu_x - \mu_y \geq D_0 \quad vs \quad H_1: \mu_x - \mu_y < D_0,$ rejeitamos $H_0$ se $t < k_2 = t_{\alpha, gl}.$
+
+\pause
+
+**Quem é gl?** 
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos e diferentes.
+
+$$gl = \dfrac{\Big(\dfrac{\hat{\sigma}_x^2}{n_1} + \dfrac{\hat{\sigma}_y^2}{n_2} \Big)^2}{\dfrac{1}{n_1-1} \Big( \dfrac{\hat{\sigma}_x^2}{n_1}\Big)^2 + \dfrac{1}{n_2-1} \Big( \dfrac{\hat{\sigma}_y^2}{n_2}\Big)^2 }$$
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos e iguais.
+
+>- O procedimento descrito anteriormente é valido para o caso das variâncias desconhecidas serem diferentes.
+>- Quando as variâncias desconhecidas são iguais, utilizamos outra estatística de teste dada por $$t = \dfrac{(\bar{x}- \bar{y}) - D_0}{s_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}} \sim t_{n_1 + n_2 - 2}, \quad \text{em que } s_p^2 = \dfrac{(n_1-1)\hat{\sigma}_x^2 + (n_2 -1)\hat{\sigma}_y^2}{n_1 + n_2-2}$$
+>- Na prática precisamos fazer um teste de hipóteses para verificar se as variâncias são iguais ou diferentes.
+>- Por enquanto essa informação será dada e não precisamos nos preocupar com isso.
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos
+
+Considere o seguinte teste $H_0: \mu_x - \mu_y = 0 \quad vs. \quad H_1: \mu_x - \mu_y \neq 0$. Considere as seguintes informações:
+
+- **Amostra 1**: $n_1 = 35$, $\bar{x} = 13.6$ e $\hat{\sigma}_x = 5.2$
+- **Amostra 2**: $n_2 = 40$, $\bar{y} = 10.1$ e $\hat{\sigma}_y = 8.5$
+
+Rejeitamos ou não $H_0$? (considere $\alpha = 0.05$ e que $\sigma_x \neq \sigma_y$)
+
+\pause
+**Solução**
+
+>- Estatística de teste:  $$t =  \dfrac{(\bar{x}-\bar{y}) -  D_0}{\sqrt{\hat{\sigma}_x^2/n_1 + \hat{\sigma}_y^2/n_2}} = \dfrac{(13.6-10.1) -  0}{\sqrt{5.2^2/35 + 8.5^2/40}} = \dfrac{3.5}{1.605871} = 2.179503$$
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos
+
+
+>- $t = 2.179503$
+>- Como estamos testando $H_0: \mu_x - \mu_y = 0 \quad vs. \quad H_1: \mu_x - \mu_y \neq 0,$ rejeitamos $H_0$ se $|t| > k = t_{1-\alpha/2, gl}$
+>- $$gl = \dfrac{\Big(\dfrac{\hat{\sigma}_x^2}{n_1} + \dfrac{\hat{\sigma}_y^2}{n_2} \Big)^2}{\dfrac{1}{n_1-1} \Big( \dfrac{\hat{\sigma}_x^2}{n_1}\Big)^2 + \dfrac{1}{n_2-1} \Big( \dfrac{\hat{\sigma}_y^2}{n_2}\Big)^2 } = \underbrace{\dfrac{\Big(\dfrac{5.2^2}{35} + \dfrac{8.5^2}{40} \Big)^2}{\dfrac{1}{35-1} \Big( \dfrac{5.2^2}{35}\Big)^2 + \dfrac{1}{40-1} \Big( \dfrac{8.5^2}{40}\Big)^2}}_{65.70829}$$
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos
+
+
+>- $t = 2.179503$, $gl = 65.70829$
+>- Para $\alpha = 0.05$
+
+```{r}
+alpha = 0.05
+qt(1-alpha/2,65.70829)
+```
+>- 2.179503 > `r qt(1-alpha/2,65.70829)` **?** Sim, então rejeitamos $H_0$
+
+\pause
+
+\color{violet}
+Antigamente, as pessoas arredondavan `gl` para baixo e assim poder olhar nas tabelas da distribuição T (que só tinha os valores para graus de liberade inteiros). Hoje em dia não precisamos mais disso.
+\color{black}
+
+
+## Duas populações: $\sigma_x$ e $\sigma_y$ desconhecidos
+
+Resolveremos o mesmo exercícios mas **assumindo** que $\sigma_x = \sigma_y$: \pause
+
+- **Amostra 1**: $n_1 = 35$, $\bar{x} = 13.6$ e $\hat{\sigma}_x = 5.2$
+- **Amostra 2**: $n_2 = 40$, $\bar{y} = 10.1$ e $\hat{\sigma}_y = 8.5$
+
+\pause 
+
+$$s_p^2 = \dfrac{(n_1-1)\hat{\sigma}_x^2 + (n_2 -1)\hat{\sigma}_y^2}{n_1 + n_2-2} = \dfrac{(35-1) \times 5.2^2 + (40-1) \times 8.5^2}{35+40-2} = 51.19329 $$
+Então $$t = \dfrac{(\bar{x}- \bar{y}) - D_0}{s_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}} = \dfrac{13.6-10.1}{\sqrt{51.19329} \sqrt{\dfrac{1}{35} + \dfrac{1}{40}}} = 2.113464$$
+
+\pause
+
+Como $H_0: \mu_x - \mu_y = 0 \quad vs. \quad H_1: \mu_x - \mu_y \neq 0,$ rejeitamos $H_0$ se $|t| > k = t_{1-\alpha/2, n_1 + n_2-2} =$ `r qt(1-0.05/2,35+40-2)`
+
+
+# Diferença de médias para amostras relacionadas.
+
+## Diferença de médias para amostras relacionadas.
+
+
+>- Até agora temos trabalhado com inferência para a diferença de médias quando as duas populações são distintas (ou independentes);
+>- Em ocasiões, precisamos fazer inferência para a diferená de médias quando as amostras são relacionadas.
+>- **Exemplo:** um mesmo grupo de funcionários antes e depois de um treinamento, um mesmo grupo de pacientes antes e depois de um medicamento, opinião de um memso numero de pessoas antes de depois um anuncio publicitário, etc.
+>- Nestes casos, a estatística de teste é dada por $$t = \dfrac{\bar{d}-\mu_0}{\hat{\sigma}_d / \sqrt{n}} \sim t_{n-1},$$ com $d_i = x_i - y_i$, $\bar{d}$ e $\hat{\sigma}_d$ são a média e desvio padrão amostral de $d_1, \ldots, d_n.$
+
+
+
+## Diferença de médias para amostras relacionadas.
+
+$$t = \dfrac{\bar{d}-\mu_0}{\hat{\sigma}_d / \sqrt{n}} \sim t_{n-1},$$ 
+
+
+>- $H_0: \mu_d = \mu_0 \quad vs. \quad H_1: \mu_d \neq \mu_0$, rejeitamos $H_0$ se |t| > $t_{1-\alpha/2, n-1}$
+>- $H_0: \mu_d \leq \mu_0 \quad vs. \quad H_1: \mu_d > \mu_0$, rejeitamos $H_0$ se t > $t_{1-\alpha, n-1}$
+>- $H_0: \mu_d \geq \mu_0 \quad vs. \quad H_1: \mu_d < \mu_0$, rejeitamos $H_0$ se t < $t_{\alpha, n-1}$
+
+
+## Diferença de médias para amostras relacionadas.
+
+
+Considere o seguinte teste de hipóteses: $H_0: \mu_d \leq 0 \quad vs. \quad H_1: \mu_d > 0.$ Os dados a seguir são amostras relacionadas.
+
+|Elemento  | antes  | depois   |
+|:--------:|:------:|:--------:|
+| 1 | 21 | 20 |
+| 2 | 28 | 26 |
+| 3 | 18 | 18 |
+| 4 | 20 | 20 |
+| 5 | 26 | 24 |
+
+Rejitamos $H_0$ ou não? (considere $\alpha = 0.05$)
+
+## Diferença de médias para amostras relacionadas.
+
+
+
+|Elemento  | antes  | depois   |  $d_i$  |
+|:--------:|:------:|:--------:|:-------:|
+| 1 | 21 | 20 | 1 |
+| 2 | 28 | 26 | 2 |
+| 3 | 18 | 18 | 0 |
+| 4 | 20 | 20 | 0 |
+| 5 | 26 | 24 | 2 |
+
+\pause
+
+```{r, echo = FALSE}
+d = c(1,2,0,0,2)
+```
+
+
+>- Então $n = 5$ $\bar{d} =$ `r mean(d)` e $\hat{\sigma}_d =$ `r sd(d)`
+>- Estatística de teste $$t = \dfrac{\bar{d}-\mu_0}{\hat{\sigma}_d / \sqrt{n}} = \dfrac{1}{1 / \sqrt{5}} = 2.236068$$
+
+## Diferença de médias para amostras relacionadas.
+
+>- $t = 2.236068$
+>- Com $H_0: \mu_d \leq 0 \quad vs. \quad H_1: \mu_d > 0$, rejeitamos $H_0$ se t > $t_{1-\alpha, n-1}$
+
+```{r}
+alpha = 0.05; n = 5
+qt(1-alpha, n-1)
+```
+>- 2.236068 > `r qt(1-alpha, n-1)` **?** Sim, então rejeitamos $H_0$ e concluimos que $\mu_d > 0$
+
+#### Dica
+
+>- \color{red} Em alguns casos temos visto que para fazer inferência precisamos da distribuição t. \color{black}
+>- \color{red} Quando o tamanho da amostra for grande, sempre podemos aproximar a distribuição $t$ pela distribuição Normal. \color{black}
+
+
+
+
+
+## Leituras recomendadas
+
+- Anderson, D. R; Sweeney, D. J.; e Williams, T. A. (2008). *Estatística Aplicada à Administração e Economia*. 2ed. Cengage Learning. **Cap 10**
+- Morettin, P.A;  e Bussab, W. de O. (2004). *Estatística Básica*. 5ed, Saraiva. **Cap 13**
+
+
+
