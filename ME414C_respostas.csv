@@ -1,66 +1,66 @@
-data;musica;filme;bandejao;dob;festas;cr;time;peso;altura;avg_creditos_semestre;lazer_semanal;estagio;trabalho
-29/08/2024 08:44:48;Funk;Terror;RU;10/03/2004;Quase nunca;5,3;Santos;96;1,8;24;28;Não;Não
-29/08/2024 08:45:06;MPB;Suspense;RU;12/03/2006;Opção 6;;Outros;59kg;1,57m;30;;Não;Não
-29/08/2024 08:45:12;Eletronica;Ação;Bandejao, eu? afff;27/01/2005;Quase nunca;0,78;Sao Paulo;86;1,81;28;2h00;Não;Não
-29/08/2024 08:45:14;Rock;Ação;RU;27/03/2006;2x por mes;668;Sao Paulo;65.0kg;1.71;30;6;Não;Não
-29/08/2024 08:45:50;Jazz;Suspense;RU;30/05/2004;2x por mes;;Corinthians;100;190;26;20;Não;Não
-29/08/2024 08:45:53;Samba;Animação;RS;01/03/2002;Quase nunca;;Sao Paulo;66 kg;1,63;28;;Não;Não
-29/08/2024 08:46:27;Forró;Ficção científica;RU;11/06/2005;1x por mes;0.76;Flamengo;63.00 kg;1.64 m;28;12;Não;Não
-29/08/2024 08:46:34;Pop;Romance;RS;07/05/2003;Quase nunca;0,8108;Sao Paulo;88;1,65;28;8;Não;Não
-29/08/2024 08:46:54;MPB;Suspense;RA;19/05/2006;1x por mes;0,7085;Outros;49;1,58;26;44;Não;Não
-29/08/2024 08:46:58;Sertanejo;Drama;Bandejao, eu? afff;09/12/2004;Quase nunca;0,5779;Corinthians;54;1,6;20;2;Não;Não
-29/08/2024 08:47:05;Samba;Comedia;RU;12/05/2006;Quase nunca;0,74;Sao Paulo;72;1,85;29;4;Não;Não
-29/08/2024 08:47:09;Pop;Comédia Romântica;RA;02/12/2005;Quase nunca;0,7385;Outros;46;1,61;26;44;Não;Não
-29/08/2024 08:47:17;Pop;Suspense;RS;13/02/2003;Quase nunca;O,7262;Flamengo;63;1,6;26;5hrs;Não;Não
-29/08/2024 08:47:31;Outros;Ficção científica;Bandejao, eu? afff;29/08/2005;Quase nunca;0,6929;Corinthians;85 kg;185 cm;28 creditos;14 horas;Não;Não
-29/08/2024 08:48:12;Funk;Ação;RA;05/07/2004;1x por mes;;Outros;75Kg;1,87 m;28;;Não;Não
-29/08/2024 08:48:31;Samba;Comédia Romântica;RS;31/12/2005;2x por mes;0,7615;Sao Paulo;52;1,63;26;16;Não;Não
-29/08/2024 08:48:36;Rock;Ação;RS;28/11/2005;1x por mes;0,7362;Santos;74kg;1,75cm;26;16;Não;Não
-29/08/2024 08:48:42;Rock;Terror;RA;29/08/2005;1x por mes;6.68;Sao Paulo;73;179;28;12;Não;Não
-29/08/2024 08:48:58;Jazz;Ficção científica;Bandejao, eu? afff;10/11/2003;1x por mes;7134;Sao Paulo;84;1.83;24;3;Não;Não
-29/08/2024 08:49:00;Rock;Terror;RS;28/11/2002;Quase nunca;4.92;Corinthians;74;172;36;2;Não;Não
-29/08/2024 08:50:16;MPB;Ação;RS;13/05/2005;1x por mes;37;Corinthians;70kg;1,65 m;28;12hrs;Não;Não
-29/08/2024 08:50:24;Samba;Comedia;RU;12/05/2006;Quase nunca;0,74;Sao Paulo;72;1,85;29;10;Não;Não
-29/08/2024 08:50:50;Pagode;Comédia Romântica;RU;12/05/2005;Quase nunca;0,6586;Sao Paulo;60 kg;1, 64;24;10;Não;Não
-29/08/2024 08:51:00;Rock;Animação;Bandejao, eu? afff;17/06/2004;Quase nunca;0,6;Ponte Preta;88;1,8;22;3;Não;Não
-29/08/2024 08:52:14;Pop;Animação;RS;11/11/2005;Quase nunca;0,7957;Corinthians;58kg;1,70m;30;24;Não;Não
-29/08/2024 08:53:20;MPB;Comédia Romântica;RS;19/10/2001;Quase nunca;0,52;Sao Paulo;90;1,9;30;35;Não;Sim
-29/08/2024 08:55:32;Sertanejo;Terror;Bandejao, eu? afff;18/05/2005;Quase nunca;0,62;Corinthians;75kg;1,86m;30;5h;Não;Não
-29/08/2024 08:57:37;Funk;Ação;RA;17/06/2005;Quase nunca;0,6;Outros;90;1,8;26;20 Horas;Não;Não
-29/08/2024 09:00:36;Funk;Ficção científica;RS;27/12/2002;Quase nunca;0,6213;Corinthians;75;1,88;40;15;Não;Não
-29/08/2024 09:01:13;Rock;Animação;RS;26/02/2006;2x por mes;0,8486;Outros;78kg;1,85m;30;20;Não;Não
-29/08/2024 09:01:22;Rock;Terror;RS;28/11/2002;Quase nunca;0.48;Corinthians;74;172;36;2;Não;Não
-29/08/2024 09:01:52;Pop;Comédia Romântica;RS;18/01/2006;Mais do que 4 vezes por mes;74;Outros;67;1,67;32;28;Não;Não
-29/08/2024 09:08:50;MPB;Animação;RU;06/07/2005;4x  por mes;31;Corinthians;62kg;1,65;34;4;Não;Não
-29/08/2024 09:09:18;MPB;Comédia Romântica;RS;26/01/2006;Mais do que 4 vezes por mes;0,7685;Flamengo;75 kg;1,80 m;28;16;Não;Não
-29/08/2024 09:17:49;Sertanejo;Ficção científica;RS;01/07/2005;Quase nunca;0.59;Sao Paulo;96;1.84;24;10;Não;Sim
-29/08/2024 09:20:02;Pop;Comedia;RA;31/07/2003;Quase nunca;0,6509;Santos;56 kg;1,565 m;17;20;Não;Não
-29/08/2024 09:30:28;Rock;Comedia;RU;10/06/2004;Opção 6;0,65;Corinthians;68;1,78;28;25;Não;Não
-29/08/2024 09:32:07;Pop;Ação;Bandejao, eu? afff;18/09/1985;Quase nunca;0.96;Sao Paulo;80;1.78;10;10;Não;Sim
-29/08/2024 10:14:37;Outros;Terror;RU;25/03/2004;Quase nunca;0,6;Santos;80;1,8;30;8;Não;Não
-29/08/2024 13:39:25;Sertanejo;Comedia;RS;15/12/2003;1x por mes;0,5514;Flamengo;80;1.75;26;24;Não;Não
-29/08/2024 13:59:38;Sertanejo;Ação;RU;15/05/2006;Quase nunca;0,815;Santos;98;1,8;28;20;Não;Não
-29/08/2024 14:13:35;Pagode;Ficção científica;RU;03/01/2000;1x por mes;0,4;Palmeiras;90;1,77;16;10;Não;Não
-29/08/2024 17:23:30;Pop;Comédia Romântica;RA;07/10/2005;Quase nunca;7436;Santos;78;1,72;26 créditos;5;Não;Não
-29/08/2024 17:38:25;Funk;Terror;RS;16/01/2006;Quase nunca;0,8008;Corinthians;70Kg;180cm;26;;Não;Não
-30/08/2024 09:36:05;Rock;Comedia;RU;30/09/2004;Quase nunca;6719;Outros;80;1.72;24;20 horas;Não;Não
-30/08/2024 12:44:40;Rock;Ficção científica;RA;20/10/1993;Quase nunca;0,4;Ponte Preta;76;1,7;12;6;Não;Sim
-30/08/2024 18:10:24;Eletronica;Comédia Romântica;RU;26/05/2006;Quase nunca;0,7057;Santos;75;188 cm;28;25;Não;Não
-31/08/2024 09:10:35;Pop;Comedia;Bandejao, eu? afff;28/04/2006;Quase nunca;0,8179;Palmeiras;62;1,73;25;8;Não;Não
-31/08/2024 11:02:01;Pop;Suspense;RU;16/11/2003;Quase nunca;0,73;;65kg;1,75m;28;5h;Não;Não
-31/08/2024 20:55:46;Rock;Ficção científica;RS;11/03/2006;1x por mes;0,7915;Outros;60kg;1,63m;26;30h;Não;Não
-01/09/2024 00:18:12;Pop;Comédia Romântica;RA;23/04/2005;1x por mes;0,5693;Outros;85;1,63;24;40;Não;Não
-01/09/2024 09:12:01;Pop;Ficção científica;RU;14/01/2006;Quase nunca;0,5107;Outros;80,0 kg;1,86 m;30;270;Não;Não
-01/09/2024 17:27:48;Pop;Documentário;RU;31/10/2005;Opção 6;0.7;Outros;68;175;34;5;Não;Não
-01/09/2024 18:04:27;Pagode;Comedia;RA;03/06/2003;Quase nunca;;Corinthians;;1,63;30;;Não;Sim
-01/09/2024 18:34:34;Rock;Suspense;RS;23/06/2005;Quase nunca;0,84;Outros;53;1,7;26;10;Não;Não
-01/09/2024 20:59:24;Outros;Ação;RS;15/06/2004;2x por mes;247791;Palmeiras;85;1,69;30;16;Não;Não
-02/09/2024 08:37:36;Pop;Ação;RA;21/08/2004;Quase nunca;0,6;Corinthians;51.5;1,59;20;5;Não;Não
-02/09/2024 10:25:05;Pop;Animação;RU;26/03/2006;Quase nunca;0,7621;Outros;74,1kg;1,75m;23,2;30;Não;Não
-02/09/2024 10:28:59;Rock;Animação;RS;31/05/2004;Quase nunca;0,5604;Flamengo;67 kg;1,65;12;10hs;Não;Sim
-02/09/2024 10:42:43;Pop;Comédia Romântica;RS;25/01/2005;Quase nunca;;Guarani;65;1,62;24;12;Não;Não
-02/09/2024 10:55:50;Pop;Comedia;RS;22/07/2005;Quase nunca;0,7;Corinthians;62,5g;1,60m;28;10h;Não;Não
-02/09/2024 11:19:16;Outros;Comédia Romântica;RU;03/01/2005;2x por mes;0.68;Corinthians;69;1,78;28;28;Não;Não
-02/09/2024 15:50:26;MPB;Drama;RU;02/06/2006;Quase nunca;0,66;Corinthians;74kg;176 cm;28;10h;Não;Sim
-02/09/2024 16:58:20;Rock;Ação;RA;20/03/2002;2x por mes;;Corinthians;80;1,73;28;0;Não;Sim
-02/09/2024 17:16:45;MPB;Romance;RA;24/03/2006;Quase nunca;0,6785;Outros;55kg;1,63m;26;3h;Não;Não
+data,musica,filme,bandejao,dob,festas,cr,time,peso,altura,avg_creditos_semestre,lazer_semanal,estagio,trabalho
+29/08/2024 08:44:48,Funk,Terror,RU,10/03/2004,Quase nunca,"5,3",Santos,96,"1,8",24,28,Não,Não
+29/08/2024 08:45:06,MPB,Suspense,RU,12/03/2006,Opção 6,,Outros,59kg,"1,57m",30,,Não,Não
+29/08/2024 08:45:12,Eletronica,Ação,"Bandejao, eu? afff",27/01/2005,Quase nunca,"0,78",Sao Paulo,86,"1,81",28,2h00,Não,Não
+29/08/2024 08:45:14,Rock,Ação,RU,27/03/2006,2x por mes,668,Sao Paulo,65.0kg,1.71,30,6,Não,Não
+29/08/2024 08:45:50,Jazz,Suspense,RU,30/05/2004,2x por mes,,Corinthians,100,190,26,20,Não,Não
+29/08/2024 08:45:53,Samba,Animação,RS,01/03/2002,Quase nunca,,Sao Paulo,66 kg,"1,63",28,,Não,Não
+29/08/2024 08:46:27,Forró,Ficção científica,RU,11/06/2005,1x por mes,0.76,Flamengo,63.00 kg,1.64 m,28,12,Não,Não
+29/08/2024 08:46:34,Pop,Romance,RS,07/05/2003,Quase nunca,"0,8108",Sao Paulo,88,"1,65",28,8,Não,Não
+29/08/2024 08:46:54,MPB,Suspense,RA,19/05/2006,1x por mes,"0,7085",Outros,49,"1,58",26,44,Não,Não
+29/08/2024 08:46:58,Sertanejo,Drama,"Bandejao, eu? afff",09/12/2004,Quase nunca,"0,5779",Corinthians,54,"1,6",20,2,Não,Não
+29/08/2024 08:47:05,Samba,Comedia,RU,12/05/2006,Quase nunca,"0,74",Sao Paulo,72,"1,85",29,4,Não,Não
+29/08/2024 08:47:09,Pop,Comédia Romântica,RA,02/12/2005,Quase nunca,"0,7385",Outros,46,"1,61",26,44,Não,Não
+29/08/2024 08:47:17,Pop,Suspense,RS,13/02/2003,Quase nunca,"O,7262",Flamengo,63,"1,6",26,5hrs,Não,Não
+29/08/2024 08:47:31,Outros,Ficção científica,"Bandejao, eu? afff",29/08/2005,Quase nunca,"0,6929",Corinthians,85 kg,185 cm,28 creditos,14 horas,Não,Não
+29/08/2024 08:48:12,Funk,Ação,RA,05/07/2004,1x por mes,,Outros,75Kg,"1,87 m",28,,Não,Não
+29/08/2024 08:48:31,Samba,Comédia Romântica,RS,31/12/2005,2x por mes,"0,7615",Sao Paulo,52,"1,63",26,16,Não,Não
+29/08/2024 08:48:36,Rock,Ação,RS,28/11/2005,1x por mes,"0,7362",Santos,74kg,"1,75cm",26,16,Não,Não
+29/08/2024 08:48:42,Rock,Terror,RA,29/08/2005,1x por mes,6.68,Sao Paulo,73,179,28,12,Não,Não
+29/08/2024 08:48:58,Jazz,Ficção científica,"Bandejao, eu? afff",10/11/2003,1x por mes,7.134,Sao Paulo,84,1.83,24,3,Não,Não
+29/08/2024 08:49:00,Rock,Terror,RS,28/11/2002,Quase nunca,4.92,Corinthians,74,172,36,2,Não,Não
+29/08/2024 08:50:16,MPB,Ação,RS,13/05/2005,1x por mes,37,Corinthians,70kg,"1,65 m",28,12hrs,Não,Não
+29/08/2024 08:50:24,Samba,Comedia,RU,12/05/2006,Quase nunca,"0,74",Sao Paulo,72,"1,85",29,10,Não,Não
+29/08/2024 08:50:50,Pagode,Comédia Romântica,RU,12/05/2005,Quase nunca,"0,6586",Sao Paulo,60 kg,"1, 64",24,10,Não,Não
+29/08/2024 08:51:00,Rock,Animação,"Bandejao, eu? afff",17/06/2004,Quase nunca,"0,6",Ponte Preta,88,"1,8",22,3,Não,Não
+29/08/2024 08:52:14,Pop,Animação,RS,11/11/2005,Quase nunca,"0,7957",Corinthians,58kg,"1,70m",30,24,Não,Não
+29/08/2024 08:53:20,MPB,Comédia Romântica,RS,19/10/2001,Quase nunca,"0,52",Sao Paulo,90,"1,9",30,35,Não,Sim
+29/08/2024 08:55:32,Sertanejo,Terror,"Bandejao, eu? afff",18/05/2005,Quase nunca,"0,62",Corinthians,75kg,"1,86m",30,5h,Não,Não
+29/08/2024 08:57:37,Funk,Ação,RA,17/06/2005,Quase nunca,"0,6",Outros,90,"1,8",26,20 Horas,Não,Não
+29/08/2024 09:00:36,Funk,Ficção científica,RS,27/12/2002,Quase nunca,"0,6213",Corinthians,75,"1,88",40,15,Não,Não
+29/08/2024 09:01:13,Rock,Animação,RS,26/02/2006,2x por mes,"0,8486",Outros,78kg,"1,85m",30,20,Não,Não
+29/08/2024 09:01:22,Rock,Terror,RS,28/11/2002,Quase nunca,0.48,Corinthians,74,172,36,2,Não,Não
+29/08/2024 09:01:52,Pop,Comédia Romântica,RS,18/01/2006,Mais do que 4 vezes por mes,74,Outros,67,"1,67",32,28,Não,Não
+29/08/2024 09:08:50,MPB,Animação,RU,06/07/2005,4x  por mes,31,Corinthians,62kg,"1,65",34,4,Não,Não
+29/08/2024 09:09:18,MPB,Comédia Romântica,RS,26/01/2006,Mais do que 4 vezes por mes,"0,7685",Flamengo,75 kg,"1,80 m",28,16,Não,Não
+29/08/2024 09:17:49,Sertanejo,Ficção científica,RS,01/07/2005,Quase nunca,0.59,Sao Paulo,96,1.84,24,10,Não,Sim
+29/08/2024 09:20:02,Pop,Comedia,RA,31/07/2003,Quase nunca,"0,6509",Santos,56 kg,"1,565 m",17,20,Não,Não
+29/08/2024 09:30:28,Rock,Comedia,RU,10/06/2004,Opção 6,"0,65",Corinthians,68,"1,78",28,25,Não,Não
+29/08/2024 09:32:07,Pop,Ação,"Bandejao, eu? afff",18/09/1985,Quase nunca,0.96,Sao Paulo,80,1.78,10,10,Não,Sim
+29/08/2024 10:14:37,Outros,Terror,RU,25/03/2004,Quase nunca,"0,6",Santos,80,"1,8",30,8,Não,Não
+29/08/2024 13:39:25,Sertanejo,Comedia,RS,15/12/2003,1x por mes,"0,5514",Flamengo,80,1.75,26,24,Não,Não
+29/08/2024 13:59:38,Sertanejo,Ação,RU,15/05/2006,Quase nunca,"0,815",Santos,98,"1,8",28,20,Não,Não
+29/08/2024 14:13:35,Pagode,Ficção científica,RU,03/01/2000,1x por mes,"0,4",Palmeiras,90,"1,77",16,10,Não,Não
+29/08/2024 17:23:30,Pop,Comédia Romântica,RA,07/10/2005,Quase nunca,7.436,Santos,78,"1,72",26 créditos,5,Não,Não
+29/08/2024 17:38:25,Funk,Terror,RS,16/01/2006,Quase nunca,"0,8008",Corinthians,70Kg,180cm,26,,Não,Não
+30/08/2024 09:36:05,Rock,Comedia,RU,30/09/2004,Quase nunca,6.719,Outros,80,1.72,24,20 horas,Não,Não
+30/08/2024 12:44:40,Rock,Ficção científica,RA,20/10/1993,Quase nunca,"0,4",Ponte Preta,76,"1,7",12,6,Não,Sim
+30/08/2024 18:10:24,Eletronica,Comédia Romântica,RU,26/05/2006,Quase nunca,"0,7057",Santos,75,188 cm,28,25,Não,Não
+31/08/2024 09:10:35,Pop,Comedia,"Bandejao, eu? afff",28/04/2006,Quase nunca,"0,8179",Palmeiras,62,"1,73",25,8,Não,Não
+31/08/2024 11:02:01,Pop,Suspense,RU,16/11/2003,Quase nunca,"0,73",,65kg,"1,75m",28,5h,Não,Não
+31/08/2024 20:55:46,Rock,Ficção científica,RS,11/03/2006,1x por mes,"0,7915",Outros,60kg,"1,63m",26,30h,Não,Não
+01/09/2024 00:18:12,Pop,Comédia Romântica,RA,23/04/2005,1x por mes,"0,5693",Outros,85,"1,63",24,40,Não,Não
+01/09/2024 09:12:01,Pop,Ficção científica,RU,14/01/2006,Quase nunca,"0,5107",Outros,"80,0 kg","1,86 m",30,270,Não,Não
+01/09/2024 17:27:48,Pop,Documentário,RU,31/10/2005,Opção 6,0.7,Outros,68,175,34,5,Não,Não
+01/09/2024 18:04:27,Pagode,Comedia,RA,03/06/2003,Quase nunca,,Corinthians,,"1,63",30,,Não,Sim
+01/09/2024 18:34:34,Rock,Suspense,RS,23/06/2005,Quase nunca,"0,84",Outros,53,"1,7",26,10,Não,Não
+01/09/2024 20:59:24,Outros,Ação,RS,15/06/2004,2x por mes,247791,Palmeiras,85,"1,69",30,16,Não,Não
+02/09/2024 08:37:36,Pop,Ação,RA,21/08/2004,Quase nunca,"0,6",Corinthians,51.5,"1,59",20,5,Não,Não
+02/09/2024 10:25:05,Pop,Animação,RU,26/03/2006,Quase nunca,"0,7621",Outros,"74,1kg","1,75m","23,2",30,Não,Não
+02/09/2024 10:28:59,Rock,Animação,RS,31/05/2004,Quase nunca,"0,5604",Flamengo,67 kg,"1,65",12,10hs,Não,Sim
+02/09/2024 10:42:43,Pop,Comédia Romântica,RS,25/01/2005,Quase nunca,,Guarani,65,"1,62",24,12,Não,Não
+02/09/2024 10:55:50,Pop,Comedia,RS,22/07/2005,Quase nunca,"0,7",Corinthians,"62,5g","1,60m",28,10h,Não,Não
+02/09/2024 11:19:16,Outros,Comédia Romântica,RU,03/01/2005,2x por mes,0.68,Corinthians,69,"1,78",28,28,Não,Não
+02/09/2024 15:50:26,MPB,Drama,RU,02/06/2006,Quase nunca,"0,66",Corinthians,74kg,176 cm,28,10h,Não,Sim
+02/09/2024 16:58:20,Rock,Ação,RA,20/03/2002,2x por mes,,Corinthians,80,"1,73",28,0,Não,Sim
+02/09/2024 17:16:45,MPB,Romance,RA,24/03/2006,Quase nunca,"0,6785",Outros,55kg,"1,63m",26,3h,Não,Não
